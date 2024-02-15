@@ -15,7 +15,7 @@
 
 | Student Name | Student Email | GitHub Username |
 |    :---:     |     :---:     |     :---:       |
-| member1      |               |                 |
+| Tim Lor      | tlor@sfsu.edu | tulxoro.        |
 | member2      |               |                 |
 | member3      |               |                 |
 | member4      |               |                 |
