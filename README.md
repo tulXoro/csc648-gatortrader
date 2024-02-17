@@ -16,7 +16,7 @@
 | Student Name | Student Email | GitHub Username |
 |    :---:     |     :---:     |     :---:       |
 | Tim Lor      | tlor@sfsu.edu | tulxoro         |
-| member2      |               |                 |
+| Parampal Singh|psingh17@sfsu.edu| singh-paul   |
 | member3      |               |                 |
 | member4      |               |                 |
 | member5      |               |                 |
