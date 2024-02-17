@@ -17,7 +17,7 @@
 |    :---:     |     :---:     |     :---:       |
 | Tim Lor      | tlor@sfsu.edu | tulxoro         |
 | Parampal Singh|psingh17@sfsu.edu| singh-paul   |
-| member3      | langelestavera@sfsu.edu  | langeles014    |
+| Luis Angeles   | langelestavera@sfsu.edu  | langeles014    |
 | member4      |               |                 |
 | member5      |               |                 |
 | member6      |               |                 |
