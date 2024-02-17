@@ -18,7 +18,7 @@
 | Tim Lor      | tlor@sfsu.edu | tulxoro         |
 | Parampal Singh|psingh17@sfsu.edu| singh-paul   |
 | Luis Angeles   | langelestavera@sfsu.edu  | langeles014    |
-| member4      |               |                 |
+| Jayden Wong  | jwong51@mail.sfsu.edu        | jwong51                |
 | member5      |               |                 |
 | member6      |               |                 |
 
