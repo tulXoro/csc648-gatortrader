@@ -7,3 +7,15 @@ You are free to organize the contents of the folder as you see fit. But remember
 
 ## Please use the rest of the README.md to store important information for your team's application.
 
+# Getting Started
+
+## Svelte Project (frontend folder)
+
+### Installation
+
+1. Change directory to frontend with `cd ./application/frontend`
+2. Run `npm install` to install necessary libraries from npm.
+
+### Running
+
+1. Run `npm run dev` to run the development server.
