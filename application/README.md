@@ -9,7 +9,13 @@ You are free to organize the contents of the folder as you see fit. But remember
 
 # Getting Started
 
-## Requirements
-1. NPM
+## Svelte Project (frontend folder)
 
-## Installation
+### Installation
+
+1. Change directory to frontend with `cd ./application/frontend`
+2. Run `npm install` to install necessary libraries from npm.
+
+### Running
+
+1. Run `npm run dev` to run the development server.
