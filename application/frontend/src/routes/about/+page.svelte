@@ -1,6 +1,6 @@
 
 <ul>
-    <li><a href="#">team member 1</a></li>
+    <li><a href="./about/cole">cole</a></li>
     <li><a href="#">team member 2</a></li>
     <li><a href="#">team member 3</a></li>
     <li><a href="#">team member 4</a></li>
