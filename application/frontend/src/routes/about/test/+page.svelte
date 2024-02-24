@@ -13,7 +13,6 @@
 
 <Profile
   name="Luis Angeles"
-  photo="https://via.placeholder.com/300"
   bio="I am currently a Senior at SFSU..."
   role="Front End Lead"
   github="https://github.com/langeles"
