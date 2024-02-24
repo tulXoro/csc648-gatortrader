@@ -13,11 +13,12 @@
 
 <Profile
   name="Luis Angeles"
-  bio="I am currently a Senior at SFSU..."
+  photo="https://via.placeholder.com/300"
+  bio="This is a bio"
   role="Front End Lead"
-  github="https://github.com/langeles"
-  linkedin="https://linkedin.com/luisangeles"
-  email="langelestaver@sfsu.edu"
+  github="https://github.com/langeles014"
+  linkedin="https://linkedin.com/langeles014"
+  email="langelestavera@sfsu.edu"
 />
 
 <Footer />

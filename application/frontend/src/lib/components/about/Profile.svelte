@@ -1,6 +1,8 @@
 <script>
+    import default_profile from "$lib/assets/default_profile.jpg";
+
     export let name = "";
-    export let photo = "";
+    export let photo = default_profile;
     export let bio = "";
     export let role = "";
     export let github = "";
