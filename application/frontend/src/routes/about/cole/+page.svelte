@@ -2,7 +2,7 @@
     import Nav from '$lib/components/main/Nav.svelte';
     import Footer from '$lib/components/main/Footer.svelte';
     import Header from '$lib/components/main/Header.svelte';
-
+    import img from '$lib/assets/image.jpg';
     import Profile from '$lib/components/about/Profile.svelte';
 </script>
 
@@ -12,7 +12,7 @@
 <Header />
 
 <Profile name="Cole Douglas"
-    photo='.about/cole/image.jpg'
+    photo={img}
     bio="This is a bio"
     role="floater/assistant to any and all"
 
