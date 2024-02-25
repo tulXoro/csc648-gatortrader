@@ -12,7 +12,6 @@
 <Header />
 
 <Profile name="Haley Park"
-    photo="https://via.placeholder.com/300"
     bio="This is a bio"
     role="This is a role"
 
