@@ -12,7 +12,6 @@
 <Header />
 
 <Profile name="Jayden Wong"
-		photo="https://via.placeholder.com/300"
 		bio="This is a bio"
 		role="Back End Lead"
 
