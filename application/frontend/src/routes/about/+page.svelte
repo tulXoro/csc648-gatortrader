@@ -1,9 +1,4 @@
 
 <ul>
-    <li><a href="#">team member 1</a></li>
-    <li><a href="#">team member 2</a></li>
-    <li><a href="#">team member 3</a></li>
-    <li><a href="#">team member 4</a></li>
-    <li><a href="#">Jayden Wong</a></li>
-    <li><a href="#">team member 6</a></li>
+    <li><a href="about/jayden">Jayden Wong</a></li>
 </ul>
