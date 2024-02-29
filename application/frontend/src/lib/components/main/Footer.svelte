@@ -1,27 +1,9 @@
 <script>
-  import {
-    Footer,
-    FooterCopyright,
-    FooterLinkGroup,
-    FooterBrand,
-    FooterLink,
-  } from "flowbite-svelte";
+  import { Footer, FooterCopyright } from "flowbite-svelte";
 </script>
 
-<Footer footerType="logo">
-  <div class="sm:flex sm:items-center sm:justify-between">
-    <FooterBrand
-      href="https://www.sfsu.edu/index.html"
-      src="/images/flowbite-svelte-icon-logo.svg"
-      alt="SFSU Logo"
-      name="Team 5"
-    />
-    <FooterLinkGroup
-      ulClass="flex flex-wrap items-center mb-6 text-sm text-gray-500 sm:mb-0 dark:text-gray-400"
-    >
-      <FooterLink href="/">About</FooterLink>
-    </FooterLinkGroup>
-  </div>
+<Footer class="absolute bottom-0 start-0 z-20 w-full">
   <hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
+  <div class="sm:flex sm:items-center sm:justify-between"></div>
   <FooterCopyright href="/" by="CSC648 Team 5™" />
 </Footer>
