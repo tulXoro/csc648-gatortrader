@@ -1,63 +1,74 @@
-<!-- <script>
-	import Nav from "$lib/components/main/Nav.svelte";
-	import Header from "$lib/components/main/Header.svelte";
-	import Footer from "$lib/components/main/Footer.svelte";
-</script>
-
-<Header/>
-<Nav/>
-
-<div class="ml-20 flex-grow">
-	<div class="carousel ml-64 flex items-center overflow-x-auto mb-8">
-		<button class="prev" onclick="moveSlide(-1)">❮</button>
-		<img src="https://fakeimg.pl/100/" class="flex-none">
-		<img src="https://fakeimg.pl/100/" class="flex-none">
-		<img src="https://fakeimg.pl/100/" class="flex-none">
-		<img src="https://fakeimg.pl/100/" class="flex-none">
-		<img src="https://fakeimg.pl/100/" class="flex-none">
-		<img src="https://fakeimg.pl/100/" class="flex-none">
-		<img src="https://fakeimg.pl/100/" class="flex-none">
-		<img src="https://fakeimg.pl/100/" class="flex-none">
-		<button class="next" onclick="moveSlide(1)">❯</button>
-	</div>
-
-	<div class="grid-posts ml-64 grid grid-cols-4 gap-4">
-		<img src="https://fakeimg.pl/100x100/?text=post 1">
-		<img src="https://fakeimg.pl/100x100/?text=post 2">
-		<img src="https://fakeimg.pl/100x100/?text=post 3">
-		<img src="https://fakeimg.pl/100x100/?text=post 4">
-		<img src="https://fakeimg.pl/100x100/?text=post 5">
-		<img src="https://fakeimg.pl/100x100/?text=post 6">
-		<img src="https://fakeimg.pl/100x100/?text=post 7">
-		<img src="https://fakeimg.pl/100x100/?text=post 8">
-		<img src="https://fakeimg.pl/100x100/?text=post 9">
-		<img src="https://fakeimg.pl/100x100/?text=post 10">
-		<img src="https://fakeimg.pl/100x100/?text=post 11">
-		<img src="https://fakeimg.pl/100x100/?text=post 12">
-		<img src="https://fakeimg.pl/100x100/?text=post 13">
-		<img src="https://fakeimg.pl/100x100/?text=post 14">
-		<img src="https://fakeimg.pl/100x100/?text=post 15">
-		<img src="https://fakeimg.pl/100x100/?text=post 16">
-	</div>
-</div>
-
-<Footer/> -->
-
 <script>
-    import Header from '$lib/components/main/Header.svelte';
-    import Footer from '$lib/components/main/Footer.svelte';
+  import Header from "$lib/components/main/Header.svelte";
+  import Footer from "$lib/components/main/Footer.svelte";
+  import { Heading } from "flowbite-svelte";
+  // import Nav from "$lib/components/main/Nav.svelte"; will be added later
+  import { Card, Button } from "flowbite-svelte";
+
+  let teamMembers = [
+    {
+      slug: "tim",
+      name: "Tim Lor",
+      position: "Project Manager",
+      img: "/path/to/image",
+    },
+    {
+      slug: "luis",
+      name: "Luis Angeles",
+      position: "Front End Lead Developer",
+      img: "/path/to/image",
+    },
+    {
+      slug: "cole",
+      name: "Cole Douglas",
+      position: "Front End Developer",
+      img: "/path/to/image",
+    },
+    {
+      slug: "Haley",
+      name: "Haley Park",
+      position: "Back End Developer",
+      img: "/path/to/image",
+    },
+    {
+      slug: "Singh",
+      name: "Parampal Singh",
+      position: "GitHub Master",
+      img: "/path/to/image",
+    },
+    {
+      slug: "jayden",
+      name: "Jayden Wong",
+      position: "Back End Lead Developer",
+      img: "/path/to/image",
+    },
+  ];
 </script>
 
 <Header />
-
-
-<ul>
-    <li><a href="./about/luis">Luis Angeles</a></li>
-    <li><a href="./about/cole">Cole Douglas</a></li>
-    <li><a href="./about/Singh">Parampal Singh</a></li>
-    <li><a href="./about/jayden">Jayden Wong</a></li>
-    <li><a href="./about/tim">Tim Lor</a></li>
-    <li><a href="./about/Haley">Haley Park</a></li>
-</ul>
-
+<Heading tag="h3">Meet the Team</Heading>
+<div class="team-container">
+  {#each teamMembers as { name, position, img, slug }, i}
+    <Card {img} class="team-member-card">
+      <a href={`./about/${slug}`} class="no-underline">
+        <h5
+          class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white hover:underline"
+        >
+          {name}
+        </h5>
+      </a>
+      <p class="font-normal text-gray-700 dark:text-gray-400">{position}</p>
+    </Card>
+  {/each}
+</div>
 <Footer />
+
+<style>
+  .team-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    justify-items: center;
+    align-items: center;
+  }
+</style>
