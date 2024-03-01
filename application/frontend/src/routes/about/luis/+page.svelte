@@ -13,7 +13,6 @@
 
 <Profile
   name="Luis Angeles"
-  photo="/src/lib/assets/image.jpg"
   bio="This is a bio"
   role="Front End Lead"
   github="https://github.com/langeles014"

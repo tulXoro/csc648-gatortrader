@@ -13,7 +13,6 @@
 
 <Profile
   name="Parampal Singh"
-  photo="https://via.placeholder.com/300"
   bio="This is a bio"
   role="Github Master"
   github="https://github.com/singh-paul"

@@ -4,7 +4,8 @@
   import Header from "$lib/components/main/Header.svelte";
   import Footer from "$lib/components/main/Footer.svelte";
   import { Heading } from "flowbite-svelte";
-  // import Nav from "$lib/components/main/Nav.svelte"; will be added later
+  import Nav from "$lib/components/main/Nav.svelte";
+  import SideBar from "$lib/components/main/SideBar.svelte";
   import { Card, Button } from "flowbite-svelte";
 
   let teamMembers = [
@@ -48,7 +49,9 @@
 </script>
 
 <Header />
+<Nav />
 <Heading tag="h3">Meet the Team</Heading>
+<SideBar />
 <div class="team-container">
   {#each teamMembers as { name, position, img, slug }, i}
     <Card {img} class="team-member-card">

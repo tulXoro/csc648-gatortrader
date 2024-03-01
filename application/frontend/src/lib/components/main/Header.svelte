@@ -12,12 +12,11 @@
 
 <header class="w-full text-center py-4">
   <div class="ticker-container">
-    <h2 class="ticker-text">
+    <h3 class="ticker-text">
       SFSU Software Engineering Project CSC 648-848, Spring 2024. For
       Demonstration Only
-    </h2>
+    </h3>
   </div>
-  <Heading tag="h1">CSC648 Project</Heading>
 </header>
 
 <style>
