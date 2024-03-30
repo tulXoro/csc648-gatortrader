@@ -4,7 +4,6 @@
     NavBrand,
     NavLi,
     NavUl,
-    NavHamburger,
     Button,
     Input,
   } from "flowbite-svelte";
@@ -44,7 +43,4 @@
   </div>
 </Navbar>
 
-<Breadcrumb aria-label="query-search">
-  <BreadcrumbItem href="/" home>Home</BreadcrumbItem>
-  <BreadcrumbItem href="/">Product</BreadcrumbItem>
-</Breadcrumb>
+<DummyMain></DummyMain>
