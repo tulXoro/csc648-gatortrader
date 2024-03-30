@@ -3,7 +3,7 @@
   import { Avatar } from "flowbite-svelte";
   import Footer from "$lib/components/main/Footer.svelte";
   import Nav from "$lib/components/main/Nav.svelte";
-  import SideBar from "$lib/components/main/DummyMain.svelte";
+  import SideBar from "$lib/components/main/PostCards.svelte";
 
   export let name = "";
   export let photo = default_profile;

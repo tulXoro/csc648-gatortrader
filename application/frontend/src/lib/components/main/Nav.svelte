@@ -7,7 +7,6 @@
     Button,
     Input,
   } from "flowbite-svelte";
-  import { Breadcrumb, BreadcrumbItem } from "flowbite-svelte";
 </script>
 
 <Navbar class="bg-gray-900 text-white">
@@ -42,5 +41,3 @@
     </NavUl>
   </div>
 </Navbar>
-
-<DummyMain></DummyMain>

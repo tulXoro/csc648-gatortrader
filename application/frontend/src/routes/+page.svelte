@@ -7,5 +7,5 @@
 
 <Header></Header>
 <Nav></Nav>
-<!-- <PostCards></PostCards> -->
+<PostCards></PostCards>
 <Footer></Footer>
