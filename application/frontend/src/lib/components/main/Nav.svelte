@@ -1,6 +1,50 @@
-<nav class="bg-gray-200 w-16 p-4 flex flex-col items-center fixed h-50">
-    <a href="index" class="py-2 px-4 text-gray-800 hover:bg-gray-300">🏠 Home</a>
-    <a href="profile" class="py-2 px-4 text-gray-800 hover:bg-gray-300">👤 Profile</a>
-    <a href="login" class="py-2 px-4 text-gray-800 hover:bg-gray-300">👤 Login</a>
-    <a href="about" class="py-2 px-4 text-gray-800 hover:bg-gray-300">👤 About Us</a>
-</nav>
+<script>
+  import {
+    Navbar,
+    NavBrand,
+    NavLi,
+    NavUl,
+    NavHamburger,
+    Button,
+    Input,
+  } from "flowbite-svelte";
+  import { Breadcrumb, BreadcrumbItem } from "flowbite-svelte";
+</script>
+
+<Navbar class="bg-gray-900 text-white">
+  <NavBrand href="/" class="ml-auto mr-10">
+    <img src="/SFSU.png" class="me-3 h-6 sm:h-20" alt="SFSU Logo" />
+    <span
+      class="self-center whitespace-nowrap text-5xl font-semibold dark:text-white"
+      >GatorTrader</span
+    >
+  </NavBrand>
+
+  <div class="hidden md:flex flex-grow items-center">
+    <Input
+      id="search-navbar"
+      class="w-full px-4 py-2 rounded-l-md border-r-0 bg-gray-800 text-white"
+      placeholder="Search GatorTrader"
+    />
+
+    <Button
+      href="/about"
+      color="none"
+      class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!-- Include your path data for the icon here -->
+      </svg>
+    </Button>
+    <NavUl>
+      <NavLi href="/" class="text-white text-2xl" active={true}>Post</NavLi>
+      <NavLi href="/about" class="text-white text-2xl">About</NavLi>
+      <NavLi href="/" class="text-white text-2xl">Dashboard</NavLi>
+    </NavUl>
+  </div>
+</Navbar>
+
+<Breadcrumb aria-label="query-search">
+  <BreadcrumbItem href="/" home>Home</BreadcrumbItem>
+  <BreadcrumbItem href="/">Product</BreadcrumbItem>
+</Breadcrumb>
