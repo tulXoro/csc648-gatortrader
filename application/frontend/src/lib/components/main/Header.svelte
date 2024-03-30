@@ -41,6 +41,6 @@
     font-weight: bold;
     background-color: rgb(188, 7, 7);
     color: white;
-    padding: 5px 50px; /* Adjust padding as needed */
+    padding: 5px 50px;
   }
 </style>

@@ -1,9 +1,9 @@
 <script>
-    import Nav from '$lib/components/main/Nav.svelte';
-    import Footer from '$lib/components/main/Footer.svelte';
-    import Header from '$lib/components/main/Header.svelte';
+  import Nav from "$lib/components/main/Nav.svelte";
+  import Footer from "$lib/components/main/Footer.svelte";
+  import Header from "$lib/components/main/Header.svelte";
 
-    import Profile from '$lib/components/about/Profile.svelte';
+  import Profile from "$lib/components/about/Profile.svelte";
 </script>
 
 <!-- Commented out because nav obstructs profile right now -->
@@ -11,13 +11,13 @@
 
 <Header />
 
-<Profile name="Haley Park"
-    bio="This is a bio"
-    role="This is a role"
-
-    github="https://github.com/jung-hyeon"
-    linkedin="https://linkedin.com"
-    email="jpark58@sfsu.edu"
+<Profile
+  name="Haley Park"
+  bio="This is a bio"
+  role="This is a role"
+  github="https://github.com/jung-hyeon"
+  linkedin="https://linkedin.com"
+  email="jpark58@sfsu.edu"
 />
 
 <Footer />

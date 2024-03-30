@@ -1,3 +1,4 @@
+<!-- This will be the test populated main page -->
 <script>
   import {
     Sidebar,
@@ -67,9 +68,9 @@
 
   .fixed-sidebar {
     position: fixed;
-    top: 300px; /* Adjust so the sidebar appears below the hamburger icon */
+    top: 250px; /* Adjust so the sidebar appears below the hamburger icon */
     left: 30px;
-    height: calc(100vh - 50px); /* Adjust the height based on the top value */
+    /* height: calc(100vh - 50px); Adjust the height based on the top value */
     z-index: 20; /* Below the hamburger icon but above other content */
     width: 250px; /* Adjust based on your design */
   }
