@@ -1,22 +1,47 @@
-<!-- This will be the cards for the products -->
 <script>
-  import { Card, Button, Toggle } from "flowbite-svelte";
-  let vCard = false;
+  import { Card, Button } from "flowbite-svelte";
+  import { onMount } from "svelte";
+  import { writable } from "svelte/store";
+
+  // Define a writable store for products
+  const posts = writable([]);
+
+  // Function to fetch product data from backend
+  async function fetchProductData() {
+    try {
+      const response = await fetch("/getPosts");
+      if (response.ok) {
+        const data = await response.json();
+        // Update the posts store with fetched data
+        posts.set(data);
+        console.log(posts);
+      } else {
+        console.error("Failed to fetch product data");
+      }
+    } catch (error) {
+      console.error("Error fetching product data:", error);
+    }
+  }
+
+  // Call fetchProductData function when the component mounts
+  onMount(fetchProductData);
 </script>
 
-<div class="space-y-4">
-  <Card img="/SFSU.png" reverse={vCard}>
-    <h5
-      class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
-    >
-      Noteworthy technology acquisitions 2021
-    </h5>
-    <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight">
-      Here are the biggest enterprise technology acquisitions of 2021 so far, in
-      reverse chronological order.
-    </p>
-    <Button>Read more</Button>
-  </Card>
-  <Toggle bind:checked={vCard} class="italic dark:text-gray-500">Reverse</Toggle
-  >
+<div class="grid grid-cols-5 gap-4">
+  {#each $posts as product}
+    <Card class="col-span-1">
+      <div class="relative h-full flex flex-col">
+        <img
+          class="object-cover w-full h-64"
+          src={`/image/${product.image_file}`}
+          alt={product.item_name}
+        />
+        <div class="p-4 flex-grow flex flex-col justify-end bg-white">
+          <h5 class="mb-2 text-xl font-bold">{product.item_name}</h5>
+          <p class="mb-2 text-sm">${product.price}</p>
+          <Button class="text-sm mt-auto">Message</Button>
+        </div>
+      </div>
+    </Card>
+  {/each}
 </div>
