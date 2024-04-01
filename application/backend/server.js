@@ -9,7 +9,7 @@ const app = express();
 const PORT = 3000;
 
 // Use CORS middleware 
-app.use(cors()); 
+// app.use(cors()); 
 
 app.get('/backtest', (req, res) => {
   res.send('Hello World');
