@@ -10,15 +10,17 @@ router.get("/", async (req, res) => {
       const [rows] = await db.query(
         `
                 SELECT * FROM t_product_post
-                WHERE category = ?
+                WHERE category_id = ?
             `,
         [req.query.category]
       );
       res.json(rows);
     } else {
-      const [rows] = await db.query(`
-                SELECT * FROM t_product_post
-            `);
+      const { search } = req.query;
+      const sql = search ? 
+        `SELECT * FROM t_product_post WHERE item_name LIKE '%${search}%' OR item_description LIKE '%${search}%'` :
+        "SELECT * FROM t_product_post";
+      const [rows] = await db.query(sql);
       res.json(rows);
     }
 
