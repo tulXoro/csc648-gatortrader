@@ -12,9 +12,8 @@
       const response = await fetch("/getPosts");
       if (response.ok) {
         const data = await response.json();
-        // Update the posts store with fetched data
+        // Update the posts store with fetched data to make it accessible for rendering
         posts.set(data);
-        console.log(posts);
       } else {
         console.error("Failed to fetch product data");
       }
@@ -27,8 +26,10 @@
   onMount(fetchProductData);
 </script>
 
+<!-- This will be used in future for product post page -->
+<!-- <div on:click={() => navigateToSomePage()} class="grid grid-cols-5 gap-4"> -->
 <div class="grid grid-cols-5 gap-4">
-  {#each $posts as product}
+  {#each $posts.filter((post) => post.status === "APPROVED") as product}
     <Card class="col-span-1">
       <div class="relative h-full flex flex-col">
         <img
