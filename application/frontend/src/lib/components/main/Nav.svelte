@@ -36,7 +36,7 @@
   async function fetchPosts(category: string, query: string): Promise<void> {
     try {
       const response = await fetch(
-        `/api/posts?category=${category}&search=${query}`
+        `/getPosts?category=${category}&search=${query}`
       );
       const data = await response.json();
       console.log(data); // Log retrieved posts

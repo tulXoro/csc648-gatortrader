@@ -5,23 +5,26 @@ const router = express.Router();
 
 router.get("/", async (req, res) => {
   try {
-    // when we receive a request to query by category
-    if (req.query.category) {
-      const [rows] = await db.query(
-        `
-                SELECT * FROM t_product_post
-                WHERE category_id = ?
-            `,
-        [req.query.category]
-      );
+    const { category, search } = req.query;
+    if (category && search) {
+      const sql = `SELECT * FROM t_product_post WHERE 
+                      category_id = ? AND
+                      (item_name LIKE '%${search}%' OR item_description LIKE '%${search}%')`;
+      const [rows] = await db.query(sql, [category]);
       res.json(rows);
-    } else {
-      const { search } = req.query;
-      const sql = search ? 
-        `SELECT * FROM t_product_post WHERE item_name LIKE '%${search}%' OR item_description LIKE '%${search}%'` :
-        "SELECT * FROM t_product_post";
+    }
+    // when we receive a request to query by category
+    else if (category) {
+      const [rows] = await db.query("SELECT * FROM t_product_post WHERE category_id = ?", [category]);
+      res.json(rows);
+    } 
+    else if (search) {
+      const sql = `SELECT * FROM t_product_post WHERE item_name LIKE '%${search}%' OR item_description LIKE '%${search}%'`;
       const [rows] = await db.query(sql);
       res.json(rows);
+    } else {
+      const [rows] = await db.query("SELECT * FROM t_product_post");
+      res.json(rows);    
     }
 
     // NOTE: Does not send image data. Client will need to make a separate request to get image data.
