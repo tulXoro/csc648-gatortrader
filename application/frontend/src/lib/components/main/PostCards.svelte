@@ -29,6 +29,7 @@
 <!-- This will be used in future for product post page -->
 <!-- <div on:click={() => navigateToSomePage()} class="grid grid-cols-5 gap-4"> -->
 <div class="grid grid-cols-5 gap-4">
+  <!-- Filter using one APPROVED posts by Admin -->
   {#each $posts.filter((post) => post.status === "APPROVED") as product}
     <Card class="col-span-1">
       <div class="relative h-full flex flex-col">
@@ -38,9 +39,10 @@
           alt={product.item_name}
         />
         <div class="p-4 flex-grow flex flex-col justify-end bg-white">
-          <h5 class="mb-2 text-xl font-bold">{product.item_name}</h5>
-          <p class="mb-2 text-sm">${product.price}</p>
-          <Button class="text-sm mt-auto">Message</Button>
+          <p class="mb-2 text-2xl font-bold">{product.item_name}</p>
+          <p class="mb-2 text-sm">{product.item_description}</p>
+          <p class="mb-2 text-xl font-black">${product.price}</p>
+          <Button class="text-xl mt-auto">Message</Button>
         </div>
       </div>
     </Card>

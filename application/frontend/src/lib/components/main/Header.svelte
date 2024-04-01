@@ -13,7 +13,7 @@
 <header class="w-full text-center py-4">
   <div class="ticker-container">
     <h3 class="ticker-text">
-      SFSU Software Engineering Project CSC 648-848, Spring 2024. For
+      SFSU Software Engineering Project CSC 648-848, Spring 2024, Team 05. For
       Demonstration Only
     </h3>
   </div>
