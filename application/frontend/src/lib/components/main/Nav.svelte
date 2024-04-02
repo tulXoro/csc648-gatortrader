@@ -9,6 +9,10 @@
   } from "flowbite-svelte";
   import { SearchSolid } from "flowbite-svelte-icons";
   import { onMount } from "svelte";
+  import { writable } from "svelte/store";
+
+  // Define a writable store for products
+  const posts = writable([]);
 
   let selectedCategory: string = ""; // Initialize selected category
   let searchQuery: string = ""; // Initialize search query
@@ -18,6 +22,7 @@
     console.log("Category:", selectedCategory);
     console.log("Search Query:", searchQuery);
     // Implement your search logic here
+    fetchPosts(selectedCategory, searchQuery);
   }
 
   // Function to update search query
@@ -25,7 +30,7 @@
     searchQuery = (event.target as HTMLInputElement).value;
   }
 
-  // Function to update selected category
+  // Function to update selected category and trigger search
   function updateCategory(event: Event): void {
     selectedCategory = (event.target as HTMLSelectElement).value;
     // Call function to fetch posts based on selected category
@@ -35,13 +40,14 @@
   // Function to fetch posts based on category and search query
   async function fetchPosts(category: string, query: string): Promise<void> {
     try {
-      const response = await fetch(
-        `/getPosts?category=${category}&search=${query}`
-      );
-      const data = await response.json();
-      console.log(data); // Log retrieved posts
-      // Update UI with retrieved posts
-      // Example: You can update a variable bound to a list of posts in your Svelte component
+      const response = await fetch(`/getPosts`);
+      if (response.ok) {
+        const data = await response.json();
+        // Update the posts store with fetched data
+        posts.set(data);
+      } else {
+        console.error("Failed to fetch posts");
+      }
     } catch (error) {
       console.error("Error fetching posts:", error);
     }
@@ -53,6 +59,13 @@
       document.querySelector("#category-select") as HTMLSelectElement
     ).value;
   });
+
+  // Function to handle Enter key press in search input
+  function handleKeyPress(event: KeyboardEvent): void {
+    if (event.key === "Enter") {
+      handleSearch();
+    }
+  }
 </script>
 
 <Navbar class="bg-gray-900 text-white sticky top-0 z-50">
@@ -107,6 +120,7 @@
       placeholder="Search GatorTrader"
       bind:value={searchQuery}
       on:input={updateSearch}
+      on:keydown={handleKeyPress}
     />
 
     <!-- Search Button -->
