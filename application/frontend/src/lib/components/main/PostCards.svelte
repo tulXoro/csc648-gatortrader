@@ -3,9 +3,10 @@
   import { onMount } from "svelte";
   import { writable } from "svelte/store";
   import selectedCategory from "./Nav.svelte";
+  import { posts } from "../../store.js";
 
   // Define a writable store for products
-  const posts = writable([]);
+  // const posts = writable([]);
 
   // Function to fetch product data from backend
   async function fetchProductData() {

@@ -10,6 +10,8 @@
   } from "flowbite-svelte";
   import { ChevronDownOutline, SearchOutline } from "flowbite-svelte-icons";
   import { writable } from "svelte/store";
+  import { posts } from "../../store.js";
+  import { goto } from "$app/navigation";
 
   const categories = [
     { id: 1, label: "Electronics" },
@@ -30,10 +32,13 @@
       const categoryId = $selectedCategory;
       url.searchParams.append("category", categoryId);
       const response = await fetch(url.toString());
+      goto(`?${url.toString()}`);
       if (response.ok) {
         const data = await response.json();
+        console.log(data);
         // Update selected category with the received data
-        selectedCategory.set(data);
+        // selectedCategory.set(data);
+        posts.set(data);
       } else {
         console.error("Failed to fetch posts");
       }
