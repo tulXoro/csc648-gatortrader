@@ -9,11 +9,12 @@
     Search,
   } from "flowbite-svelte";
   import { ChevronDownOutline, SearchOutline } from "flowbite-svelte-icons";
-  import { writable } from "svelte/store";
+
   import { posts } from "../../store.js";
   import { goto } from "$app/navigation";
 
   const categories = [
+    { id: 0, label: "All"},
     { id: 1, label: "Electronics" },
     { id: 2, label: "Furniture" },
     { id: 3, label: "Textbooks" },
@@ -21,16 +22,16 @@
   ];
 
   // Define a writable store for selected category
-  export const selectedCategory = writable("All");
+  export let selectedCategory = 0;
 
   // Define a writable store for search query
-  const searchQuery = writable("");
+  let searchQuery = "";
 
   async function handleSearch(): Promise<void> {
     try {
       const url = new URL("/getPosts", window.location.origin);
-      const categoryId = $selectedCategory;
-      url.searchParams.append("category", categoryId);
+      const categoryId = selectedCategory;
+      url.searchParams.append("category", categoryId.toString());
       const response = await fetch(url.toString());
       goto(`?${url.toString()}`);
       if (response.ok) {
@@ -48,14 +49,14 @@
   }
 
   // Function to update selected category and trigger search
-  function updateCategory(categoryId: string): void {
-    selectedCategory.set(categoryId);
+  function updateCategory(categoryId: number): void {
+    selectedCategory = categoryId;
     handleSearch();
   }
 
   // Function to update search query
   function updateSearch(event: InputEvent): void {
-    searchQuery.set((event.target as HTMLInputElement).value);
+    searchQuery = (event.target as HTMLInputElement).value;
   }
 
   // Function to handle Enter key press in search input
@@ -87,16 +88,16 @@
           class="rounded-e-none whitespace-nowrap border border-e-0 border-primary-700"
           style="color: white;"
         >
-          {$selectedCategory}
+          {categories[selectedCategory].label}
           <ChevronDownOutline class="flex w-2.5 h-2.5 ms-2.5" />
         </button>
         <Dropdown>
-          {#each categories as { label }}
+          {#each categories as { id, label }}
             <DropdownItem
               on:click={() => {
-                updateCategory(label);
+                updateCategory(id);
               }}
-              class={$selectedCategory === label ? "underline" : ""}
+              class={ selectedCategory === id ? "underline" : ""}
               style="color: black;"
             >
               {label}
