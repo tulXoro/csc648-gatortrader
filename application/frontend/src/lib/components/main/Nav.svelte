@@ -4,47 +4,36 @@
     NavBrand,
     NavLi,
     NavUl,
-    Button,
-    Input,
+    Dropdown,
+    DropdownItem,
+    Search,
   } from "flowbite-svelte";
-  import { SearchSolid } from "flowbite-svelte-icons";
-  import { onMount } from "svelte";
+  import { ChevronDownOutline, SearchOutline } from "flowbite-svelte-icons";
   import { writable } from "svelte/store";
 
-  // Define a writable store for products
-  const posts = writable([]);
+  const categories = [
+    { id: 1, label: "Electronics" },
+    { id: 2, label: "Furniture" },
+    { id: 3, label: "Textbooks" },
+    { id: 4, label: "Misc." },
+  ];
 
-  let selectedCategory: string = ""; // Initialize selected category
-  let searchQuery: string = ""; // Initialize search query
+  // Define a writable store for selected category
+  export const selectedCategory = writable("All");
 
-  // Function to handle search
-  function handleSearch(): void {
-    console.log("Category:", selectedCategory);
-    console.log("Search Query:", searchQuery);
-    // Implement your search logic here
-    fetchPosts(selectedCategory, searchQuery);
-  }
+  // Define a writable store for search query
+  const searchQuery = writable("");
 
-  // Function to update search query
-  function updateSearch(event: Event): void {
-    searchQuery = (event.target as HTMLInputElement).value;
-  }
-
-  // Function to update selected category and trigger search
-  function updateCategory(event: Event): void {
-    selectedCategory = (event.target as HTMLSelectElement).value;
-    // Call function to fetch posts based on selected category
-    fetchPosts(selectedCategory, searchQuery);
-  }
-
-  // Function to fetch posts based on category and search query
-  async function fetchPosts(category: string, query: string): Promise<void> {
+  async function handleSearch(): Promise<void> {
     try {
-      const response = await fetch(`/getPosts`);
+      const url = new URL("/getPosts", window.location.origin);
+      const categoryId = $selectedCategory;
+      url.searchParams.append("category", categoryId);
+      const response = await fetch(url.toString());
       if (response.ok) {
         const data = await response.json();
-        // Update the posts store with fetched data
-        posts.set(data);
+        // Update selected category with the received data
+        selectedCategory.set(data);
       } else {
         console.error("Failed to fetch posts");
       }
@@ -53,12 +42,16 @@
     }
   }
 
-  onMount(() => {
-    // Update selected category when the component mounts
-    selectedCategory = (
-      document.querySelector("#category-select") as HTMLSelectElement
-    ).value;
-  });
+  // Function to update selected category and trigger search
+  function updateCategory(categoryId: string): void {
+    selectedCategory.set(categoryId);
+    handleSearch();
+  }
+
+  // Function to update search query
+  function updateSearch(event: InputEvent): void {
+    searchQuery.set((event.target as HTMLInputElement).value);
+  }
 
   // Function to handle Enter key press in search input
   function handleKeyPress(event: KeyboardEvent): void {
@@ -68,67 +61,61 @@
   }
 </script>
 
-<Navbar class="bg-gray-900 text-white sticky top-0 z-50">
-  <NavBrand href="/" class="ml-auto mr-10">
-    <img src="/SFSU.png" class="me-3 h-6 sm:h-20" alt="SFSU Logo" />
-    <span
-      class="self-center whitespace-nowrap text-5xl font-semibold dark:text-white"
-      >GatorTrader</span
-    >
-  </NavBrand>
+<Navbar
+  class="bg-gray-900 text-white sticky top-0 z-50 flex justify-between items-center"
+>
+  <!-- Left side -->
+  <div class="flex items-center">
+    <NavBrand href="/" class="mr-10">
+      <img src="/SFSU.png" class="me-3 h-6 sm:h-20" alt="SFSU Logo" />
+      <span
+        class="self-center whitespace-nowrap text-5xl font-semibold dark:text-white"
+      >
+        GatorTrader
+      </span>
+    </NavBrand>
 
-  <div class="hidden md:flex flex-grow items-center relative">
-    <!-- Dropdown Menu -->
-    <div class="relative">
-      <select
-        id="category-select"
-        class="rounded-l-md px-4 py-2 bg-gray-800 text-black"
-        bind:value={selectedCategory}
-        on:change={updateCategory}
-      >
-        <option value="">All</option>
-        <option value="Electronics">Electronics</option>
-        <option value="Furniture">Furniture</option>
-        <option value="Textbooks">Textbooks</option>
-        <!-- Add more options as needed -->
-      </select>
-      <div
-        class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none"
-      >
-        <!-- Dropdown Icon -->
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-6 w-6 text-gray-500 dark:text-gray-400"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
+    <div class="flex items-center justify-between">
+      <!-- Left side: Category selection -->
+      <div class="relative flex items-center">
+        <button
+          class="rounded-e-none whitespace-nowrap border border-e-0 border-primary-700"
+          style="color: white;"
         >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M19 9l-7 7-7-7"
-          />
-        </svg>
+          {$selectedCategory}
+          <ChevronDownOutline class="flex w-2.5 h-2.5 ms-2.5" />
+        </button>
+        <Dropdown>
+          {#each categories as { label }}
+            <DropdownItem
+              on:click={() => {
+                updateCategory(label);
+              }}
+              class={$selectedCategory === label ? "underline" : ""}
+              style="color: black;"
+            >
+              {label}
+            </DropdownItem>
+          {/each}
+        </Dropdown>
       </div>
+
+      <!-- Middle: Search query -->
+      <Search
+        size="md"
+        class="flex-1 rounded-none py-2.5"
+        placeholder="Search GatorTrader..."
+        style="width: 100%;"
+        on:keypress={handleKeyPress}
+      />
+
+      <!-- Right side: Search icon button -->
+      <button class="!p-2.5 rounded-s-none">
+        <SearchOutline class="w-5 h-5" />
+      </button>
     </div>
 
-    <!-- Search Input -->
-    <Input
-      id="search"
-      class="w-full px-4 py-2 rounded-r-md border-l-0 bg-gray-800 text-white"
-      placeholder="Search GatorTrader"
-      bind:value={searchQuery}
-      on:input={updateSearch}
-      on:keydown={handleKeyPress}
-    />
-
-    <!-- Search Button -->
-    <Button class="!p-3" on:click={handleSearch}
-      ><SearchSolid class="w-5 h-5" /></Button
-    >
-
-    <!-- Navigation Links -->
+    <!-- Right side -->
     <NavUl>
       <NavLi href="/" class="text-white text-2xl" active={true}>Post</NavLi>
       <NavLi href="/about" class="text-white text-2xl">About</NavLi>

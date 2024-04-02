@@ -2,6 +2,7 @@
   import { Card, Button } from "flowbite-svelte";
   import { onMount } from "svelte";
   import { writable } from "svelte/store";
+  import selectedCategory from "./Nav.svelte";
 
   // Define a writable store for products
   const posts = writable([]);
@@ -40,7 +41,7 @@
         />
         <div class="p-4 flex-grow flex flex-col justify-end bg-white">
           <p class="mb-2 text-2xl font-bold">{product.item_name}</p>
-          <p class="mb-2 text-sm">{product.item_description}</p>
+          <p class="mb-2 text-">{product.item_description}</p>
           <p class="mb-2 text-xl font-black">${product.price}</p>
           <Button class="text-xl mt-auto">Message</Button>
         </div>
