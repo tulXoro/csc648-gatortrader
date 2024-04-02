@@ -36,9 +36,7 @@
       goto(`?${url.toString()}`);
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
-        // Update selected category with the received data
-        // selectedCategory.set(data);
+
         posts.set(data);
       } else {
         console.error("Failed to fetch posts");
