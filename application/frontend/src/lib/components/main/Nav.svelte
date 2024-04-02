@@ -14,7 +14,7 @@
   import { goto } from "$app/navigation";
 
   const categories = [
-    { id: 0, label: "All"},
+    { id: 0, label: "All" },
     { id: 1, label: "Electronics" },
     { id: 2, label: "Furniture" },
     { id: 3, label: "Textbooks" },
@@ -30,13 +30,22 @@
   async function handleSearch(): Promise<void> {
     try {
       const url = new URL("/getPosts", window.location.origin);
-      const categoryId = selectedCategory;
-      url.searchParams.append("category", categoryId.toString());
+
+      // Append selected category to URL if it's not 0 (All)
+      if (selectedCategory !== 0) {
+        url.searchParams.append("category", selectedCategory.toString());
+      }
+
+      // Append search query to URL if it's not empty
+      if (searchQuery.trim() !== "") {
+        url.searchParams.append("search", searchQuery.trim());
+      }
+
       const response = await fetch(url.toString());
       goto(`?${url.toString()}`);
+
       if (response.ok) {
         const data = await response.json();
-
         posts.set(data);
       } else {
         console.error("Failed to fetch posts");
@@ -95,7 +104,7 @@
               on:click={() => {
                 updateCategory(id);
               }}
-              class={ selectedCategory === id ? "underline" : ""}
+              class={selectedCategory === id ? "underline" : ""}
               style="color: black;"
             >
               {label}
@@ -105,18 +114,18 @@
       </div>
 
       <!-- Middle: Search query -->
-      <Search
-        size="md"
-        class="flex-1 rounded-none py-2.5"
-        placeholder="Search GatorTrader..."
-        style="width: 100%;"
-        on:keypress={handleKeyPress}
-      />
-
-      <!-- Right side: Search icon button -->
-      <button class="!p-2.5 rounded-s-none">
-        <SearchOutline class="w-5 h-5" />
-      </button>
+      <form on:submit|preventDefault={handleSearch} class="flex-1 flex">
+        <Search
+          size="md"
+          class="rounded-none py-2.5"
+          placeholder="Search GatorTrader..."
+          style="width: 100%;"
+          bind:value={searchQuery}
+        />
+        <button type="submit" class="!p-2.5 rounded-s-none">
+          <SearchOutline class="w-5 h-5" />
+        </button>
+      </form>
     </div>
 
     <!-- Right side -->

@@ -1,20 +1,26 @@
 <script>
   import { Card, Button } from "flowbite-svelte";
   import { onMount } from "svelte";
-  import { writable } from "svelte/store";
-  import selectedCategory from "./Nav.svelte";
+  // import { writable } from "svelte/store";
+  // import selectedCategory from "./Nav.svelte";
   import { posts } from "../../store.js";
 
-  // Define a writable store for products
-  // const posts = writable([]);
-
-  // Function to fetch product data from backend
+  // Fetches data from back with curr URL parameters
   async function fetchProductData() {
     try {
-      const response = await fetch("/getPosts");
+      // Create a new URL object for the fetch request
+      const url = new URL("/getPosts", window.location.origin);
+      // Extract URL parameters from the current URL
+      const params = new URLSearchParams(window.location.search);
+      // Append URL parameters to the fetch URL
+      params.forEach((value, key) => {
+        url.searchParams.append(key, value);
+      });
+      // Fetch data from the server using updatedURL
+      const response = await fetch(url.toString());
+      // update the 'posts' store with the fetched data
       if (response.ok) {
         const data = await response.json();
-        // Update the posts store with fetched data to make it accessible for rendering
         posts.set(data);
       } else {
         console.error("Failed to fetch product data");
