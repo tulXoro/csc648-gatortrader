@@ -26,7 +26,7 @@
   export let selectedCategory = 0;
 
   // Define a writable store for search query
-  let searchQuery = "";
+  export let searchQuery = "";
 
   async function handleSearch(): Promise<void> {
     try {
@@ -41,9 +41,9 @@
       if (searchQuery.trim() !== "") {
         url.searchParams.append("search", searchQuery.trim());
       }
-
       const response = await fetch(url.toString());
-      goto(`?${url.toString()}`);
+      // will use url/
+      goto(`?${url.search}`);
 
       if (response.ok) {
         const data = await response.json();
@@ -60,18 +60,6 @@
   function updateCategory(categoryId: number): void {
     selectedCategory = categoryId;
     handleSearch();
-  }
-
-  // Function to update search query
-  function updateSearch(event: InputEvent): void {
-    searchQuery = (event.target as HTMLInputElement).value;
-  }
-
-  // Function to handle Enter key press in search input
-  function handleKeyPress(event: KeyboardEvent): void {
-    if (event.key === "Enter") {
-      handleSearch();
-    }
   }
 </script>
 
