@@ -7,7 +7,7 @@
   import Results from "$lib/components/main/Results.svelte";
 </script>
 
-<title>GatorTrader Homepage</title>
+<title>GatorTrader | Homepage</title>
 
 <Header></Header>
 <Nav></Nav>

@@ -1,5 +1,6 @@
 <script lang="ts">
   import {
+    Button,
     Navbar,
     NavBrand,
     NavLi,
@@ -78,61 +79,55 @@
   class="bg-gray-900 text-white sticky top-0 z-50 flex justify-between items-center"
 >
   <!-- Left side -->
-  <div class="flex items-center">
-    <NavBrand href="/" class="mr-10">
-      <img src="/SFSU.png" class="me-3 h-6 sm:h-20" alt="SFSU Logo" />
-      <span
-        class="self-center whitespace-nowrap text-5xl font-semibold dark:text-white"
-      >
-        GatorTrader
-      </span>
-    </NavBrand>
-
-    <div class="flex items-center justify-between">
-      <!-- Left side: Category selection -->
-      <div class="relative flex items-center">
-        <button
-          class="rounded-e-none whitespace-nowrap border border-e-0 border-primary-700"
-          style="color: white;"
+  <NavBrand href="/" class="mr-10">
+    <img src="/SFSU.png" class="me-3 h-6 sm:h-20" alt="SFSU Logo" />
+    <span
+      class="self-center whitespace-nowrap text-5xl font-semibold dark:text-white"
+    >
+      GatorTrader
+    </span>
+  </NavBrand>
+  <!-- Category selection -->
+  <!-- search parameter query for url-->
+  <form on:submit|preventDefault={handleSearch} class="flex">
+    <Button
+      class="rounded-e-none whitespace-nowrap border border-e-0 border-primary-700"
+    >
+      {categories[selectedCategory].label}
+      <ChevronDownOutline class="w-2.5 h-2.5 ms-2.5" />
+    </Button>
+    <Dropdown class="w-40">
+      {#each categories as { id, label }}
+        <DropdownItem
+          on:click={() => {
+            updateCategory(id);
+          }}
+          class={selectedCategory === id ? "underline" : ""}
+          style="color: black;"
         >
-          {categories[selectedCategory].label}
-          <ChevronDownOutline class="flex w-2.5 h-2.5 ms-2.5" />
-        </button>
-        <Dropdown>
-          {#each categories as { id, label }}
-            <DropdownItem
-              on:click={() => {
-                updateCategory(id);
-              }}
-              class={selectedCategory === id ? "underline" : ""}
-              style="color: black;"
-            >
-              {label}
-            </DropdownItem>
-          {/each}
-        </Dropdown>
-      </div>
+          {label}
+        </DropdownItem>
+      {/each}
+    </Dropdown>
 
-      <!-- Middle: Search query -->
-      <form on:submit|preventDefault={handleSearch} class="flex-1 flex">
-        <Search
-          size="md"
-          class="rounded-none py-2.5"
-          placeholder="Search GatorTrader..."
-          style="width: 100%;"
-          bind:value={searchQuery}
-        />
-        <button type="submit" class="!p-2.5 rounded-s-none">
-          <SearchOutline class="w-5 h-5" />
-        </button>
-      </form>
+    <!-- Middle: Search query -->
+    <div class="flex">
+      <Search
+        size="md"
+        class="rounded-none py-2.5 mr-2"
+        placeholder="Search GatorTrader..."
+        bind:value={searchQuery}
+      />
+      <Button class="!p-2.5 rounded-s-none">
+        <SearchOutline class="w-5 h-5" />
+      </Button>
     </div>
+  </form>
 
-    <!-- Right side -->
-    <NavUl>
-      <NavLi href="/" class="text-white text-2xl" active={true}>Post</NavLi>
-      <NavLi href="/about" class="text-white text-2xl">About</NavLi>
-      <NavLi href="/" class="text-white text-2xl">Login/SignUp</NavLi>
-    </NavUl>
-  </div>
+  <!-- Right side -->
+  <NavUl class="flex items-center">
+    <NavLi href="/" class="text-white text-2xl" active={true}>Post</NavLi>
+    <NavLi href="/about" class="text-white text-2xl">About</NavLi>
+    <NavLi href="/" class="text-white text-2xl">Login/SignUp</NavLi>
+  </NavUl>
 </Navbar>
