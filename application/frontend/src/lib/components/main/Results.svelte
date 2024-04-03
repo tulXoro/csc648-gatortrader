@@ -1,34 +1,29 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { writable } from "svelte/store";
+  import { searchQuery } from "../../store.js";
 
-  // Define a writable store for products
-  // right now it works like this might change later
-  const posts = writable<Post[]>([]); // Explicitly specify the type of posts
-
-  interface Post {
-    post_id: number;
-    item_name: string;
-    item_description: string;
-    price: number;
-    category: string;
-    user_id: number;
-    image_file: string;
-    status: string;
-  }
-
+  let posts: any[] = [];
   let helper = { start: 1, end: 10, total: 0 }; // Initial pagination data
+  let searchQueryText: string = "";
 
   async function fetchProductData() {
     try {
+      // Get the search query parameter from the URL
+      const params = new URLSearchParams(window.location.search);
+      const searchParam = params.get("search");
+
+      // If a search query parameter is present, set it to the store
+      if (searchParam) {
+        searchQuery.set(searchParam);
+      }
+
+      // Fetch data based on the search query
       const response = await fetch("/getPosts");
       if (response.ok) {
-        const data = await response.json();
-        // Update the posts store with fetched data to make it accessible for rendering
-        posts.set(data);
+        posts = await response.json();
         // Calculate the total number of "APPROVED" posts
-        helper.total = data.filter(
-          (post: Post) => post.status === "APPROVED"
+        helper.total = posts.filter(
+          (post) => post.status === "APPROVED"
         ).length;
       } else {
         console.error("Failed to fetch product data");
@@ -40,21 +35,28 @@
 
   // Call fetchProductData function when the component mounts
   onMount(fetchProductData);
+
+  $: searchQueryText = $searchQuery ? $searchQuery.trim() : "";
 </script>
 
-<div class="flex flex-col margin-left gap-2">
-  <div class="text-sm text-gray-700 dark:text-gray-400">
-    Showing
-    <span class="font-semibold text-gray-900 dark:text-white"
-      >{helper.start}</span
-    >
-    to
-    <span class="font-semibold text-gray-900 dark:text-white">{helper.end}</span
-    >
-    of
-    <span class="font-semibold text-gray-900 dark:text-white"
-      >{helper.total}</span
-    >
-    Posts
+{#if searchQueryText !== ""}
+  <div class="flex flex-col margin-left gap-2">
+    <div class="text-sm text-gray-700 dark:text-gray-400">
+      <span class="font-semibold text-gray-900 dark:text-white">
+        {helper.start}
+      </span>
+      -{" "}
+      <span class="font-semibold text-gray-900 dark:text-white">
+        {helper.end}
+      </span>
+      of over{" "}
+      <span class="font-semibold text-gray-900 dark:text-white">
+        {helper.total}
+      </span>
+      results for{" "}
+      <span class="font-semibold text-gray-900 dark:text-white">
+        "{searchQueryText}"
+      </span>
+    </div>
   </div>
-</div>
+{/if}
