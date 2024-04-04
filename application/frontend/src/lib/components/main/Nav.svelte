@@ -41,9 +41,9 @@
       if (searchQuery.trim() !== "") {
         url.searchParams.append("search", searchQuery.trim());
       }
+
       const response = await fetch(url.toString());
-      // will use url/
-      goto(`?${url.search}`);
+      goto(`${url.search}`);
 
       if (response.ok) {
         const data = await response.json();
@@ -56,10 +56,26 @@
     }
   }
 
-  // Function to update selected category and trigger search
+  // Function to update selected category without triggering search
   function updateCategory(categoryId: number): void {
     selectedCategory = categoryId;
-    handleSearch();
+  }
+
+  // redirects to handleSearch when "enter" or search button is pressed
+  function searchExecution(): void {
+    if (searchQuery.trim() !== "") {
+      handleSearch();
+    } else {
+      // If empty, perform search based on selected category
+      handleSearch();
+    }
+  }
+
+  // if "Enter" key is press redirect
+  function handleKeyPress(event: KeyboardEvent): void {
+    if (event.key === "Enter") {
+      searchExecution();
+    }
   }
 </script>
 
@@ -77,7 +93,7 @@
   </NavBrand>
   <!-- Category selection -->
   <!-- search parameter query for url-->
-  <form on:submit|preventDefault={handleSearch} class="flex">
+  <div on:submit|preventDefault={handleSearch} class="flex">
     <Button
       class="rounded-e-none whitespace-nowrap border border-e-0 border-primary-700"
     >
@@ -105,12 +121,13 @@
         class="rounded-none py-2.5 mr-2"
         placeholder="Search GatorTrader..."
         bind:value={searchQuery}
+        on:keypress={handleKeyPress}
       />
-      <Button class="!p-2.5 rounded-s-none">
+      <Button class="!p-2.5 rounded-s-none flex" on:click={searchExecution}>
         <SearchOutline class="w-5 h-5" />
       </Button>
     </div>
-  </form>
+  </div>
 
   <!-- Right side -->
   <NavUl class="flex items-center">

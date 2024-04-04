@@ -3,7 +3,7 @@
   import { Avatar } from "flowbite-svelte";
   import Footer from "$lib/components/main/Footer.svelte";
   import Nav from "$lib/components/main/Nav.svelte";
-  import SideBar from "$lib/components/main/PostCards.svelte";
+  import Header from "$lib/components/main/Header.svelte";
 
   export let name = "";
   export let photo = default_profile;
@@ -14,8 +14,8 @@
   export let email = "";
 </script>
 
+<Header />
 <Nav />
-<SideBar />
 <main>
   <div class="flex flex-wrap justify-center items-center gap-8">
     <div class="w-full md:w-1/2 flex justify-center">

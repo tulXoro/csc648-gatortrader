@@ -3,7 +3,7 @@
   import { onMount } from "svelte";
   import { posts } from "../../store.js";
 
-  // Fetch approved posts from the store and map them to image objects
+  // filter post by status and timestamp
   $: images = $posts
     .filter((post) => post.status === "APPROVED")
     .sort((a, b) => {
@@ -14,10 +14,10 @@
     .map((post) => ({
       alt: post.item_name,
       src: `/image/${post.image_file}`,
-      timestamp: post.timestamp, // Include the timestamp in the image object
+      timestamp: post.timestamp,
     }));
 
-  // Fetch posts from the server when the component mounts
+  // Fetch posts
   onMount(async () => {
     try {
       const response = await fetch(

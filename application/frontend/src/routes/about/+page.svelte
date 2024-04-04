@@ -5,7 +5,7 @@
   import Footer from "$lib/components/main/Footer.svelte";
   import { Heading } from "flowbite-svelte";
   import Nav from "$lib/components/main/Nav.svelte";
-  import { Card, Button } from "flowbite-svelte";
+  import { Card } from "flowbite-svelte";
 
   let teamMembers = [
     {

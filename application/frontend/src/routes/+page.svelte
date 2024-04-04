@@ -9,9 +9,9 @@
 
 <title>GatorTrader | Homepage</title>
 
-<Header></Header>
-<Nav></Nav>
-<Results></Results>
-<!-- <Carousel></Carousel> -->
-<PostCards></PostCards>
-<Footer></Footer>
+<Header />
+<Nav />
+<Results />
+<!-- <Carousel/> -->
+<PostCards />
+<Footer />

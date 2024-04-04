@@ -1,10 +1,9 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { searchQuery } from "../../store.js";
 
   let posts: any[] = [];
   let helper = { start: 1, end: 10, total: 0 };
-  let searchInput = ""; // Store the search query
+  let searchInput = "";
 
   async function fetchProductData() {
     try {
@@ -14,7 +13,6 @@
       // Fetch data from server
       const response = await fetch("/getPosts");
       if (response.ok) {
-        // Parse response JSON
         posts = await response.json();
         // Filter posts based on the search query and status
         const NumResults = posts.filter(
@@ -26,7 +24,7 @@
             post.status === "APPROVED"
         );
 
-        // Update pagination data
+        // Query Search Results
         helper.total = NumResults.length;
         helper.start = 1;
         helper.end = Math.min(NumResults.length, 10);
@@ -70,13 +68,15 @@
   </div>
 
   <!-- Display message if no results are found -->
-  {#if helper.total === 0}
+  <div class="flex justify-center">
     <div class="text-xl text-black-500">
-      {#if searchInput !== ""}
-        No results for "{searchInput}" found.
-      {:else}
-        No results found.
+      {#if helper.total === 0}
+        {#if searchInput !== ""}
+          No results for "<span class="font-bold">{searchInput}</span>" found.
+        {:else}
+          No results found.
+        {/if}
       {/if}
     </div>
-  {/if}
+  </div>
 </div>
