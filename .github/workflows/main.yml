@@ -32,7 +32,7 @@ jobs:
     - name: Set up SSH key
       uses: webfactory/ssh-agent@v0.5.3
       with:
-        ssh-private-key: ${{ secrets.DEPLOY_SSH_KEY }}
+        ssh-private-key: ${{ secrets.secretkey }}
 
     - name: Deploy Frontend
       run: |
