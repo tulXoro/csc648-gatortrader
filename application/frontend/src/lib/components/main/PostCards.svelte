@@ -1,8 +1,6 @@
 <script>
   import { Card, Button } from "flowbite-svelte";
   import { onMount } from "svelte";
-  // import { writable } from "svelte/store";
-  // import selectedCategory from "./Nav.svelte";
   import { posts } from "../../store.js";
 
   // Fetches data from back with curr URL parameters
@@ -34,8 +32,6 @@
   onMount(fetchProductData);
 </script>
 
-<!-- This will be used in future for product post page -->
-<!-- <div on:click={() => navigateToSomePage()} class="grid grid-cols-5 gap-4"> -->
 <div class="grid grid-cols-5 gap-4">
   <!-- Filter using one APPROVED posts by Admin -->
   {#each $posts.filter((post) => post.status === "APPROVED") as product}

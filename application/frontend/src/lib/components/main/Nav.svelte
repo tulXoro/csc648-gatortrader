@@ -11,8 +11,12 @@
   } from "flowbite-svelte";
   import { ChevronDownOutline, SearchOutline } from "flowbite-svelte-icons";
 
+  import { onMount } from "svelte";
   import { posts } from "../../store.js";
   import { goto } from "$app/navigation";
+
+  let searchQuery = "";
+  let selectedCategory = 0;
 
   const categories = [
     { id: 0, label: "All" },
@@ -22,38 +26,38 @@
     { id: 4, label: "Misc." },
   ];
 
-  // Define a writable store for selected category
-  export let selectedCategory = 0;
-
-  // Define a writable store for search query
-  export let searchQuery = "";
-
-  async function handleSearch(): Promise<void> {
+  async function handleSearch() {
     try {
+      // Construct the URL with search parameters
       const url = new URL("/getPosts", window.location.origin);
-
-      // Append selected category to URL if it's not 0 (All)
       if (selectedCategory !== 0) {
         url.searchParams.append("category", selectedCategory.toString());
       }
-
-      // Append search query to URL if it's not empty
       if (searchQuery.trim() !== "") {
         url.searchParams.append("search", searchQuery.trim());
       }
 
       const response = await fetch(url.toString());
-      goto(`${url.search}`);
-
       if (response.ok) {
         const data = await response.json();
         posts.set(data);
       } else {
         console.error("Failed to fetch posts");
       }
+
+      // Update browser history with new search parameters without triggering a page reload
+      const newUrl = `${window.location.pathname}${url.search}`;
+      window.history.pushState({ path: newUrl }, "", newUrl);
     } catch (error) {
       console.error("Error fetching posts:", error);
     }
+  }
+
+  // Function to parse URL parameters and initialize search fields
+  function initializeSearchFields() {
+    const params = new URLSearchParams(window.location.search);
+    searchQuery = params.get("search") || "";
+    selectedCategory = parseInt(params.get("category") || "0", 10);
   }
 
   // Function to update selected category without triggering search
@@ -77,6 +81,8 @@
       searchExecution();
     }
   }
+
+  onMount(initializeSearchFields);
 </script>
 
 <Navbar

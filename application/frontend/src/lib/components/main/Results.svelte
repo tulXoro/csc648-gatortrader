@@ -1,43 +1,38 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import { posts, searchQuery } from "../../store.js"; // Import the shared store.js file
 
-  let posts: any[] = [];
+  // Store filtered posts and pagination helper
+  let filteredPosts: any[] = [];
   let helper = { start: 1, end: 10, total: 0 };
-  let searchInput = "";
 
-  async function fetchProductData() {
-    try {
-      const urlParams = new URLSearchParams(window.location.search);
-      searchInput = urlParams.get("search") || ""; // Get search query from URL
+  // Function to filter posts based on the current search query
+  function filterPosts() {
+    const query = $searchQuery;
 
-      // Fetch data from server
-      const response = await fetch("/getPosts");
-      if (response.ok) {
-        posts = await response.json();
-        // Filter posts based on the search query and status
-        const NumResults = posts.filter(
-          (post) =>
-            (!searchInput ||
-              post.item_name
-                .toLowerCase()
-                .includes(searchInput.toLowerCase())) &&
-            post.status === "APPROVED"
-        );
+    const postsArray = $posts as any[];
+    // status and name
+    filteredPosts = postsArray.filter(
+      (post) =>
+        (!query ||
+          post.item_name.toLowerCase().includes(query.toLowerCase())) &&
+        post.status === "APPROVED"
+    );
 
-        // Query Search Results
-        helper.total = NumResults.length;
-        helper.start = 1;
-        helper.end = Math.min(NumResults.length, 10);
-      } else {
-        console.error("Failed to fetch product data");
-      }
-    } catch (error) {
-      console.error("Error fetching product data:", error);
-    }
+    helper.total = filteredPosts.length;
+    helper.start = 1;
+    helper.end = Math.min(filteredPosts.length, 10);
   }
 
-  // Call fetchProductData function when the component mounts
-  onMount(fetchProductData);
+  // Subscribe to update search results
+  let timeoutId: ReturnType<typeof setTimeout> | undefined;
+  $: {
+    if (timeoutId) clearTimeout(timeoutId); // Clear previous timeout
+    timeoutId = setTimeout(filterPosts, 300); // Debounce filter function
+  }
+
+  // Fetch initial data
+  onMount(filterPosts);
 </script>
 
 <div class="flex flex-col margin-left gap-2">
@@ -56,14 +51,11 @@
     </span>
     {" results "}
     <!-- Display search query if available -->
-    {#if searchInput !== ""}
+    {#if $searchQuery !== ""}
       {" for "}
       <span class="font-bold italic text-gray-900 dark:text-white">
-        "{searchInput}"
+        {$searchQuery}
       </span>
-    {:else}
-      {" "}
-      <span class="font-semibold text-gray-900 dark:text-white"> All </span>
     {/if}
   </div>
 
@@ -71,8 +63,8 @@
   <div class="flex justify-center">
     <div class="text-xl text-black-500">
       {#if helper.total === 0}
-        {#if searchInput !== ""}
-          No results for "<span class="font-bold">{searchInput}</span>" found.
+        {#if $searchQuery !== ""}
+          No results for "<span class="font-bold">{$searchQuery}</span>" found.
         {:else}
           No results found.
         {/if}
