@@ -10,10 +10,9 @@
     Search,
   } from "flowbite-svelte";
   import { ChevronDownOutline, SearchOutline } from "flowbite-svelte-icons";
-
+  import SFSULogo from "$lib/assets/SFSU.png";
   import { onMount } from "svelte";
   import { posts } from "../../store.js";
-  import { goto } from "$app/navigation";
 
   const categories = [
     { id: 0, label: "All" },
@@ -75,13 +74,6 @@
     }
   }
 
-  // Function to parse URL parameters and initialize search fields
-  function initializeSearchFields() {
-    const params = new URLSearchParams(window.location.search);
-    searchQuery = params.get("search") || "";
-    selectedCategory = parseInt(params.get("category") || "0", 10);
-  }
-
   // Function to update selected category without triggering search
   function updateCategory(categoryId: number): void {
     selectedCategory = categoryId;
@@ -112,7 +104,7 @@
 >
   <!-- Left side -->
   <NavBrand href="/" class="mr-10">
-    <img src="/SFSU.png" class="me-3 h-6 sm:h-20" alt="SFSU Logo" />
+    <img src={SFSULogo} class="me-3 h-6 sm:h-20" alt="SFSU Logo" />
     <span
       class="self-center whitespace-nowrap text-5xl font-semibold dark:text-white"
     >
