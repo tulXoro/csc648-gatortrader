@@ -14,6 +14,7 @@
   import { onMount } from "svelte";
   import { posts } from "../../store.js";
   import { goto } from "$app/navigation";
+    import { onMount } from "svelte";
 
   let searchQuery = "";
   let selectedCategory = 0;
@@ -26,7 +27,36 @@
     { id: 4, label: "Misc." },
   ];
 
+<<<<<<< HEAD
   async function handleSearch() {
+=======
+  // Define a writable store for selected category
+  export let selectedCategory = 0;
+
+  // Define a writable store for search query
+  export let searchQuery = "";
+
+  function loadURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const category = urlParams.get("category");
+    const search = urlParams.get("search");
+
+    if (category) {
+      selectedCategory = parseInt(category);
+    }
+
+    if (search) {
+      searchQuery = search;
+    }
+
+    // Perform search if on the home page
+    if (window.location.pathname === "/") {
+      handleSearch();
+    }
+  }
+
+  async function handleSearch(): Promise<void> {
+>>>>>>> refs/remotes/origin/verticalPrototype
     try {
       // Construct the URL with search parameters
       const url = new URL("/getPosts", window.location.origin);
@@ -82,7 +112,11 @@
     }
   }
 
+<<<<<<< HEAD
   onMount(initializeSearchFields);
+=======
+  onMount(loadURL);
+>>>>>>> refs/remotes/origin/verticalPrototype
 </script>
 
 <Navbar

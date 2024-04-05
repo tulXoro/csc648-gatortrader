@@ -6,9 +6,17 @@
   let filteredPosts: any[] = [];
   let helper = { start: 1, end: 10, total: 0 };
 
+<<<<<<< HEAD
   // Function to filter posts based on the current search query
   function filterPosts() {
     const query = $searchQuery;
+=======
+  // OPTIMIZE THIS FUNCTION SO THAT IT DOESNT REQUIRE FETCHING DATA
+  async function fetchProductData() {
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      searchInput = urlParams.get("search") || ""; // Get search query from URL
+>>>>>>> refs/remotes/origin/verticalPrototype
 
     const postsArray = $posts as any[];
     // status and name
