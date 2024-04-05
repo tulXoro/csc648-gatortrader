@@ -1,12 +1,6 @@
 <script>
   import { Card, Button } from "flowbite-svelte";
-<<<<<<< HEAD
-  import { onMount } from "svelte";
-=======
->>>>>>> refs/remotes/origin/verticalPrototype
   import { posts } from "../../store.js";
-
-
 </script>
 
 <div class="grid grid-cols-5 gap-4">

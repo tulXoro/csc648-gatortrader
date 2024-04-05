@@ -14,10 +14,6 @@
   import { onMount } from "svelte";
   import { posts } from "../../store.js";
   import { goto } from "$app/navigation";
-    import { onMount } from "svelte";
-
-  let searchQuery = "";
-  let selectedCategory = 0;
 
   const categories = [
     { id: 0, label: "All" },
@@ -27,9 +23,6 @@
     { id: 4, label: "Misc." },
   ];
 
-<<<<<<< HEAD
-  async function handleSearch() {
-=======
   // Define a writable store for selected category
   export let selectedCategory = 0;
 
@@ -56,7 +49,6 @@
   }
 
   async function handleSearch(): Promise<void> {
->>>>>>> refs/remotes/origin/verticalPrototype
     try {
       // Construct the URL with search parameters
       const url = new URL("/getPosts", window.location.origin);
@@ -112,11 +104,7 @@
     }
   }
 
-<<<<<<< HEAD
-  onMount(initializeSearchFields);
-=======
   onMount(loadURL);
->>>>>>> refs/remotes/origin/verticalPrototype
 </script>
 
 <Navbar

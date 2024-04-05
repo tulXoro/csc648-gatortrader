@@ -1,61 +1,15 @@
 <script lang="ts">
-<<<<<<< HEAD
-  import { onMount } from "svelte";
-  import { posts, searchQuery } from "../../store.js"; // Import the shared store.js file
-
-  // Store filtered posts and pagination helper
-  let filteredPosts: any[] = [];
-  let helper = { start: 1, end: 10, total: 0 };
-
-<<<<<<< HEAD
-  // Function to filter posts based on the current search query
-  function filterPosts() {
-    const query = $searchQuery;
-=======
-  // OPTIMIZE THIS FUNCTION SO THAT IT DOESNT REQUIRE FETCHING DATA
-  async function fetchProductData() {
-    try {
-      const urlParams = new URLSearchParams(window.location.search);
-      searchInput = urlParams.get("search") || ""; // Get search query from URL
->>>>>>> refs/remotes/origin/verticalPrototype
-
-    const postsArray = $posts as any[];
-    // status and name
-    filteredPosts = postsArray.filter(
-      (post) =>
-        (!query ||
-          post.item_name.toLowerCase().includes(query.toLowerCase())) &&
-        post.status === "APPROVED"
-    );
-
-    helper.total = filteredPosts.length;
-    helper.start = 1;
-    helper.end = Math.min(filteredPosts.length, 10);
-  }
-
-  // Subscribe to update search results
-  let timeoutId: ReturnType<typeof setTimeout> | undefined;
-  $: {
-    if (timeoutId) clearTimeout(timeoutId); // Clear previous timeout
-    timeoutId = setTimeout(filterPosts, 300); // Debounce filter function
-  }
-
-  // Fetch initial data
-  onMount(filterPosts);
-=======
   import { derived } from "svelte/store";
 
   import { posts } from "../../store.js";
 
   let searchInput = "";
 
-  const helper = derived(posts, $posts => ({
+  const helper = derived(posts, ($posts) => ({
     start: Math.min($posts.length, 1),
     end: Math.min($posts.length, 10),
     total: $posts.length,
   }));
-
->>>>>>> refs/remotes/origin/verticalPrototype
 </script>
 
 <div class="flex flex-col margin-left gap-2">
@@ -74,20 +28,23 @@
     </span>
     {" results "}
     <!-- Display search query if available -->
-    {#if $searchQuery !== ""}
+    {#if searchInput !== ""}
       {" for "}
       <span class="font-bold italic text-gray-900 dark:text-white">
-        {$searchQuery}
+        "{searchInput}"
       </span>
+    {:else}
+      {" "}
+      <span class="font-semibold text-gray-900 dark:text-white"> All </span>
     {/if}
   </div>
 
   <!-- Display message if no results are found -->
   <div class="flex justify-center">
     <div class="text-xl text-black-500">
-      {#if helper.total === 0}
-        {#if $searchQuery !== ""}
-          No results for "<span class="font-bold">{$searchQuery}</span>" found.
+      {#if $helper.total === 0}
+        {#if searchInput !== ""}
+          No results for "<span class="font-bold">{searchInput}</span>" found.
         {:else}
           No results found.
         {/if}
