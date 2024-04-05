@@ -1,4 +1,4 @@
-name: Deploy
+name: Your Workflow Name
 on:
   push:
     branches:
@@ -16,8 +16,12 @@ jobs:
     - name: Set up SSH key
       uses: webfactory/ssh-agent@v0.5.3
       with:
-        ssh-private-key: ${{ secrets.secretkey }}
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-    - name: Deploy Frontend
+    - name: Pull latest changes
       run: |
-        ssh -o StrictHostKeyChecking=no admin@34.210.12.165 'cd /home/admin/csc648-sp24-03-team05/application/frontend && git pull origin main && npm install && npm run build'
+        ssh -o StrictHostKeyChecking=no admin@34.210.12.165 'cd /home/admin/csc648-sp24-03-team05 && git pull origin main'
+
+    - name: Build project
+      run: |
+        ssh -o StrictHostKeyChecking=no admin@34.210.12.165 'cd /home/admin/csc648-sp24-03-team05/application/frontend && npm install && npm run build'
