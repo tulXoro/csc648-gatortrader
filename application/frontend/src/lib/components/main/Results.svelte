@@ -43,7 +43,7 @@
   <!-- Display message if no results are found -->
   <div class="flex justify-center">
     <div class="text-xl text-black-500">
-      {#if helper.total === 0}
+      {#if $helper.total === 0}
         {#if searchInput !== ""}
           No results for "<span class="font-bold">{searchInput}</span>" found.
         {:else}
