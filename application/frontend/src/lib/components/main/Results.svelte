@@ -5,6 +5,7 @@
   let helper = { start: 1, end: 10, total: 0 };
   let searchInput = "";
 
+  // OPTIMIZE THIS FUNCTION SO THAT IT DOESNT REQUIRE FETCHING DATA
   async function fetchProductData() {
     try {
       const urlParams = new URLSearchParams(window.location.search);

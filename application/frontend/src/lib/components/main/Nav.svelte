@@ -13,6 +13,7 @@
 
   import { posts } from "../../store.js";
   import { goto } from "$app/navigation";
+    import { onMount } from "svelte";
 
   const categories = [
     { id: 0, label: "All" },
@@ -27,6 +28,25 @@
 
   // Define a writable store for search query
   export let searchQuery = "";
+
+  function loadURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const category = urlParams.get("category");
+    const search = urlParams.get("search");
+
+    if (category) {
+      selectedCategory = parseInt(category);
+    }
+
+    if (search) {
+      searchQuery = search;
+    }
+
+    // Perform search if on the home page
+    if (window.location.pathname === "/") {
+      handleSearch();
+    }
+  }
 
   async function handleSearch(): Promise<void> {
     try {
@@ -77,6 +97,8 @@
       searchExecution();
     }
   }
+
+  onMount(loadURL);
 </script>
 
 <Navbar
