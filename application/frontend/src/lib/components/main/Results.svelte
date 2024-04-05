@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { onMount } from "svelte";
   import { derived } from "svelte/store";
 
   import { posts } from "../../store.js";
