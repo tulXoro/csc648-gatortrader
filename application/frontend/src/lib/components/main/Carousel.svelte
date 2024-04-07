@@ -1,3 +1,15 @@
+<!-- /**************************************************************
+* Class: CSC-648-03 Spring 2024
+* Team: 05
+* GitHub ID: csc648-sp24-03-team05
+* Project: SWE Final Project
+*
+* File: Carousel.svelte
+*
+* Description: Component to display recent posts based on 
+* Status (APPROVED) and Timestamp (LASTEST).
+**************************************************************/ -->
+
 <script>
   import { Carousel, Indicator } from "flowbite-svelte";
   import { onMount } from "svelte";

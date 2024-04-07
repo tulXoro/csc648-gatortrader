@@ -1,3 +1,15 @@
+<!-- /**************************************************************
+* Class: CSC-648-03 Spring 2024
+* Team: 05
+* GitHub ID: csc648-sp24-03-team05
+* Project: SWE Final Project
+*
+* File: Results.svelte
+*
+* Description: Component to display top left a query search 
+* result for every search entered 
+**************************************************************/ -->
+
 <script lang="ts">
   import { derived } from "svelte/store";
   import { posts, searchQuery } from "../../store.js";

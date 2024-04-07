@@ -1,3 +1,15 @@
+<!-- /**************************************************************
+* Class: CSC-648-03 Spring 2024
+* Team: 05
+* GitHub ID: csc648-sp24-03-team05
+* Project: SWE Final Project
+*
+* File: Profile.svelte
+*
+* Description: Page route to display detailed information 
+* of a team member.
+**************************************************************/ -->
+
 <script>
   import default_profile from "$lib/assets/default_profile.jpg";
   import { Avatar } from "flowbite-svelte";

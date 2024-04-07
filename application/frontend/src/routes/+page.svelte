@@ -1,3 +1,14 @@
+<!-- /**************************************************************
+* Class: CSC-648-03 Spring 2024
+* Team: 05
+* GitHub ID: csc648-sp24-03-team05
+* Project: SWE Final Project
+*
+* File: +page.svelte
+*
+* Description: This is the main page showcasing all the components
+* linking all page routes.
+**************************************************************/ -->
 <script>
   import Header from "$lib/components/main/Header.svelte";
   import Footer from "$lib/components/main/Footer.svelte";
