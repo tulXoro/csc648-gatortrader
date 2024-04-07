@@ -1,3 +1,13 @@
+<!-- /**************************************************************
+* Class: CSC-648-03 Spring 2024
+* Team: 05
+* GitHub ID: csc648-sp24-03-team05
+* Project: SWE Final Project
+*
+* File: PostCards.svelte
+*
+* Description: Component to display posts in a uniform fashion. 
+**************************************************************/ -->
 <script>
   import { Card, Button } from "flowbite-svelte";
   import { posts } from "../../store.js";

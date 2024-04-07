@@ -1,3 +1,14 @@
+<!-- /**************************************************************
+* Class: CSC-648-03 Spring 2024
+* Team: 05
+* GitHub ID: csc648-sp24-03-team05
+* Project: SWE Final Project
+*
+* File: Footer.svelte
+*
+* Description: Component to display copyright information.
+**************************************************************/ -->
+
 <script>
   import { Footer, FooterCopyright } from "flowbite-svelte";
 </script>

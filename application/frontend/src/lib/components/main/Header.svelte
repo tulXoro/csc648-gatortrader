@@ -1,6 +1,16 @@
+<!-- /**************************************************************
+* Class: CSC-648-03 Spring 2024
+* Team: 05
+* GitHub ID: csc648-sp24-03-team05
+* Project: SWE Final Project
+*
+* File: Header.svelte
+*
+* Description: Component to display disclaimer for imitated website.
+**************************************************************/ -->
+
 <script>
   import { onMount } from "svelte";
-  import { Heading } from "flowbite-svelte";
 
   let width = 0;
 
