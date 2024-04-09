@@ -1,15 +1,3 @@
-<!-- /**************************************************************
-* Class: CSC-648-03 Spring 2024
-* Team: 05
-* GitHub ID: csc648-sp24-03-team05
-* Project: SWE Final Project
-*
-* File: Nav.svelte
-*
-* Description: Main component that handles all the API calls, and 
-* search functionality occurs here.
-**************************************************************/ -->
-
 <script lang="ts">
   import {
     Button,
@@ -22,9 +10,9 @@
     Search,
   } from "flowbite-svelte";
   import { ChevronDownOutline, SearchOutline } from "flowbite-svelte-icons";
-  import SFSULogo from "$lib/assets/SFSU.png";
-  import { onMount } from "svelte";
+
   import { posts } from "../../stores/store.js";
+  import { goto } from "$app/navigation";
 
   const categories = [
     { id: 0, label: "All" },
@@ -40,47 +28,29 @@
   // Define a writable store for search query
   export let searchQuery = "";
 
-  function loadURL() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const category = urlParams.get("category");
-    const search = urlParams.get("search");
-
-    if (category) {
-      selectedCategory = parseInt(category);
-    }
-
-    if (search) {
-      searchQuery = search;
-    }
-
-    // Perform search if on the home page
-    if (window.location.pathname === "/") {
-      handleSearch();
-    }
-  }
-
   async function handleSearch(): Promise<void> {
     try {
-      // Construct the URL with search parameters
       const url = new URL("/getPosts", window.location.origin);
+
+      // Append selected category to URL if it's not 0 (All)
       if (selectedCategory !== 0) {
         url.searchParams.append("category", selectedCategory.toString());
       }
+
+      // Append search query to URL if it's not empty
       if (searchQuery.trim() !== "") {
         url.searchParams.append("search", searchQuery.trim());
       }
 
       const response = await fetch(url.toString());
+      goto(`${url.search}`);
+
       if (response.ok) {
         const data = await response.json();
         posts.set(data);
       } else {
         console.error("Failed to fetch posts");
       }
-
-      // Update browser history with new search parameters without triggering a page reload
-      const newUrl = `${window.location.pathname}${url.search}`;
-      window.history.pushState({ path: newUrl }, "", newUrl);
     } catch (error) {
       console.error("Error fetching posts:", error);
     }
@@ -107,8 +77,6 @@
       searchExecution();
     }
   }
-
-  onMount(loadURL);
 </script>
 
 <Navbar
@@ -116,7 +84,7 @@
 >
   <!-- Left side -->
   <NavBrand href="/" class="mr-10">
-    <img src={SFSULogo} class="me-3 h-6 sm:h-20" alt="SFSU Logo" />
+    <img src="/SFSU.png" class="me-3 h-6 sm:h-20" alt="SFSU Logo" />
     <span
       class="self-center whitespace-nowrap text-5xl font-semibold dark:text-white"
     >
@@ -163,11 +131,8 @@
 
   <!-- Right side -->
   <NavUl class="flex items-center">
-    <NavLi href="/post" class="text-white text-2xl" active={true}>Post</NavLi>
+    <NavLi href="/" class="text-white text-2xl" active={true}>Post</NavLi>
     <NavLi href="/about" class="text-white text-2xl">About</NavLi>
-    <NavLi href="/registration" class="text-white text-2xl">Login/SignUp</NavLi>
-    <!-- {#if isLoggedIn}
-      <NavLi href="/dashboard" class="text-white text-2xl">Dashboard</NavLi>
-    {/if} -->
+    <NavLi href="/" class="text-white text-2xl">Login/SignUp</NavLi>
   </NavUl>
 </Navbar>
