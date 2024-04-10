@@ -21,6 +21,18 @@
       img: "/path/to/image",
     },
     {
+      slug: "jayden",
+      name: "Jayden Wong",
+      position: "Back End Lead Developer",
+      img: "/path/to/image",
+    },
+    {
+      slug: "Singh",
+      name: "Parampal Singh",
+      position: "GitHub Master",
+      img: "/path/to/image",
+    },
+    {
       slug: "cole",
       name: "Cole Douglas",
       position: "Front End Developer",
@@ -32,25 +44,11 @@
       position: "Back End Developer",
       img: "/path/to/image",
     },
-    {
-      slug: "Singh",
-      name: "Parampal Singh",
-      position: "GitHub Master",
-      img: "/path/to/image",
-    },
-    {
-      slug: "jayden",
-      name: "Jayden Wong",
-      position: "Back End Lead Developer",
-      img: "/path/to/image",
-    },
   ];
 </script>
 
 <Header />
 <Nav />
-<Heading tag="h3">Meet the Team</Heading>
-<!-- <SideBar /> -->
 <div class="team-container">
   {#each teamMembers as { name, position, img, slug }, i}
     <Card {img} class="team-member-card">
