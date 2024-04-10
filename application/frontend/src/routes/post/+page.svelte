@@ -8,4 +8,16 @@
 *
 * Description: page dedicated to uploading posts 
 **************************************************************/ -->
-<p>This is where the post (uploads) be</p>
+<script>
+  import Header from "$lib/components/main/Header.svelte";
+  import Nav from "$lib/components/main/Nav.svelte";
+  import Footer from "$lib/components/main/Footer.svelte";
+  import Post from "$lib/components/main/Post.svelte";
+</script>
+
+<title>GatorTrader | Registration</title>
+
+<Header />
+<Nav />
+<Post />
+<Footer />
