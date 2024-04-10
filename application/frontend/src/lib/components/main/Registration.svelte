@@ -7,7 +7,7 @@
     A,
     ButtonGroup,
     InputAddon,
-    ToolbarButton,
+    P,
   } from "flowbite-svelte";
   import { Popover } from "flowbite-svelte";
   import { EyeOutline, EyeSlashOutline } from "flowbite-svelte-icons";
@@ -56,18 +56,31 @@
   }
 </script>
 
-<form method="POST" action="?/create">
+<form method="POST" action="?/create" on:submit|preventDefault>
   <div class="form-container">
     <div class="mb-6">
+      <P align="center" size="3xl" height="loose" weight="semibold">Sign up</P>
+    </div>
+    <div class="grid gap-6 md:grid-cols-2">
+      <div class="mb-6">
+        <Label for="username" class="mb-2">First name</Label>
+        <Input type="text" id="first_name" required />
+      </div>
+      <div class="mb-6">
+        <Label for="username" class="mb-2">Last name</Label>
+        <Input type="text" id="first_name" required />
+      </div>
+    </div>
+    <div class="mb-6">
       <Label for="username" class="mb-2">Username</Label>
-      <Input type="text" id="first_name" placeholder="John" required />
+      <Input type="text" id="first_name" required />
     </div>
     <div class="mb-6">
       <Label for="email" class="mb-2">Email</Label>
       <Input
         type="email"
         id="email"
-        placeholder="@sfsu.edu"
+        placeholder="domain@sfsu.edu"
         bind:value={email}
         required
       />
@@ -75,7 +88,7 @@
 
     <div class="mb-6">
       <Label for="password" class="mb-2">Password</Label>
-      <ButtonGroup class="w-full flex justify-between">
+      <ButtonGroup class="w-full">
         <Input
           id="password"
           type={showPW ? "text" : "password"}
@@ -84,7 +97,10 @@
           on:input={checkPasswordCriteria}
         />
         <InputAddon>
-          <Button on:click={() => (showPW = !showPW)}>
+          <Button
+            class="p-0 bg-transparent"
+            on:click={() => (showPW = !showPW)}
+          >
             {#if showPW}
               <EyeOutline class="w-5 h-5 eye-icon" />
             {:else}
@@ -95,13 +111,13 @@
       </ButtonGroup>
     </div>
 
-    <Popover class="text-sm" triggeredBy="#password" placement="bottom">
+    <Popover class="text-sm" triggeredBy="#password" placement="left">
       <div class="grid grid-cols-1 gap-2">
         <div class="flex items-center">
           <div
             class="{criteria.length
               ? 'bg-green-400'
-              : 'bg-gray-200 dark:bg-gray-600'} rounded-full h-3 w-3 flex items-center justify-center"
+              : 'bg-gray-200 dark:bg-gray-600'} rounded-full h-4 w-4 flex items-center justify-center"
           >
             {criteria.length ? "✓" : ""}
           </div>
@@ -111,7 +127,7 @@
           <div
             class="{criteria.number
               ? 'bg-green-400'
-              : 'bg-gray-200 dark:bg-gray-600'} rounded-full h-3 w-3 flex items-center justify-center"
+              : 'bg-gray-200 dark:bg-gray-600'} rounded-full h-4 w-4 flex items-center justify-center"
           >
             {criteria.number ? "✓" : ""}
           </div>
@@ -121,7 +137,7 @@
           <div
             class="{criteria.uppercase
               ? 'bg-green-400'
-              : 'bg-gray-200 dark:bg-gray-600'} rounded-full h-3 w-3 flex items-center justify-center"
+              : 'bg-gray-200 dark:bg-gray-600'} rounded-full h-4 w-4 flex items-center justify-center"
           >
             {criteria.uppercase ? "✓" : ""}
           </div>
@@ -132,7 +148,7 @@
           <div
             class="{criteria.lowercase
               ? 'bg-green-400'
-              : 'bg-gray-200 dark:bg-gray-600'} rounded-full h-3 w-3 flex items-center justify-center"
+              : 'bg-gray-200 dark:bg-gray-600'} rounded-full h-4 w-4 flex items-center justify-center"
           >
             {criteria.lowercase ? "✓" : ""}
           </div>
@@ -143,7 +159,7 @@
           <div
             class="{criteria.specialChar
               ? 'bg-green-400'
-              : 'bg-gray-200 dark:bg-gray-600'} rounded-full h-3 w-3 flex items-center justify-center"
+              : 'bg-gray-200 dark:bg-gray-600'} rounded-full h-4 w-4 flex items-center justify-center"
           >
             {criteria.specialChar ? "✓" : ""}
           </div>
@@ -152,23 +168,17 @@
       </div>
     </Popover>
 
-    <Checkbox class="mb-6 space-x-1 rtl:space-x-reverse" required>
-      I agree with the<A
-        href="#"
-        class="text-primary-700 dark:text-primary-600 hover:underline"
-        >terms and conditions</A
-      >.
+    <Checkbox class="flex justify-center" required>
+      I agree with the<A href="#">terms and conditions</A>
     </Checkbox>
-    <div class="flex justify-center">
-      <Button class="" type="button" on:click={handleSubmit}>Submit</Button>
-    </div>
+    <Button class="w-full" type="button" on:click={handleSubmit}>Submit</Button>
   </div>
 </form>
 
 <style>
   .form-container {
-    max-width: 400px;
-    margin: 0 auto;
+    width: 500px; /* Set a fixed width */
+    margin: 100px auto 0;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 8px;
