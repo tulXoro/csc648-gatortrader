@@ -12,6 +12,8 @@
  * alerts based on validation results.
  **************************************************************/
 
+// WORK IN PROGRESS STILL TRYING TO IMPORT MIDDLEWARE CORRECTLY
+
 // email criteria
 export let email = "";
 export function validateEmail() {
