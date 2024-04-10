@@ -13,9 +13,17 @@
   import { Footer, FooterCopyright } from "flowbite-svelte";
 </script>
 
-<div class="page-container absolute bottom-0 left-0 right-0">
+<div class="page-container">
   <Footer>
-    <hr class="lg:my-5" />
+    <hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-10" />
     <FooterCopyright href="/" by="CSC648 Team 5™" />
   </Footer>
 </div>
+
+<style>
+  .page-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 1vh;
+  }
+</style>
