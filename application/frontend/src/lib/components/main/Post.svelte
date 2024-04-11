@@ -1,3 +1,13 @@
+<!-- /**************************************************************
+* Class: CSC-648-03 Spring 2024
+* Team: 05
+* GitHub ID: csc648-sp24-03-team05
+* Project: SWE Final Project
+*
+* File: Post.svelte
+*
+* Description: Component to display a form for registration. 
+**************************************************************/ -->
 <script lang="ts">
   import {
     Input,
@@ -12,6 +22,7 @@
   } from "flowbite-svelte";
   import { ChevronDownOutline } from "flowbite-svelte-icons";
   import DropBox from "./DropBox.svelte";
+  import SignUpPop from "./SignUpPop.svelte";
 
   let title = "";
   let description = "";
@@ -129,6 +140,8 @@
     <Checkbox class="flex justify-center mb-6" required>
       I agree with the<A href="#">terms and conditions</A>
     </Checkbox>
+    <div class="modal mb-3"><SignUpPop /></div>
+
     <Button class="w-full mb-3" type="button" on:click={handleSubmit}
       >Submit</Button
     >
@@ -151,5 +164,8 @@
     border: 1px solid #ccc;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  .modal {
+    text-align: center;
   }
 </style>
