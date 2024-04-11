@@ -1,10 +1,10 @@
 <!-- This this the about-us page  -->
 
 <script>
-  import Header from "$lib/components/main/Header.svelte";
-  import Footer from "$lib/components/main/Footer.svelte";
+  import Header from "$lib/components/main/layout/Header.svelte";
+  import Footer from "$lib/components/main/layout/Footer.svelte";
   import { Heading } from "flowbite-svelte";
-  import Nav from "$lib/components/main/Nav.svelte";
+  import Nav from "$lib/components/main/layout/Nav.svelte";
   import { Card } from "flowbite-svelte";
 
   let teamMembers = [

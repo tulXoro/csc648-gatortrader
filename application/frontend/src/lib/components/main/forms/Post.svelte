@@ -21,8 +21,8 @@
     DropdownItem,
   } from "flowbite-svelte";
   import { ChevronDownOutline } from "flowbite-svelte-icons";
-  import DropBox from "./DropBox.svelte";
-  import SignUpPop from "./SignUpPop.svelte";
+  import DropBox from "../popUps/DropBox.svelte";
+  import SignUpPop from "../popUps/SignUpPop.svelte";
 
   let title = "";
   let description = "";

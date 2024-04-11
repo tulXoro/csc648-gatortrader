@@ -12,15 +12,12 @@
 <script>
   import { onMount } from "svelte";
 
-  let width = 0;
-
   onMount(() => {
     const el = document.querySelector(".ticker-text");
-    // width = el.offsetWidth;
   });
 </script>
 
-<header class="w-full text-center py-4">
+<header class="w-full text-center">
   <div class="ticker-container">
     <h3 class="ticker-text">
       SFSU Software Engineering Project CSC 648-848, Spring 2024, Team 05. For

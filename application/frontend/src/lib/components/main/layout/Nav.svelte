@@ -24,7 +24,7 @@
   import { ChevronDownOutline, SearchOutline } from "flowbite-svelte-icons";
   import SFSULogo from "$lib/assets/SFSU.png";
   import { onMount } from "svelte";
-  import { posts } from "../../stores/store.js";
+  import { posts } from "../../../stores/store.js";
 
   const categories = [
     { id: 0, label: "All" },

@@ -1,6 +1,6 @@
 <script>
   import img from "$lib/assets/image.jpg";
-  import Profile from "$lib/components/about/Profile.svelte";
+  import Profile from "$lib/components/main/about/Profile.svelte";
 </script>
 
 <Profile

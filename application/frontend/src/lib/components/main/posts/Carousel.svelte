@@ -13,7 +13,7 @@
 <script>
   import { Carousel, Indicator } from "flowbite-svelte";
   import { onMount } from "svelte";
-  import { posts } from "../../stores/store.js";
+  import { posts } from "../../../stores/store.js";
 
   // filter post by status and timestamp
   $: images = $posts
