@@ -13,6 +13,7 @@
   import Nav from "$lib/components/main/Nav.svelte";
   import Footer from "$lib/components/main/Footer.svelte";
   import Post from "$lib/components/main/Post.svelte";
+  import SignUpPop from "$lib/components/main/SignUpPop.svelte";
 </script>
 
 <title>GatorTrader | Registration</title>
