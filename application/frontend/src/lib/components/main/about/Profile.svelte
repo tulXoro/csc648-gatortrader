@@ -13,9 +13,9 @@
 <script>
   import default_profile from "$lib/assets/default_profile.jpg";
   import { Avatar } from "flowbite-svelte";
-  import Footer from "$lib/components/main/Footer.svelte";
-  import Nav from "$lib/components/main/Nav.svelte";
-  import Header from "$lib/components/main/Header.svelte";
+  import Footer from "$lib/components/main/layout/Footer.svelte";
+  import Nav from "$lib/components/main/layout/Nav.svelte";
+  import Header from "$lib/components/main/layout/Header.svelte";
 
   export let name = "";
   export let photo = default_profile;

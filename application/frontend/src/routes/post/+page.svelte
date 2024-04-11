@@ -9,11 +9,11 @@
 * Description: page dedicated to uploading posts 
 **************************************************************/ -->
 <script>
-  import Header from "$lib/components/main/Header.svelte";
-  import Nav from "$lib/components/main/Nav.svelte";
-  import Footer from "$lib/components/main/Footer.svelte";
-  import Post from "$lib/components/main/Post.svelte";
-  import SignUpPop from "$lib/components/main/SignUpPop.svelte";
+  import Header from "$lib/components/main/layout/Header.svelte";
+  import Nav from "$lib/components/main/layout/Nav.svelte";
+  import Footer from "$lib/components/main/layout/Footer.svelte";
+  import Post from "$lib/components/main/forms/Post.svelte";
+  import SignUpPop from "$lib/components/main/popUps/SignUpPop.svelte";
 </script>
 
 <title>GatorTrader | Registration</title>

@@ -12,7 +12,7 @@
 
 <script lang="ts">
   import { derived } from "svelte/store";
-  import { posts, searchQuery } from "../../stores/store.js";
+  import { posts, searchQuery } from "../../../stores/store.js";
 
   let searchInput = "";
 

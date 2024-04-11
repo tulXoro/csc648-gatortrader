@@ -10,7 +10,7 @@
 **************************************************************/ -->
 <script>
   import { Card, Button } from "flowbite-svelte";
-  import { posts } from "../../stores/store.js";
+  import { posts } from "../../../stores/store.js";
 </script>
 
 <div class="grid grid-cols-5 gap-4">

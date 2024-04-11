@@ -10,12 +10,12 @@
 * linking all page routes.
 **************************************************************/ -->
 <script>
-  import Header from "$lib/components/main/Header.svelte";
-  import Footer from "$lib/components/main/Footer.svelte";
-  import Nav from "$lib/components/main/Nav.svelte";
-  import PostCards from "$lib/components/main/PostCards.svelte";
-  import Carousel from "$lib/components/main/Carousel.svelte";
-  import Results from "$lib/components/main/Results.svelte";
+  import Header from "$lib/components/main/layout/Header.svelte";
+  import Footer from "$lib/components/main/layout/Footer.svelte";
+  import Nav from "$lib/components/main/layout/Nav.svelte";
+  import PostCards from "$lib/components/main/posts/PostCards.svelte";
+  import Carousel from "$lib/components/main/posts/Carousel.svelte";
+  import Results from "$lib/components/main/posts/Results.svelte";
 </script>
 
 <title>GatorTrader | Homepage</title>
