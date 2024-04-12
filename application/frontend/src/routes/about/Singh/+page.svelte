@@ -3,17 +3,17 @@
   import Footer from "$lib/components/main/Footer.svelte";
   import Header from "$lib/components/main/Header.svelte";
 
-  import Profile from "$lib/components/about/Profile.svelte";
+  import Profile from "../../Profile.svelte";
 </script>
 
 <!-- Commented out because nav obstructs profile right now -->
 <!-- <Nav /> -->
 
 <Header />
+<Nav />
 
 <Profile
   name="Parampal Singh"
-  photo="https://via.placeholder.com/300"
   bio="This is a bio"
   role="Github Master"
   github="https://github.com/singh-paul"
