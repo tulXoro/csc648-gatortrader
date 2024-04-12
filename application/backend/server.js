@@ -2,8 +2,10 @@ import express from 'express';
 import { handler } from '../frontend/build/handler.js';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
+import bodyParser from 'body-parser';
 
 import getPosts from './routes/getPosts.js';
+import registerUser from './routes/registerUser.js';
 
 const app = express();
 const PORT = 3000;
@@ -19,6 +21,8 @@ app.use('/getPosts', getPosts);
 
 app.use('/image', express.static(path.join(dirname(fileURLToPath(import.meta.url)), 'images')));
 
+app.use(bodyParser.json());
+app.use('/registerUser', registerUser);
 
 app.use(handler);
 
