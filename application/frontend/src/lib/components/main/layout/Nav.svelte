@@ -166,6 +166,7 @@
     <NavLi href="/post" class="text-white text-2xl" active={true}>Post</NavLi>
     <NavLi href="/about" class="text-white text-2xl">About</NavLi>
     <NavLi href="/registration" class="text-white text-2xl">Login/SignUp</NavLi>
+    <NavLi href="/dashboard" class="text-white text-2xl">Dashboard</NavLi>
     <!-- {#if isLoggedIn}
       <NavLi href="/dashboard" class="text-white text-2xl">Dashboard</NavLi>
     {/if} -->
