@@ -22,7 +22,7 @@
 
 <Header />
 <Nav />
+<Carousel />
 <Results />
-<!-- <Carousel/> -->
 <PostCards />
 <Footer />

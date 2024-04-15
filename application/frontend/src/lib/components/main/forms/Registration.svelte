@@ -177,7 +177,7 @@
 
 <style>
   .form-container {
-    width: 500px; /* Set a fixed width */
+    width: 500px;
     margin: 100px auto 0;
     padding: 20px;
     border: 1px solid #ccc;

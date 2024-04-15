@@ -11,51 +11,83 @@
 **************************************************************/ -->
 
 <script>
-  import { Carousel, Indicator } from "flowbite-svelte";
-  import { onMount } from "svelte";
+  import { Card, Button, Heading, P, Span } from "flowbite-svelte";
   import { posts } from "../../../stores/store.js";
+  import { CaretLeftOutline, CaretRightOutline } from "flowbite-svelte-icons";
 
-  // filter post by status and timestamp
-  $: images = $posts
+  // Filter and sort posts
+  $: filteredPosts = $posts
     .filter((post) => post.status === "APPROVED")
     .sort((a, b) => {
       const timestampA = new Date(a.timestamp).getTime();
       const timestampB = new Date(b.timestamp).getTime();
       return timestampB - timestampA; // Sort by timestamp descending
-    })
-    .map((post) => ({
-      alt: post.item_name,
-      src: `/image/${post.image_file}`,
-      timestamp: post.timestamp,
-    }));
+    });
 
-  // Fetch posts
-  onMount(async () => {
-    try {
-      const response = await fetch(
-        "/getPosts?status=APPROVED&sortBy=timestamp:desc"
-      );
-      if (response.ok) {
-        const data = await response.json();
-        posts.set(data);
-      } else {
-        console.error("Failed to fetch approved posts");
-      }
-    } catch (error) {
-      console.error("Error fetching approved posts:", error);
-    }
-  });
+  let currentIndex = 0;
+  const itemsPerPage = 5;
+
+  // scroll buttons
+  function handleNext() {
+    currentIndex = Math.min(
+      currentIndex + itemsPerPage,
+      filteredPosts.length - itemsPerPage
+    );
+  }
+
+  function handlePrev() {
+    currentIndex = Math.max(currentIndex - itemsPerPage, 0);
+  }
 </script>
 
-<div class="max-w-4xl space-y-4">
-  <Carousel
-    {images}
-    imgClass="object-contain h-full w-fit rounded-sm"
-    let:Indicators
-    let:Controls
-    class="rounded-md ring-4 ring-green-500 border-4 border-white dark:border-gray-800 min-h-[320px] bg-gray-200"
+<Heading tag="h1" class="mb-5" align="center">
+  The <Span highlight>Marketplace</Span> for you. Buy and sell locally.
+</Heading>
+
+<div class="carousel-container relative">
+  <P align="left" weight="bold" size="2xl">Recent Posts</P>
+  <div class="grid grid-cols-5 gap-1 relative overflow-hidden">
+    {#each filteredPosts.slice(currentIndex, currentIndex + itemsPerPage) as post}
+      <Card class="col-span-1">
+        <div class="relative h-full flex flex-col">
+          <img
+            class="object-cover w-full h-64"
+            src={`/image/${post.image_file}`}
+            alt={post.item_name}
+          />
+          <div class="flex-grow flex flex-col justify-end bg-white">
+            <p class="mb-2 text-xl font-black">{post.item_name}</p>
+            <p class="mb-2 text-3xl font-black" style="text-align: right;">
+              ${post.price}
+            </p>
+            <Button class="text-xl mt-auto">Message</Button>
+          </div>
+        </div>
+      </Card>
+    {/each}
+  </div>
+  <Button
+    pill={true}
+    on:click={handlePrev}
+    class="absolute left-0 transform -translate-y-1/2 bg-red-300/50 "
+    ><CaretLeftOutline class="w-4 h-4" /></Button
   >
-    <Indicators class="border border-white rounded-md p-2" />
-    <Controls class="items-center text-red-400 dark:text-green-400 pt-4" />
-  </Carousel>
+  <Button
+    pill={true}
+    on:click={handleNext}
+    class="absolute right-0 transform -translate-y-1/2 bg-red-300/50"
+    ><CaretRightOutline class="w-4 h-4" /></Button
+  >
 </div>
+
+<style>
+  .carousel-container {
+    width: auto;
+    background-color: #ccc;
+    padding: 20px;
+    margin-bottom: 50px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+</style>
