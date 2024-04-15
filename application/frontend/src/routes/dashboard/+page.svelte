@@ -56,6 +56,7 @@
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
       incididunt ut labore et dolore magna aliqua.
     </p>
+    <PostCards />
   </TabItem>
   <TabItem title="Messages">
     <p class="text-sm text-gray-500 dark:text-gray-400">
