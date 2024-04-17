@@ -9,20 +9,36 @@
 * Description: This is the main page showcasing all the components
 * linking all page routes.
 **************************************************************/ -->
-<script>
+<script lang="ts">
   import Header from "$lib/components/main/layout/Header.svelte";
   import Footer from "$lib/components/main/layout/Footer.svelte";
   import Nav from "$lib/components/main/layout/Nav.svelte";
   import PostCards from "$lib/components/main/posts/PostCards.svelte";
   import Carousel from "$lib/components/main/posts/Carousel.svelte";
   import Results from "$lib/components/main/posts/Results.svelte";
+
+  let showCarousel = true;
+
+  function handleSearchQueryChange(
+    event: CustomEvent<{ searchQuery: string }>
+  ) {
+    showCarousel = !event.detail.searchQuery;
+  }
+  function handleSearchButtonClick() {
+    showCarousel = false;
+  }
 </script>
 
 <title>GatorTrader | Homepage</title>
 
 <Header />
-<Nav />
-<Carousel />
+<Nav
+  on:searchQueryChange={handleSearchQueryChange}
+  on:searchButtonClick={handleSearchButtonClick}
+/>
+{#if showCarousel}
+  <Carousel />
+{/if}
 <Results />
 <PostCards />
 <Footer />
