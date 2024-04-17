@@ -23,9 +23,13 @@
   } from "flowbite-svelte";
   import { ChevronDownOutline, SearchOutline } from "flowbite-svelte-icons";
   import SFSULogo from "$lib/assets/SFSU.png";
-  import { onMount } from "svelte";
+  import { onMount, createEventDispatcher } from "svelte";
   import { posts } from "../../../stores/store.js";
 
+  export let selectedCategory = 0;
+  export let searchQuery = "";
+
+  const dispatch = createEventDispatcher();
   const categories = [
     { id: 0, label: "All" },
     { id: 1, label: "Electronics" },
@@ -33,12 +37,6 @@
     { id: 3, label: "Textbooks" },
     { id: 4, label: "Misc." },
   ];
-
-  // Define a writable store for selected category
-  export let selectedCategory = 0;
-
-  // Define a writable store for search query
-  export let searchQuery = "";
 
   function loadURL() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -91,10 +89,11 @@
     selectedCategory = categoryId;
   }
 
-  // redirects to handleSearch when "enter" or search button is pressed
-  function searchExecution(): void {
+  // provides search results
+  async function searchExecution() {
     if (searchQuery.trim() !== "") {
-      handleSearch();
+      await handleSearch();
+      dispatch("searchButtonClick");
     } else {
       // If empty, perform search based on selected category
       handleSearch();
