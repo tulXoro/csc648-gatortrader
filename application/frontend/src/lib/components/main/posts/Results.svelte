@@ -13,6 +13,8 @@
 <script lang="ts">
   import { derived } from "svelte/store";
   import { posts, searchQuery } from "../../../stores/store.js";
+  import { Button, Dropdown, DropdownItem } from "flowbite-svelte";
+  import { ChevronDownOutline } from "flowbite-svelte-icons";
 
   let searchInput = "";
 
@@ -78,6 +80,18 @@
       {/if}
     </div>
   {/if}
+
+  <!-- <Button
+    class="rounded-e-none whitespace-nowrap border border-e-0 border-primary-700"
+  >
+    Sort By:<ChevronDownOutline class="w-2.5 h-2.5 ms-2.5" />
+  </Button>
+  <Dropdown class="w-45">
+    <DropdownItem on:click={() => {}} style="color: black;">
+      <DropdownItem>Price: Low to high (Default)</DropdownItem>
+      <DropdownItem>Price: High to low (Default)</DropdownItem>
+    </DropdownItem>
+  </Dropdown> -->
 
   <!-- Display message if no results are found -->
   <div class="flex justify-center">
