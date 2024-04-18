@@ -110,28 +110,21 @@
   onMount(loadURL);
 </script>
 
-<Navbar
-  class="bg-gray-900 text-white sticky top-0 z-50 flex justify-between items-center"
->
+<Navbar class="bg-gray-900 text-white sticky top-0 sm:flex-row items-center">
   <!-- Left side -->
-  <NavBrand href="/" class="mr-10">
-    <img src={SFSULogo} class="me-3 h-6 sm:h-20" alt="SFSU Logo" />
-    <span
-      class="self-center whitespace-nowrap text-5xl font-semibold dark:text-white"
-    >
-      GatorTrader
-    </span>
+  <NavBrand href="/" class="mb-5 sm:mb-4">
+    <img src={SFSULogo} class="me-5 h-5 sm:h-20 lg:20" alt="SFSU Logo" />
+    <span class="text-6xl font-bold dark:text-white">GatorTrader</span>
   </NavBrand>
-  <!-- Category selection -->
-  <!-- search parameter query for url-->
-  <div on:submit|preventDefault={handleSearch} class="flex">
-    <Button
-      class="rounded-e-none whitespace-nowrap border border-e-0 border-primary-700"
-    >
+
+  <!-- Middle: Search query -->
+  <div class="flex sm:flex-row items-center sm:mx-auto">
+    <!-- Category selection -->
+    <Button class="rounded-e-none border-e-0 !p-2.5 ">
       {categories[selectedCategory].label}
-      <ChevronDownOutline class="w-2.5 h-2.5 ms-2.5" />
+      <ChevronDownOutline class="w-5 h-5 ms-2.5" />
     </Button>
-    <Dropdown class="w-40">
+    <Dropdown>
       {#each categories as { id, label }}
         <DropdownItem
           on:click={() => {
@@ -145,29 +138,34 @@
       {/each}
     </Dropdown>
 
-    <!-- Middle: Search query -->
-    <div class="flex">
-      <Search
-        size="md"
-        class="rounded-none py-2.5 mr-2"
-        placeholder="Search GatorTrader..."
-        bind:value={searchQuery}
-        on:keypress={handleKeyPress}
-      />
-      <Button class="!p-2.5 rounded-s-none flex" on:click={searchExecution}>
-        <SearchOutline class="w-5 h-5" />
-      </Button>
-    </div>
+    <!-- Search -->
+    <Search
+      size="md"
+      class="rounded-none py-2 mr-10"
+      placeholder="Search GatorTrader..."
+      bind:value={searchQuery}
+      on:keypress={handleKeyPress}
+    />
+    <Button class="!p-2.5 rounded-s-none flex" on:click={searchExecution}>
+      <SearchOutline class="w-5 h-5" />
+    </Button>
   </div>
 
   <!-- Right side -->
-  <NavUl class="flex items-center">
-    <NavLi href="/post" class="text-white text-2xl" active={true}>Post</NavLi>
-    <NavLi href="/about" class="text-white text-2xl">About</NavLi>
-    <NavLi href="/registration" class="text-white text-2xl">Login/SignUp</NavLi>
-    <NavLi href="/dashboard" class="text-white text-2xl">Dashboard</NavLi>
-    <!-- {#if isLoggedIn}
-      <NavLi href="/dashboard" class="text-white text-2xl">Dashboard</NavLi>
-    {/if} -->
-  </NavUl>
+  <div class="flex flex-row items-center">
+    <NavUl class="flex flex-row">
+      <NavLi href="/post" class="text-white text-2xl mb-4 sm:mb-0">Post</NavLi>
+      <NavLi href="/about" class="text-white text-2xl mb-4 sm:mb-0">About</NavLi
+      >
+      <NavLi href="/registration" class="text-white text-2xl mb-4 sm:mb-0"
+        >Login/SignUp</NavLi
+      >
+      <NavLi href="/dashboard" class="text-white text-2xl mb-4 sm:mb-0"
+        >Dashboard</NavLi
+      >
+      <!-- {#if isLoggedIn}
+    <NavLi href="/dashboard" class="text-white text-2xl mb-4 sm:mb-0">Dashboard</NavLi>
+  {/if} -->
+    </NavUl>
+  </div>
 </Navbar>

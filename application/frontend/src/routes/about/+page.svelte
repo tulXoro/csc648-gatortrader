@@ -3,7 +3,6 @@
 <script>
   import Header from "$lib/components/main/layout/Header.svelte";
   import Footer from "$lib/components/main/layout/Footer.svelte";
-  import { Heading } from "flowbite-svelte";
   import Nav from "$lib/components/main/layout/Nav.svelte";
   import { Card } from "flowbite-svelte";
 
@@ -49,7 +48,9 @@
 
 <Header />
 <Nav />
-<div class="team-container">
+<div
+  class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 justify-items-center"
+>
   {#each teamMembers as { name, position, img, slug }, i}
     <Card {img} class="team-member-card">
       <a href={`./about/${slug}`} class="no-underline">
@@ -64,13 +65,3 @@
   {/each}
 </div>
 <Footer />
-
-<style>
-  .team-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    justify-items: center;
-    align-items: center;
-  }
-</style>

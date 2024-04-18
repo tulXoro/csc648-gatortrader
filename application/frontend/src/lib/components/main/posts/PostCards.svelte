@@ -13,17 +13,19 @@
   import { posts } from "../../../stores/store.js";
 </script>
 
-<div class="grid grid-cols-5 gap-4">
-  <!-- Filter using one APPROVED posts by Admin -->
+<div
+  class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
+>
+  <!-- Filter using only APPROVED posts by Admin -->
   {#each $posts.filter((post) => post.status === "APPROVED") as post}
     <Card padding="none">
-      <a href="/"
-        ><img
+      <a href="/">
+        <img
           class="object-cover w-full h-64"
           src={`/image/${post.image_file}`}
           alt={post.item_name}
-        /></a
-      >
+        />
+      </a>
 
       <div class="flex-grow flex flex-col justify-end bg-white">
         <p class="ml-2 mb-2 text-2xl font-black">{post.item_name}</p>

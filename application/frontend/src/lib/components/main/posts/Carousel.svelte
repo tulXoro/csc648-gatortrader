@@ -46,7 +46,9 @@
 
 <div class="carousel-container relative">
   <P align="left" weight="bold" size="2xl">Recent Posts</P>
-  <div class="grid grid-cols-5 gap-1 relative overflow-hidden">
+  <div
+    class="grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 relative overflow-hidden"
+  >
     {#each filteredPosts.slice(currentIndex, currentIndex + itemsPerPage) as post}
       <Card padding="none">
         <a href="/"

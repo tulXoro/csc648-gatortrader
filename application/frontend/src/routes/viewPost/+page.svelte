@@ -2,7 +2,8 @@
   import Header from "$lib/components/main/layout/Header.svelte";
   import Nav from "$lib/components/main/layout/Nav.svelte";
   import Footer from "$lib/components/main/layout/Footer.svelte";
-  import { Button, Card } from "flowbite-svelte";
+  import { Avatar, Button, Card } from "flowbite-svelte";
+  import img from "$lib/assets/image.jpg";
 </script>
 
 <title>GatorTrader | View Post</title>
@@ -39,14 +40,15 @@
     <p class="text-5xl dark:text-black mb-5">Title</p>
     <p class="text-3xl dark:text-black mb-3">$XX.XX</p>
     <p class="text-xl dark:text-black mb-5">Posted on: April 17, 2024</p>
-    <div class="user-info flex">
-      <img
-        src="https://fakeimg.pl/100x100/?text=Profile Pic"
-        alt="profile-pic"
-      />
-      <div class="ml-2">
-        <p>Username</p>
-        <p>Joined: January 1, 2020</p>
+    <div
+      class="md:flex md:items-center md:space-x-4 md:rtl:space-x-reverse md:pb-20"
+    >
+      <Avatar src={img} rounded class="w-20 h-20" />
+      <div class="mt-4 md:mt-0 md:flex md:flex-col md:justify-center">
+        <div class="text-xl font-medium dark:text-white">Seller's Name</div>
+        <div class="text-sm text-gray-500 dark:text-gray-400">
+          Joined in August 2014
+        </div>
       </div>
     </div>
 

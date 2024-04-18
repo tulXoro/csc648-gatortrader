@@ -34,8 +34,8 @@
   }));
 </script>
 
-<div class="flex flex-col margin-left gap-2">
-  {#if $helper.total === 1}
+<div class="flex flex-col gap-2">
+  {#if $helper.total === 1 || $helper.total > 0}
     <div class="text-sm text-gray-700 dark:text-gray-400">
       <span class="font-semibold text-gray-900 dark:text-white">
         {$helper.start}
@@ -49,28 +49,6 @@
         {$helper.total}
       </span>
       {" result "}
-      <!-- Display search query if available -->
-      {#if searchInput !== ""}
-        {" for "}
-        <span class="font-bold italic text-gray-900 dark:text-white">
-          "{searchInput}"
-        </span>
-      {/if}
-    </div>
-  {:else if $helper.total > 0}
-    <div class="text-sm text-gray-700 dark:text-gray-400">
-      <span class="font-semibold text-gray-900 dark:text-white">
-        {$helper.start}
-      </span>
-      {"-"}
-      <span class="font-semibold text-gray-900 dark:text-white">
-        {$helper.end}
-      </span>
-      {" of "}
-      <span class="font-semibold text-gray-900 dark:text-white">
-        {$helper.total}
-      </span>
-      {" results "}
       <!-- Display search query if available -->
       {#if searchInput !== ""}
         {" for "}
