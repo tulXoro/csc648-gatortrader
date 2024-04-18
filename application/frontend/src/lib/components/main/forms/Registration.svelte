@@ -57,7 +57,7 @@
 </script>
 
 <form method="POST" action="?/create" on:submit|preventDefault>
-  <div class="form-container">
+  <div class="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
     <div class="mb-6">
       <P align="center" size="3xl" height="loose" weight="semibold">Sign up</P>
     </div>
@@ -176,12 +176,8 @@
 </form>
 
 <style>
-  .form-container {
-    width: 500px;
-    margin: 100px auto 0;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  .container {
+    max-width: 600px; /* Adjust the max-width based on your design */
+    margin-top: 100px;
   }
 </style>

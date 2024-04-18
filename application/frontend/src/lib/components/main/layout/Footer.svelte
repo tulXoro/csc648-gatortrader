@@ -13,17 +13,18 @@
   import { Footer, FooterCopyright } from "flowbite-svelte";
 </script>
 
-<div class="page-container">
-  <Footer>
-    <hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-10" />
-    <FooterCopyright href="/" by="CSC648 Team 5™" />
-  </Footer>
+<div class="bg-gray-100 dark:bg-gray-800">
+  <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center">
+      <hr
+        class="my-6 border-gray-200 sm:hidden dark:border-gray-700 lg:block"
+      />
+      <Footer>
+        <FooterCopyright href="/" by="CSC648 Team 5™" />
+      </Footer>
+      <hr
+        class="my-6 border-gray-200 sm:hidden dark:border-gray-700 lg:block"
+      />
+    </div>
+  </div>
 </div>
-
-<style>
-  .page-container {
-    display: flex;
-    flex-direction: column;
-    min-height: 1vh;
-  }
-</style>
