@@ -21,21 +21,20 @@
 
 <Header />
 <Nav />
-<div class="dashboard-profile">
+<div class="container mx-auto px-4">
   <div
-    class="flex items-center space-x-4 rtl:space-x-reverse"
-    style="padding-bottom: 20px"
+    class="md:flex md:items-center md:space-x-4 md:rtl:space-x-reverse md:pb-20"
   >
     <Avatar src={img} rounded class="w-20 h-20" />
-    <div class="space-y-1 font-medium dark:text-white">
-      <div style="font-size: 25px">Name</div>
+    <div class="mt-4 md:mt-0 md:flex md:flex-col md:justify-center">
+      <div class="text-xl font-medium dark:text-white">Name</div>
       <div class="text-sm text-gray-500 dark:text-gray-400">
         Joined in August 2014
       </div>
     </div>
   </div>
-  <div>
-    <p>
+  <div class="mb-8 md:max-w-lg">
+    <p class="text-sm text-gray-500 dark:text-gray-400">
       Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
       do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum
       dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
@@ -44,34 +43,23 @@
       dolore magna aliqua.
     </p>
   </div>
+  <Tabs>
+    <TabItem open title="Listings">
+      <p class="text-sm text-gray-500 dark:text-gray-400">
+        <b>Profile:</b>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+        incididunt ut labore et dolore magna aliqua.
+      </p>
+      <PostCards />
+    </TabItem>
+    <TabItem title="Messages">
+      <p class="text-sm text-gray-500 dark:text-gray-400">
+        <b>Settings:</b>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+        incididunt ut labore et dolore magna aliqua.
+      </p>
+    </TabItem>
+  </Tabs>
 </div>
-<div>
-  <p>Description</p>
-</div>
-
-<Tabs>
-  <TabItem open title="Listings">
-    <p class="text-sm text-gray-500 dark:text-gray-400">
-      <b>Profile:</b>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-      incididunt ut labore et dolore magna aliqua.
-    </p>
-    <PostCards />
-  </TabItem>
-  <TabItem title="Messages">
-    <p class="text-sm text-gray-500 dark:text-gray-400">
-      <b>Settings:</b>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-      incididunt ut labore et dolore magna aliqua.
-    </p>
-  </TabItem>
-</Tabs>
 
 <Footer />
-
-<style>
-  .dashboard-profile {
-    width: 800px;
-    padding: 20px;
-  }
-</style>
