@@ -15,6 +15,7 @@
   import { Avatar, Tabs, TabItem } from "flowbite-svelte";
   import img from "$lib/assets/image.jpg";
   import PostCards from "$lib/components/main/posts/PostCards.svelte";
+  import Notification from "$lib/components/main/popUps/Notification.svelte";
 </script>
 
 <title>GatorTrader | Dashboard</title>
@@ -44,20 +45,20 @@
     </p>
   </div>
   <Tabs>
-    <TabItem open title="Listings">
+    <TabItem open title="Posts">
       <p class="text-sm text-gray-500 dark:text-gray-400">
-        <b>Profile:</b>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-        incididunt ut labore et dolore magna aliqua.
+    
       </p>
       <PostCards />
     </TabItem>
     <TabItem title="Messages">
       <p class="text-sm text-gray-500 dark:text-gray-400">
-        <b>Settings:</b>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-        incididunt ut labore et dolore magna aliqua.
+
       </p>
+      <Notification/>
+      <Notification/>
+      <Notification/>
+      <Notification/>
     </TabItem>
   </Tabs>
 </div>
