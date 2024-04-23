@@ -16,6 +16,7 @@
   import PostCards from "$lib/components/main/posts/PostCards.svelte";
   import Carousel from "$lib/components/main/posts/Carousel.svelte";
   import Results from "$lib/components/main/posts/Results.svelte";
+  import Filter from "$lib/components/main/layout/Filter.svelte";
 
   let showCarousel = true;
 
@@ -39,6 +40,13 @@
 {#if showCarousel}
   <Carousel />
 {/if}
-<Results />
-<PostCards />
+<div style="display: flex">
+  <div style="flex-direction: column; padding: 5px; border: 1px; width: 12%; border-radius: 3px; box-shadow: 1px 1px 2px 1px rgba(0,0,0,0.2);">
+    <Filter/>
+  </div>
+<div style="flex-direction: column; padding: 5px">
+    <Results />
+    <PostCards />
+  </div>
+</div>
 <Footer />

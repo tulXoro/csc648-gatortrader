@@ -21,11 +21,11 @@
     <a href="/" class="font-semibold underline hover:text-blue-800 dark:hover:text-blue-900">example link</a>
     . Give it a click if you like.
   </Alert> -->
-  <Alert color="blue" dismissable>
+  <Alert color="red" dismissable>
     <InfoCircleSolid slot="icon" class="w-5 h-5" />
-    A simple info alert with an
-    <a href="/" class="font-semibold underline hover:text-blue-800 dark:hover:text-blue-900">example link</a>
-    . Give it a click if you like.
+    A sample message notification that will be filled later
+    <!-- <a href="/" class="font-semibold underline hover:text-blue-800 dark:hover:text-blue-900">example link</a>
+    . Give it a click if you like. -->
   </Alert>
   <!-- <Alert color="red" dismissable>
     <InfoCircleSolid slot="icon" class="w-5 h-5" />
