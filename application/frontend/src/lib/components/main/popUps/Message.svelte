@@ -13,7 +13,7 @@
 <script>
   import { Button, Modal, A, P, Textarea } from "flowbite-svelte";
 
-  let formModal = true;
+  let formModal = false;
 
   // will use middleware to auth.js
   let message = "";
@@ -22,9 +22,20 @@
   function handleSubmit() {
     console.log("Submitted message in Message Modal:", message);
   }
+
+  
+  let isButtonClicked = true;
+
+  function handleClick(){
+    isButtonClicked = false;
+  }
+
+  function handleClose() {
+    formModal = false;
+  }
 </script>
 
-<Button on:click={() => (formModal = true)}>Message</Button>
+<Button class="text-xl mt-auto" style="width: 99%" on:click={() => (formModal = true)}>Message</Button>
 
 <Modal bind:open={formModal} size="sm" autoclose={false}>
   <!-- Method is ? -->
@@ -54,11 +65,12 @@
           rows="6"
           name="message"
           bind:value={message}
+          style="resize:none"
         />
       </div>
       <!-- Middleware IsLoggedIn  onClick:{} -->
       <div style="display: flex; justify-content: space-between;">
-        <A align="text-left" on:click={() => (formModal = false)}>Cancel</A>
+        <A align="text-left" on:click={handleClose}>Cancel</A>
         <!-- on:click will send message from FK -> PK -->
         <Button type="submit" align="text-right" on:click={handleSubmit}
           >Send message</Button

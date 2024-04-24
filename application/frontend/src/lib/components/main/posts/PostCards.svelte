@@ -11,6 +11,15 @@
 <script>
   import { Card, Button, A } from "flowbite-svelte";
   import { posts } from "../../../stores/store.js";
+  import Message from "../popUps/Message.svelte";
+
+  let isButtonClicked = false;
+
+  function handleClick(){
+    isButtonClicked = true;
+  }
+
+  // function handleOutside
 </script>
 
 <div
@@ -33,7 +42,15 @@
         <p class="mr-2 mb-2 text-3xl font-black" style="text-align: right;">
           ${post.price}
         </p>
-        <Button class="text-xl mt-auto">Message</Button>
+        
+        {#if isButtonClicked}
+          <div>
+            <Message/>
+          </div>
+          {/if}
+          {#if !isButtonClicked}
+            <Button class="text-xl mt-auto" on:click={handleClick}>Message</Button>
+          {/if}
       </div>
     </Card>
   {/each}
