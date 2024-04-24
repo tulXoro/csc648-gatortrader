@@ -4,9 +4,10 @@
   import Footer from "$lib/components/main/layout/Footer.svelte";
   import { Avatar, Button, Card } from "flowbite-svelte";
   import img from "$lib/assets/image.jpg";
+  import { posts } from "$lib/stores/store.js";
 </script>
 
-<title>GatorTrader | View Post</title>
+<title>GatorTrader | View Post </title>
 
 <Header />
 <Nav />
@@ -17,14 +18,6 @@
   <div class="image-detail">
     <div class="image-container mb-10">
       <img src="https://fakeimg.pl/1000x500/?text=Image" alt="image" />
-      <div class="additional-photos flex">
-        <div class="mt-1 flex mr-2">
-          <img src="https://fakeimg.pl/100x100" alt="current image " />
-        </div>
-        <div class="mt-1 flex mr-2">
-          <img src="https://fakeimg.pl/100x100/?text=image 2" alt="image 2" />
-        </div>
-      </div>
     </div>
 
     <!-- Description -->
@@ -35,9 +28,12 @@
     </div>
   </div>
   <!-- Product details -->
-  <Card>
-    <!-- <div class="detail-container"> -->
+  <!-- {#each $posts.filter((post) => post.status === "APPROVED") as post} -->
+  <!-- <Card> -->
+  <div class="ml-10">
+    <!-- <p class="text-5xl dark:text-black mb-5">{post.item_name}</p> -->
     <p class="text-5xl dark:text-black mb-5">Title</p>
+    <!-- <p class="text-3xl dark:text-black mb-3">${post.price}</p> -->
     <p class="text-3xl dark:text-black mb-3">$XX.XX</p>
     <p class="text-xl dark:text-black mb-5">Posted on: April 17, 2024</p>
     <div
@@ -54,7 +50,9 @@
 
     <!-- Message Button -->
     <Button class="message-button w-full">Message</Button>
-  </Card>
+  </div>
+  >
+  <!-- {/each} -->
 </div>
 
 <Footer />
