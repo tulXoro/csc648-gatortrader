@@ -91,7 +91,11 @@
 
   // provides search results
   async function searchExecution() {
-    if (searchQuery.trim() !== "") {
+    // Check if search query exceeds 40 characters to prevent injection
+    if (searchQuery.trim().length > 40) {
+      alert("Search query is too long. Please limit it to 40 characters.");
+      return;
+    } else if (searchQuery.trim() !== "") {
       await handleSearch();
       dispatch("searchButtonClick");
     } else {
