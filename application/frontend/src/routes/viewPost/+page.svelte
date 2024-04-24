@@ -16,6 +16,15 @@
   import { Avatar, Button, Card } from "flowbite-svelte";
   import img from "$lib/assets/image.jpg";
   import { posts } from "$lib/stores/store.js";
+  import Message from "$lib/components/main/popUps/Message.svelte";
+
+  
+  let isButtonClicked = false;
+
+  function handleClick(){
+    isButtonClicked = true;
+  }
+
 </script>
 
 <title>GatorTrader | View Post </title>
@@ -42,14 +51,19 @@
   <!-- {#each $posts.filter((post) => post.status === "APPROVED") as post} -->
   <!-- <Card> -->
   <div class="ml-10">
-    <!-- <p class="text-5xl dark:text-black mb-5">{post.item_name}</p> -->
-    <p class="text-5xl dark:text-black mb-5">Title</p>
+    
+
+    <p class="text-5xl dark:text-black mb-5" style="border-bottom:1px solid grey; padding-bottom: 20px">Title</p>
     <!-- <p class="text-3xl dark:text-black mb-3">${post.price}</p> -->
-    <p class="text-3xl dark:text-black mb-3">$XX.XX</p>
-    <p class="text-xl dark:text-black mb-5">Posted on: April 17, 2024</p>
+    <p class="text-3xl dark:text-black mb-3"  style="border-bottom:1px solid grey; padding-bottom: 20px">$XX.XX</p>
+    <p class="text-xl dark:text-black mb-5"  style="border-bottom:1px solid grey; padding-bottom: 20px">Posted on: April 17, 2024</p>
     <div
-      class="md:flex md:items-center md:space-x-4 md:rtl:space-x-reverse md:pb-20"
+      class="md:flex md:items-center md:space-x-4 md:rtl:space-x-reverse md:pb-20" style="padding:15px;"
     >
+
+    <!-- <p class="text-5xl dark:text-black mb-5">{post.item_name}</p> -->
+    <!-- <p class="text-3xl dark:text-black mb-3">${post.price}</p> -->
+
       <Avatar src={img} rounded class="w-20 h-20" />
       <div class="mt-4 md:mt-0 md:flex md:flex-col md:justify-center">
         <div class="text-xl font-medium dark:text-white">Seller's Name</div>
@@ -58,11 +72,17 @@
         </div>
       </div>
     </div>
-
     <!-- Message Button -->
-    <Button class="message-button w-full">Message</Button>
+    
+    {#if isButtonClicked}
+    <div>
+      <Message/>
+    </div>
+    {/if}
+    {#if !isButtonClicked}
+      <Button class="message-button w-full" on:click={handleClick}>Message</Button>
+    {/if}
   </div>
-  >
   <!-- {/each} -->
 </div>
 

@@ -14,6 +14,7 @@
   import { Card, Button, Heading, P, Span } from "flowbite-svelte";
   import { posts } from "../../../stores/store.js";
   import { CaretLeftOutline, CaretRightOutline } from "flowbite-svelte-icons";
+  import Message from "../popUps/Message.svelte";
 
   // Filter and sort posts
   $: filteredPosts = $posts
@@ -38,6 +39,14 @@
   function handlePrev() {
     currentIndex = Math.max(currentIndex - itemsPerPage, 0);
   }
+
+  
+  let isButtonClicked = false;
+
+  function handleClick(){
+    isButtonClicked = true;
+  }
+
 </script>
 
 <Heading tag="h1" class="mb-5" align="center">
@@ -51,7 +60,7 @@
   >
     {#each filteredPosts.slice(currentIndex, currentIndex + itemsPerPage) as post}
       <Card padding="none">
-        <a href="/"
+        <a href="/viewPost" target="_blank"
           ><img
             class="object-cover w-full h-64"
             src={`/image/${post.image_file}`}
@@ -64,7 +73,15 @@
           <p class="mr-2 mb-2 text-3xl font-black" style="text-align: right;">
             ${post.price}
           </p>
-          <Button class="text-xl mt-auto">Message</Button>
+          
+    {#if isButtonClicked}
+    <div>
+      <Message/>
+    </div>
+    {/if}
+    {#if !isButtonClicked}
+      <Button class="text-xl mt-auto" on:click={handleClick}>Message</Button>
+    {/if}
         </div>
       </Card>
     {/each}
