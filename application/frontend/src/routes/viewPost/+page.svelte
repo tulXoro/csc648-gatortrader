@@ -1,3 +1,14 @@
+<!-- /**************************************************************
+* Class: CSC-648-03 Spring 2024
+* Team: 05
+* GitHub ID: csc648-sp24-03-team05
+* Project: SWE Final Project
+*
+* File: +page.svelte
+*
+* Description: page dedicated to viewing post details when 
+* clicked on 
+**************************************************************/ -->
 <script>
   import Header from "$lib/components/main/layout/Header.svelte";
   import Nav from "$lib/components/main/layout/Nav.svelte";
