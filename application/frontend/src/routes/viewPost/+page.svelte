@@ -32,12 +32,8 @@
   <!-- <Card> -->
   <div class="ml-10">
     <!-- <p class="text-5xl dark:text-black mb-5">{post.item_name}</p> -->
-    <p class="text-5xl dark:text-black mb-5">Title</p>
     <!-- <p class="text-3xl dark:text-black mb-3">${post.price}</p> -->
-    <p class="text-3xl dark:text-black mb-3">$XX.XX</p>
-    <p class="text-xl dark:text-black mb-5">Posted on: April 17, 2024</p>
     <div
-      class="md:flex md:items-center md:space-x-4 md:rtl:space-x-reverse md:pb-20"
     >
       <Avatar src={img} rounded class="w-20 h-20" />
       <div class="mt-4 md:mt-0 md:flex md:flex-col md:justify-center">
@@ -51,7 +47,6 @@
     <!-- Message Button -->
     <Button class="message-button w-full">Message</Button>
   </div>
-  >
   <!-- {/each} -->
 </div>
 

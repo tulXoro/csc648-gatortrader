@@ -19,7 +19,6 @@
     isButtonClicked = true;
   }
 
-  // function handleOutside
 </script>
 
 <div
