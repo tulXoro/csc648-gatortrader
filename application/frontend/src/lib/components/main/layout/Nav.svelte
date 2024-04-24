@@ -114,15 +114,17 @@
   onMount(loadURL);
 </script>
 
-<Navbar class="bg-gray-900 text-white sticky top-0 sm:flex-row items-center">
+<Navbar
+  class="bg-gray-900 text-white sticky top-0 flex flex-row items-center px-4 py-2"
+>
   <!-- Left side -->
-  <NavBrand href="/" class="mb-5 sm:mb-4">
-    <img src={SFSULogo} class="me-5 h-5 sm:h-20 lg:20" alt="SFSU Logo" />
-    <span class="text-6xl font-bold dark:text-white">GatorTrader</span>
+  <NavBrand href="/" class="flex items-center">
+    <img src={SFSULogo} class="me-5 h-5 sm:h-10" alt="SFSU Logo" />
+    <span class="text-5xl font-bold dark:text-white">GatorTrader</span>
   </NavBrand>
 
   <!-- Middle: Search query -->
-  <div class="flex sm:flex-row items-center sm:mx-auto">
+  <div class="flex flex-row justify-center px-4 py-2">
     <!-- Category selection -->
     <Button class="rounded-e-none border-e-0 !p-2.5 ">
       {categories[selectedCategory].label}
@@ -144,8 +146,8 @@
 
     <!-- Search -->
     <Search
-      size="md"
-      class="rounded-none py-2 mr-10"
+      size="sm"
+      class="rounded-none py-4 "
       placeholder="Search GatorTrader..."
       bind:value={searchQuery}
       on:keypress={handleKeyPress}
@@ -156,20 +158,17 @@
   </div>
 
   <!-- Right side -->
-  <div class="flex flex-row items-center">
-    <NavUl class="flex flex-row">
-      <NavLi href="/post" class="text-white text-2xl mb-4 sm:mb-0">Post</NavLi>
-      <NavLi href="/about" class="text-white text-2xl mb-4 sm:mb-0">About</NavLi
-      >
-      <NavLi href="/registration" class="text-white text-2xl mb-4 sm:mb-0"
-        >Login/SignUp</NavLi
-      >
-      <NavLi href="/dashboard" class="text-white text-2xl mb-4 sm:mb-0"
-        >Dashboard</NavLi
-      >
-      <!-- {#if isLoggedIn}
+  <NavUl class="flex flex-row">
+    <NavLi href="/post" class="text-white text-2xl mb-4 sm:mb-0">Post</NavLi>
+    <NavLi href="/about" class="text-white text-2xl mb-4 sm:mb-0">About</NavLi>
+    <NavLi href="/registration" class="text-white text-2xl mb-4 sm:mb-0"
+      >Login/SignUp</NavLi
+    >
+    <NavLi href="/dashboard" class="text-white text-2xl mb-4 sm:mb-0"
+      >Dashboard</NavLi
+    >
+    <!-- {#if isLoggedIn}
     <NavLi href="/dashboard" class="text-white text-2xl mb-4 sm:mb-0">Dashboard</NavLi>
   {/if} -->
-    </NavUl>
-  </div>
+  </NavUl>
 </Navbar>
