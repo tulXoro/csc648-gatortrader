@@ -28,6 +28,9 @@
   let description = "";
   let price = "";
   let selectedCategory = 0;
+  let checkboxChecked = false;
+  let courseNumber = "";
+  let professor = "";
 
   const categories = [
     { id: 0, label: "Choose one" },
@@ -38,6 +41,22 @@
   ];
   function updateCategory(id: number) {
     selectedCategory = id;
+  }
+
+  // Function to check if all required fields are filled in
+  function checkRequiredFields(): boolean {
+    // Check if title and price are filled
+    if (!title.trim() || !price.trim()) {
+      return false;
+    }
+
+    // If the selected category is textbooks, also check if courseNumber and professor are filled
+    if (selectedCategory === 3) {
+      return !!courseNumber.trim() && !!professor.trim();
+    }
+
+    // Return true if all required fields are filled for other categories
+    return true;
   }
 
   function handlePriceInput(event: Event) {
@@ -66,13 +85,20 @@
   }
 
   // Function to handle form submission
-  // FOR TEST
-  function handleSubmit() {
-    // You can add form submission logic here
-    console.log("Submitted title:", title);
-    console.log("Submitted description:", description);
-    console.log("Submitted category:", selectedCategory);
-    console.log("Submitted price:", price);
+  function handleSubmit(): void {
+    if (!checkRequiredFields()) {
+      alert("Please fill in all required fields.");
+      return;
+    }
+    if (!selectedCategory) {
+      alert("Please select a category.");
+      return;
+    }
+    if (!checkboxChecked) {
+      alert("Please agree to the terms and conditions.");
+      return;
+    }
+    console.log("Form submitted successfully!");
   }
 </script>
 
@@ -84,16 +110,24 @@
       >
     </div>
     <div class="mb-6">
-      <Label for="username" class="mb-2">Title</Label>
-      <Input type="text" id="title" bind:value={title} required />
+      <Label for="title" class="mb-2">Title</Label>
+      <Input
+        type="text"
+        id="title"
+        placeholder="Ex. Software Engineering - Best Practices"
+        bind:value={title}
+        required
+      />
     </div>
     <div class="mb-6">
       <Label for="textarea-id" class="mb-2">Description</Label>
       <Textarea
         id="textarea-id"
-        placeholder="Your message"
-        rows="4"
+        placeholder="describe your post... (Please leave contact information for buyers to reach you!)"
+        bind:value={description}
+        rows="5"
         name="message"
+        style="resize: none;"
       />
     </div>
     <div class="grid gap-6 md:grid-cols-2">
@@ -130,6 +164,28 @@
           required
         />
       </div>
+      {#if selectedCategory === 3}
+        <div class="mb-6">
+          <Label for="courseNumber" class="mb-2">Course Number</Label>
+          <Input
+            type="text"
+            id="courseNumber"
+            placeholder="Ex. CSC648"
+            bind:value={courseNumber}
+            required
+          />
+        </div>
+        <div class="mb-6">
+          <Label for="professor" class="mb-2">Professor</Label>
+          <Input
+            type="text"
+            id="professor"
+            placeholder="Ex. Petkovic"
+            bind:value={professor}
+            required
+          />
+        </div>
+      {/if}
     </div>
     <div class="mb-6">
       <Label for="textarea-id" class="mb-2">Upload Image</Label>
@@ -137,7 +193,7 @@
 
     <DropBox />
 
-    <Checkbox class="flex justify-center mb-6" required>
+    <Checkbox class="flex justify-center mb-6" bind:checked={checkboxChecked}>
       I agree with the<A href="#">terms and conditions</A>
     </Checkbox>
     <div class="modal mb-3"><SignUpPop /></div>
@@ -155,3 +211,15 @@
     >
   </div>
 </form>
+
+<style>
+  .container {
+    max-width: 600px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+</style>

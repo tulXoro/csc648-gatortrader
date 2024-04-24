@@ -1,14 +1,3 @@
-<!-- /**************************************************************
-* Class: CSC-648-03 Spring 2024
-* Team: 05
-* GitHub ID: csc648-sp24-03-team05
-* Project: SWE Final Project
-*
-* File: +page.svelte
-*
-* Description: This is the main page showcasing all the components
-* linking all page routes.
-**************************************************************/ -->
 <script lang="ts">
   import Header from "$lib/components/main/layout/Header.svelte";
   import Footer from "$lib/components/main/layout/Footer.svelte";
@@ -19,14 +8,17 @@
   import Filter from "$lib/components/main/layout/Filter.svelte";
 
   let showCarousel = true;
+  let showFilters = false;
 
   function handleSearchQueryChange(
     event: CustomEvent<{ searchQuery: string }>
   ) {
     showCarousel = !event.detail.searchQuery;
+    showFilters = !!event.detail.searchQuery;
   }
   function handleSearchButtonClick() {
     showCarousel = false;
+    showFilters = true;
   }
 </script>
 
@@ -40,13 +32,19 @@
 {#if showCarousel}
   <Carousel />
 {/if}
-<div style="display: flex">
-  <div style="flex-direction: column; padding: 5px; border: 1px; width: 12%; border-radius: 3px; box-shadow: 1px 1px 2px 1px rgba(0,0,0,0.2);">
-    <Filter/>
+<Results />
+{#if showFilters}
+  <div style="display: flex">
+    <div
+      style="flex-direction: column; padding: 5px; border: 1px; width: 12%; border-radius: 3px; box-shadow: 1px 1px 2px 1px rgba(0,0,0,0.2);"
+    >
+      <Filter />
+    </div>
+    <div style="flex-direction: column; padding: 5px">
+      <PostCards />
+    </div>
   </div>
-<div style="flex-direction: column; padding: 5px">
-    <Results />
-    <PostCards />
-  </div>
-</div>
+{:else}
+  <PostCards />
+{/if}
 <Footer />

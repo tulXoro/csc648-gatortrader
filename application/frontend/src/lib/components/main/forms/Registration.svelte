@@ -1,4 +1,5 @@
-<script>
+<script lang="ts">
+  // Import Svelte components
   import {
     Input,
     Label,
@@ -12,32 +13,14 @@
   import { Popover } from "flowbite-svelte";
   import { EyeOutline, EyeSlashOutline } from "flowbite-svelte-icons";
 
-  // email criteria
+  let firstName = "";
+  let lastName = "";
+  let username = "";
   let email = "";
-  function validateEmail() {
-    if (!email.trim()) return false; // if empty
-    return email.trim().toLowerCase().endsWith("@sfsu.edu");
-  }
-
-  // Function to handle form submission
-  function handleSubmit() {
-    checkPasswordCriteria(); // Check password criteria
-    if (!validateEmail()) {
-      alert("Please enter a valid email ending with '@sfsu.edu'.");
-    } else if (!Object.values(criteria).every((c) => c === true)) {
-      alert("Please make sure your password meets all criteria.");
-    } else {
-      // Proceed with form submission
-      console.log("Email and password are valid:", email, password);
-      // Add your form submission logic here
-    }
-  }
-
-  // show password
-  let showPW = false;
-
-  // password criteria
   let password = "";
+  let confirmPassword = "";
+  let showPW = false;
+  let checkboxChecked = false;
   let criteria = {
     length: false,
     number: false,
@@ -46,13 +29,60 @@
     specialChar: false,
   };
 
-  // real-time validator
+  // Function to check if at least one of the names is filled in
+  function checkNameFields() {
+    return !!firstName.trim() && !!lastName.trim();
+  }
+
+  // Function to validate email format
+  function validateEmail() {
+    if (!email.trim()) return false; // if empty
+    return email.trim().toLowerCase().endsWith("@sfsu.edu");
+  }
+
+  // Function to check password criteria
   function checkPasswordCriteria() {
     criteria.length = password.length >= 8;
     criteria.number = /\d/.test(password);
     criteria.uppercase = /[A-Z]/.test(password);
     criteria.lowercase = /[a-z]/.test(password);
     criteria.specialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+  }
+
+  // Function to validate confirm password
+  function validateConfirmPassword() {
+    return password === confirmPassword;
+  }
+
+  // Function to check if all required fields are filled in except first name or last name
+  function checkRequiredFields() {
+    const requiredInputs = [username, email, password];
+    return requiredInputs.every((input) => !!input.trim()) && checkNameFields();
+  }
+
+  // Function to handle form submission
+  function handleSubmit() {
+    if (!checkRequiredFields()) {
+      alert("Please fill in all required fields.");
+      return;
+    }
+    if (!validateEmail()) {
+      alert("Please enter a valid email address ending with @sfsu.edu.");
+      return;
+    }
+    if (!validateConfirmPassword()) {
+      alert("Passwords do not match.");
+      return;
+    }
+    if (!checkboxChecked) {
+      alert("Please agree to the terms and conditions.");
+      return;
+    }
+    if (!Object.values(criteria).every((value) => value)) {
+      alert("Password does not meet all criteria.");
+      return;
+    }
+    console.log("Form submitted successfully!");
   }
 </script>
 
@@ -63,17 +93,17 @@
     </div>
     <div class="grid gap-6 md:grid-cols-2">
       <div class="mb-6">
-        <Label for="username" class="mb-2">First name</Label>
-        <Input type="text" id="first_name" required />
+        <Label for="firstName" class="mb-2">First name</Label>
+        <Input type="text" id="firstName" bind:value={firstName} required />
       </div>
       <div class="mb-6">
-        <Label for="username" class="mb-2">Last name</Label>
-        <Input type="text" id="first_name" required />
+        <Label for="lastName" class="mb-2">Last name</Label>
+        <Input type="text" id="lastName" bind:value={lastName} required />
       </div>
     </div>
     <div class="mb-6">
       <Label for="username" class="mb-2">Username</Label>
-      <Input type="text" id="first_name" required />
+      <Input type="text" id="username" bind:value={username} required />
     </div>
     <div class="mb-6">
       <Label for="email" class="mb-2">Email</Label>
@@ -82,6 +112,7 @@
         id="email"
         placeholder="domain@sfsu.edu"
         bind:value={email}
+        on:input={validateEmail}
         required
       />
     </div>
@@ -109,6 +140,16 @@
           </Button>
         </InputAddon>
       </ButtonGroup>
+    </div>
+    <div class="mb-6">
+      <Label for="confirmPassword" class="mb-2">Confirm password</Label>
+      <Input
+        id="confirmPassword"
+        type={showPW ? "text" : "password"}
+        placeholder="••••••••"
+        bind:value={confirmPassword}
+        on:input={validateConfirmPassword}
+      />
     </div>
 
     <Popover class="text-sm" triggeredBy="#password" placement="left">
@@ -168,7 +209,7 @@
       </div>
     </Popover>
 
-    <Checkbox class="flex justify-center" required>
+    <Checkbox class="flex justify-center" bind:checked={checkboxChecked}>
       I agree with the<A href="#">terms and conditions</A>
     </Checkbox>
     <Button class="w-full" type="button" on:click={handleSubmit}>Submit</Button>
@@ -177,7 +218,12 @@
 
 <style>
   .container {
-    max-width: 600px; /* Adjust the max-width based on your design */
-    margin-top: 100px;
+    max-width: 600px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
 </style>
