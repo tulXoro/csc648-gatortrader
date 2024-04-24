@@ -53,6 +53,7 @@
     </div>
     <div style="flex-direction: column; padding: 5px">
       <PostCards />
+      <Gallery />
     </div>
   </div>
 {:else}
