@@ -16,6 +16,15 @@
   import { Avatar, Button, Card } from "flowbite-svelte";
   import img from "$lib/assets/image.jpg";
   import { posts } from "$lib/stores/store.js";
+  import Message from "$lib/components/main/popUps/Message.svelte";
+
+  
+  let isButtonClicked = false;
+
+  function handleClick(){
+    isButtonClicked = true;
+  }
+
 </script>
 
 <title>GatorTrader | View Post </title>
@@ -66,7 +75,15 @@
     </div>
     </div>
     <!-- Message Button -->
-    <Button class="message-button w-full">Message</Button>
+    
+    {#if isButtonClicked}
+    <div>
+      <Message/>
+    </div>
+    {/if}
+    {#if !isButtonClicked}
+      <Button class="message-button w-full" on:click={handleClick}>Message</Button>
+    {/if}
   </div>
   <!-- {/each} -->
 </div>
