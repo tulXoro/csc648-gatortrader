@@ -12,7 +12,7 @@
 
 <script>
   import default_profile from "$lib/assets/default_profile.jpg";
-  import { Avatar } from "flowbite-svelte";
+  import { Avatar, Button, ButtonGroup } from "flowbite-svelte";
   import Footer from "$lib/components/main/layout/Footer.svelte";
   import Nav from "$lib/components/main/layout/Nav.svelte";
   import Header from "$lib/components/main/layout/Header.svelte";
@@ -29,7 +29,9 @@
 <Header />
 <Nav />
 <main>
-  <div class="container mx-auto">
+  <div class="bg-white dark:bg-gray-800 text-black-500 dark:text-gray-400 rounded-lg
+       border border-gray-200 dark:border-gray-700 divide-gray-200 dark:divide-gray-700 shadow-md flex justify-center items-center" 
+       style="padding:10px; text-align:center ">
     <div class="flex flex-wrap justify-center items-center gap-8">
       <div class="w-full md:w-1/2 flex justify-center">
         <Avatar src={photo} alt={name} rounded class="w-48 h-48" />
@@ -39,30 +41,32 @@
         <h3 class="text-xl mb-3">{role}</h3>
         <p class="mb-6">{bio}</p>
         <div class="space-x-4">
+          <ButtonGroup>
           {#if github}
-            <a
+          <Button outline color="dark"
               href={github}
               target="_blank"
               rel="noopener noreferrer"
-              class="text-blue-500 hover:underline">GitHub</a
+              >GitHub</Button
             >
           {/if}
           {#if linkedin}
-            <a
+          <Button outline color="dark"
               href={linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              class="text-blue-500 hover:underline">LinkedIn</a
+              >LinkedIn</Button
             >
           {/if}
           {#if email}
-            <a
+          <Button outline color="dark"
               href={"mailto:" + email}
               target="_blank"
               rel="noopener noreferrer"
-              class="text-blue-500 hover:underline">Email</a
+              >Email</Button
             >
           {/if}
+          </ButtonGroup>
         </div>
       </div>
     </div>
