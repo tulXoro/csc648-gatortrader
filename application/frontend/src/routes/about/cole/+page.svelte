@@ -1,16 +1,7 @@
 <script>
-  import Nav from "$lib/components/main/Nav.svelte";
-  import Footer from "$lib/components/main/Footer.svelte";
-  import Header from "$lib/components/main/Header.svelte";
   import img from "$lib/assets/image.jpg";
-  import Profile from "../../Profile.svelte";
+  import Profile from "$lib/components/main/about/Profile.svelte";
 </script>
-
-<!-- Commented out because nav obstructs profile right now -->
-<!-- <Nav /> -->
-
-<Header />
-<Nav />
 
 <Profile
   name="Cole Douglas"
@@ -21,5 +12,3 @@
   linkedin="https://linkedin.com"
   email="cdouglas8@sfsu.edu"
 />
-
-<Footer />

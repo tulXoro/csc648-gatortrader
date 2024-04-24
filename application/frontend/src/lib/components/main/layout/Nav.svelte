@@ -1,3 +1,15 @@
+<!-- /**************************************************************
+* Class: CSC-648-03 Spring 2024
+* Team: 05
+* GitHub ID: csc648-sp24-03-team05
+* Project: SWE Final Project
+*
+* File: Nav.svelte
+*
+* Description: Main component that handles all the API calls, and 
+* search functionality occurs here.
+**************************************************************/ -->
+
 <script lang="ts">
   import {
     Button,
@@ -11,9 +23,13 @@
   } from "flowbite-svelte";
   import { ChevronDownOutline, SearchOutline } from "flowbite-svelte-icons";
   import SFSULogo from "$lib/assets/SFSU.png";
-  import { onMount } from "svelte";
-  import { posts } from "../../store.js";
+  import { onMount, createEventDispatcher } from "svelte";
+  import { posts } from "../../../stores/store.js";
 
+  export let selectedCategory = 0;
+  export let searchQuery = "";
+
+  const dispatch = createEventDispatcher();
   const categories = [
     { id: 0, label: "All" },
     { id: 1, label: "Electronics" },
@@ -21,12 +37,6 @@
     { id: 3, label: "Textbooks" },
     { id: 4, label: "Misc." },
   ];
-
-  // Define a writable store for selected category
-  export let selectedCategory = 0;
-
-  // Define a writable store for search query
-  export let searchQuery = "";
 
   function loadURL() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -79,10 +89,15 @@
     selectedCategory = categoryId;
   }
 
-  // redirects to handleSearch when "enter" or search button is pressed
-  function searchExecution(): void {
-    if (searchQuery.trim() !== "") {
-      handleSearch();
+  // provides search results
+  async function searchExecution() {
+    // Check if search query exceeds 40 characters to prevent injection
+    if (searchQuery.trim().length > 40) {
+      alert("Search query is too long. Please limit it to 40 characters.");
+      return;
+    } else if (searchQuery.trim() !== "") {
+      await handleSearch();
+      dispatch("searchButtonClick");
     } else {
       // If empty, perform search based on selected category
       handleSearch();
@@ -100,27 +115,22 @@
 </script>
 
 <Navbar
-  class="bg-gray-900 text-white sticky top-0 z-50 flex justify-between items-center"
+  class="bg-gray-900 text-white sticky top-0 flex flex-row items-center px-4 py-2"
 >
   <!-- Left side -->
-  <NavBrand href="/" class="mr-10">
-    <img src={SFSULogo} class="me-3 h-6 sm:h-20" alt="SFSU Logo" />
-    <span
-      class="self-center whitespace-nowrap text-5xl font-semibold dark:text-white"
-    >
-      GatorTrader
-    </span>
+  <NavBrand href="/" class="flex items-center">
+    <img src={SFSULogo} class="me-5 h-5 sm:h-10" alt="SFSU Logo" />
+    <span class="text-5xl font-bold dark:text-white">GatorTrader</span>
   </NavBrand>
-  <!-- Category selection -->
-  <!-- search parameter query for url-->
-  <div on:submit|preventDefault={handleSearch} class="flex">
-    <Button
-      class="rounded-e-none whitespace-nowrap border border-e-0 border-primary-700"
-    >
+
+  <!-- Middle: Search query -->
+  <div class="flex flex-row justify-center px-4 py-2">
+    <!-- Category selection -->
+    <Button class="rounded-e-none border-e-0 !p-2.5 ">
       {categories[selectedCategory].label}
-      <ChevronDownOutline class="w-2.5 h-2.5 ms-2.5" />
+      <ChevronDownOutline class="w-5 h-5 ms-2.5" />
     </Button>
-    <Dropdown class="w-40">
+    <Dropdown>
       {#each categories as { id, label }}
         <DropdownItem
           on:click={() => {
@@ -134,25 +144,31 @@
       {/each}
     </Dropdown>
 
-    <!-- Middle: Search query -->
-    <div class="flex">
-      <Search
-        size="md"
-        class="rounded-none py-2.5 mr-2"
-        placeholder="Search GatorTrader..."
-        bind:value={searchQuery}
-        on:keypress={handleKeyPress}
-      />
-      <Button class="!p-2.5 rounded-s-none flex" on:click={searchExecution}>
-        <SearchOutline class="w-5 h-5" />
-      </Button>
-    </div>
+    <!-- Search -->
+    <Search
+      size="sm"
+      class="rounded-none py-4 "
+      placeholder="Search GatorTrader..."
+      bind:value={searchQuery}
+      on:keypress={handleKeyPress}
+    />
+    <Button class="!p-2.5 rounded-s-none flex" on:click={searchExecution}>
+      <SearchOutline class="w-5 h-5" />
+    </Button>
   </div>
 
   <!-- Right side -->
-  <NavUl class="flex items-center">
-    <NavLi href="/" class="text-white text-2xl" active={true}>Post</NavLi>
-    <NavLi href="/about" class="text-white text-2xl">About</NavLi>
-    <NavLi href="/" class="text-white text-2xl">Login/SignUp</NavLi>
+  <NavUl class="flex flex-row">
+    <NavLi href="/post" class="text-white text-2xl mb-4 sm:mb-0">Post</NavLi>
+    <NavLi href="/about" class="text-white text-2xl mb-4 sm:mb-0">About</NavLi>
+    <NavLi href="/registration" class="text-white text-2xl mb-4 sm:mb-0"
+      >Login/SignUp</NavLi
+    >
+    <NavLi href="/dashboard" class="text-white text-2xl mb-4 sm:mb-0"
+      >Dashboard</NavLi
+    >
+    <!-- {#if isLoggedIn}
+    <NavLi href="/dashboard" class="text-white text-2xl mb-4 sm:mb-0">Dashboard</NavLi>
+  {/if} -->
   </NavUl>
 </Navbar>
