@@ -63,8 +63,7 @@
 
     <!-- <p class="text-5xl dark:text-black mb-5">{post.item_name}</p> -->
     <!-- <p class="text-3xl dark:text-black mb-3">${post.price}</p> -->
-    <div
-    >
+
       <Avatar src={img} rounded class="w-20 h-20" />
       <div class="mt-4 md:mt-0 md:flex md:flex-col md:justify-center">
         <div class="text-xl font-medium dark:text-white">Seller's Name</div>
@@ -72,7 +71,6 @@
           Joined in August 2014
         </div>
       </div>
-    </div>
     </div>
     <!-- Message Button -->
     
