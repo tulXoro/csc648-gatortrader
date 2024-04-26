@@ -126,7 +126,10 @@
         <NavLi href="/about" class="text-white text-2xl">About</NavLi>
       </NavUl>
       <!-- Middle: Search query -->
-      <Button class="rounded-e-none border-e-0 !p-4">
+      <Button
+        class="rounded-e-none border-e-0 !p-4"
+        style="background-color:lightgray; color: black;"
+      >
         {categories[selectedCategory].label}
         <ChevronDownOutline class="w-5 h-5" />
       </Button>
@@ -153,15 +156,19 @@
         bind:value={searchQuery}
         on:keypress={handleKeyPress}
       />
-      <Button class="border-e-0 rounded-s-none !p-4" on:click={searchExecution}>
+      <Button
+        class="border-e-0 rounded-s-none !p-4"
+        style="background-color:steelblue; color: white;"
+        on:click={searchExecution}
+      >
         <SearchOutline class="w-5 h-5" />
       </Button>
 
       <!-- Right side -->
       <NavUl class="flex flex-row">
         <NavLi href="/post" class="text-white text-2xl">Post</NavLi>
-        <NavLi href="/registration" class="text-white text-2xl">Login</NavLi>
         <NavLi href="/dashboard" class="text-white text-2xl">Dashboard</NavLi>
+        <NavLi href="/registration" class="text-white text-2xl">Login</NavLi>
         <!-- {#if isLoggedIn}
           <NavLi href="/dashboard" class="text-white text-2xl mb-4 sm:mb-0">Dashboard</NavLi>
           {/if} -->

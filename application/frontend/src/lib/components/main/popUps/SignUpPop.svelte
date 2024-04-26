@@ -8,7 +8,11 @@
   let email = "";
 </script>
 
-<Button on:click={() => (formModal = true)}>Submit</Button>
+<Button
+  on:click={() => (formModal = true)}
+  class="w-full text-lg mb-3"
+  style="background-color:steelblue; color: white;">Submit</Button
+>
 
 <Modal bind:open={formModal} size="xs" autoclose={false}>
   <!-- Method is ? -->
@@ -46,7 +50,11 @@
     </div>
     <!-- Middleware IsLoggedIn  onClick:{} -->
     <div>
-      <Button type="submit" class="w-full">Login</Button>
+      <Button
+        type="submit"
+        class="w-full"
+        style="background-color:steelblue; color: white;">Login</Button
+      >
       <div
         class="text-sm font-medium text-gray-500 dark:text-gray-300 mb-3 mt-3"
       >

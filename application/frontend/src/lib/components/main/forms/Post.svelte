@@ -29,8 +29,7 @@
   let price = "";
   let selectedCategory = 0;
   let checkboxChecked = false;
-  let courseNumber = "";
-  let professor = "";
+  let bookInfo = "";
 
   const categories = [
     { id: 0, label: "Choose one" },
@@ -52,7 +51,7 @@
 
     // If the selected category is textbooks, also check if courseNumber and professor are filled
     if (selectedCategory === 3) {
-      return !!courseNumber.trim() && !!professor.trim();
+      return !!bookInfo.trim();
     }
 
     // Return true if all required fields are filled for other categories
@@ -94,11 +93,7 @@
       alert("Please select a category.");
       return;
     }
-    if (!checkboxChecked) {
-      alert("Please agree to the terms and conditions.");
-      return;
-    }
-    console.log("Form submitted successfully!");
+    alert("Form submitted successfully!");
   }
 </script>
 
@@ -108,9 +103,9 @@
       <P align="center" size="3xl" height="loose" weight="semibold"
         >Upload Your Post</P
       >
-    </div>
-    <div class="mb-6">
-      <Label for="title" class="mb-2">Title</Label>
+      <Label for="title" class="mb-2 flex text-xl"
+        >Title <p class="text-gray-500 italic text-sm">* Required</p></Label
+      >
       <Input
         type="text"
         id="title"
@@ -120,94 +115,96 @@
       />
     </div>
     <div class="mb-6">
-      <Label for="textarea-id" class="mb-2">Description</Label>
+      <Label for="textarea-id" class="mb-2 flex text-xl"
+        >Category
+        <p class="text-gray-500 italic text-sm">* Required</p></Label
+      >
+      <Button
+        style="background-color:steelblue; color: white;"
+        class="border-primary-700"
+      >
+        {categories[selectedCategory].label}
+        <ChevronDownOutline class="w-2.5 h-2.5 ms-2.5" />
+      </Button>
+      <Dropdown class="w-40">
+        {#each categories as { id, label }}
+          <DropdownItem
+            on:click={() => {
+              updateCategory(id);
+            }}
+            bind:value={id}
+            class={selectedCategory === id ? "underline" : ""}
+            style="color: black;"
+          >
+            {label}
+          </DropdownItem>
+        {/each}
+      </Dropdown>
+    </div>
+    {#if selectedCategory === 3}
+      <div class="mb-6">
+        <Label for="courseNumber" class="mb-2 flex text-xl"
+          >Book Information
+          <p class="text-gray-500 italic text-sm">* Required</p></Label
+        >
+        <Input
+          type="text"
+          id="bookInfo"
+          placeholder="Ex. CSC648 Spring 2024 book for html"
+          bind:value={bookInfo}
+          required
+        />
+      </div>
+    {/if}
+    <div class="mb-6">
+      <Label for="textarea-id" class="mb-2 flex text-xl"
+        >Description
+        <p class="text-gray-500 italic text-sm">(Optional)</p></Label
+      >
       <Textarea
         id="textarea-id"
         placeholder="describe your post... (Please leave contact information for buyers to reach you!)"
         bind:value={description}
-        rows="5"
+        rows="6"
         name="message"
         style="resize: none;"
       />
     </div>
-    <div class="grid gap-6 md:grid-cols-2">
-      <div class="mb-6">
-        <Label for="textarea-id" class="mb-2">Category</Label>
-        <Button style="width: auto;" class=" border-primary-700">
-          {categories[selectedCategory].label}
-          <ChevronDownOutline class="w-2.5 h-2.5 ms-2.5" />
-        </Button>
-        <Dropdown class="w-40">
-          {#each categories as { id, label }}
-            <DropdownItem
-              on:click={() => {
-                updateCategory(id);
-              }}
-              bind:value={id}
-              class={selectedCategory === id ? "underline" : ""}
-              style="color: black;"
-            >
-              {label}
-            </DropdownItem>
-          {/each}
-        </Dropdown>
-      </div>
-      <div class="mb-6">
-        <Label for="price" class="mb-2">Price</Label>
-        <Input
-          class="w-full md:w-48"
-          type="text"
-          id="price"
-          placeholder="$"
-          bind:value={price}
-          on:input={handlePriceInput}
-          required
-        />
-      </div>
-      {#if selectedCategory === 3}
-        <div class="mb-6">
-          <Label for="courseNumber" class="mb-2">Course Number</Label>
-          <Input
-            type="text"
-            id="courseNumber"
-            placeholder="Ex. CSC648"
-            bind:value={courseNumber}
-            required
-          />
-        </div>
-        <div class="mb-6">
-          <Label for="professor" class="mb-2">Professor</Label>
-          <Input
-            type="text"
-            id="professor"
-            placeholder="Ex. Petkovic"
-            bind:value={professor}
-            required
-          />
-        </div>
-      {/if}
+    <div class="mb-6">
+      <Label for="price" class="mb-2 flex text-xl"
+        >Price
+        <p class="text-gray-500 italic text-sm">* Required</p></Label
+      >
+      <Input
+        class="w-full md:w-48"
+        type="text"
+        id="price"
+        placeholder="$"
+        bind:value={price}
+        on:input={handlePriceInput}
+        required
+      />
     </div>
     <div class="mb-6">
-      <Label for="textarea-id" class="mb-2">Upload Image</Label>
+      <Label for="textarea-id" class="mb-2 flex text-xl"
+        >Upload Image
+        <p class="text-gray-500 italic text-sm">(Optional)</p></Label
+      >
+
+      <DropBox />
     </div>
+    <SignUpPop />
 
-    <DropBox />
-
-    <Checkbox class="flex justify-center mb-6" bind:checked={checkboxChecked}>
-      I agree with the<A href="#">terms and conditions</A>
-    </Checkbox>
-    <div class="modal mb-3"><SignUpPop /></div>
-
-    <Button class="w-full mb-3" type="button" on:click={handleSubmit}
+    <!-- <Button class="w-full mb-3" type="button" on:click={handleSubmit}
       >Submit</Button
-    >
+    > -->
     <P
       align="center"
       italic
-      size="sm"
+      size="lg"
       weight="light"
       color="text-gray-500 dark:text-gray-400"
-      >Please allow up to 24 hours for post to publish</P
+      >Please allow up to 24 hours for post to publish.</P
     >
   </div>
 </form>

@@ -212,7 +212,12 @@
     <Checkbox class="flex justify-center" bind:checked={checkboxChecked}>
       I agree with the<A href="#">terms and conditions</A>
     </Checkbox>
-    <Button class="w-full" type="button" on:click={handleSubmit}>Submit</Button>
+    <Button
+      class="w-full"
+      type="button"
+      style="background-color:steelblue; color: white;"
+      on:click={handleSubmit}>Submit</Button
+    >
   </div>
 </form>
 
