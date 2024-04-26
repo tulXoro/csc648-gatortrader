@@ -82,7 +82,7 @@
       alert("Password does not meet all criteria.");
       return;
     }
-    console.log("Form submitted successfully!");
+    alert("Form submitted successfully!");
   }
 </script>
 

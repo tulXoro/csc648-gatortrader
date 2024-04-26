@@ -15,6 +15,7 @@
   import { posts } from "../../../stores/store.js";
   import { CaretLeftOutline, CaretRightOutline } from "flowbite-svelte-icons";
   import Message from "../popUps/Message.svelte";
+  import Results from "./Results.svelte";
 
   // Filter and sort posts
   $: filteredPosts = $posts
@@ -40,21 +41,20 @@
     currentIndex = Math.max(currentIndex - itemsPerPage, 0);
   }
 
-  
   let isButtonClicked = false;
 
-  function handleClick(){
+  function handleClick() {
     isButtonClicked = true;
   }
-
 </script>
 
 <Heading tag="h1" class="mb-5" align="center">
-  The <Span highlight>Marketplace</Span> for you. Buy and sell locally.
+  The marketplace for <Span highlight>SFSU</Span>. Buy and sell locally.
 </Heading>
 
 <div class="carousel-container relative">
   <P align="left" weight="bold" size="2xl">Recent Posts</P>
+  <Results />
   <div
     class="grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 relative overflow-hidden"
   >
@@ -73,15 +73,17 @@
           <p class="mr-2 mb-2 text-3xl font-black" style="text-align: right;">
             ${post.price}
           </p>
-          
-    {#if isButtonClicked}
-    <div>
-      <Message/>
-    </div>
-    {/if}
-    {#if !isButtonClicked}
-      <Button class="text-xl mt-auto" on:click={handleClick}>Message</Button>
-    {/if}
+
+          {#if isButtonClicked}
+            <div>
+              <Message />
+            </div>
+          {/if}
+          {#if !isButtonClicked}
+            <Button class="text-xl mt-auto" on:click={handleClick}
+              >Message</Button
+            >
+          {/if}
         </div>
       </Card>
     {/each}
