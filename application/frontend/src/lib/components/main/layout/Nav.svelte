@@ -114,61 +114,58 @@
   onMount(loadURL);
 </script>
 
-<Navbar
-  class="bg-gray-900 text-white sticky top-0 flex flex-row items-center px-4 py-2"
->
+<Navbar class="bg-gray-900 text-white sticky top-0 md:py-5">
   <!-- Left side -->
-  <NavBrand href="/" class="flex items-center">
-    <img src={SFSULogo} class="me-5 h-5 sm:h-10" alt="SFSU Logo" />
-    <span class="text-5xl font-bold dark:text-white">GatorTrader</span>
-  </NavBrand>
+  <div class="flex">
+    <NavBrand href="/">
+      <img src={SFSULogo} class="me-5 h-20" alt="SFSU Logo" />
+      <span class="text-6xl font-bold dark:text-white">GatorTrader</span>
+    </NavBrand>
+    <div class="flex items-center ml-10">
+      <NavUl>
+        <NavLi href="/about" class="text-white text-2xl">About</NavLi>
+      </NavUl>
+      <!-- Middle: Search query -->
+      <Button class="rounded-e-none border-e-0 !p-4">
+        {categories[selectedCategory].label}
+        <ChevronDownOutline class="w-5 h-5" />
+      </Button>
+      <Dropdown>
+        {#each categories as { id, label }}
+          <DropdownItem
+            on:click={() => {
+              updateCategory(id);
+            }}
+            class={selectedCategory === id ? "underline" : ""}
+            style="color: black;"
+          >
+            {label}
+          </DropdownItem>
+        {/each}
+      </Dropdown>
 
-  <!-- Middle: Search query -->
-  <div class="flex flex-row justify-center px-4 py-2">
-    <!-- Category selection -->
-    <Button class="rounded-e-none border-e-0 !p-2.5 ">
-      {categories[selectedCategory].label}
-      <ChevronDownOutline class="w-5 h-5 ms-2.5" />
-    </Button>
-    <Dropdown>
-      {#each categories as { id, label }}
-        <DropdownItem
-          on:click={() => {
-            updateCategory(id);
-          }}
-          class={selectedCategory === id ? "underline" : ""}
-          style="color: black;"
-        >
-          {label}
-        </DropdownItem>
-      {/each}
-    </Dropdown>
+      <!-- Search -->
+      <Search
+        class="flex-grow rounded-none py-3 mr-4 w-full"
+        placeholder={selectedCategory === 3
+          ? "Search by course, title, or professor"
+          : "Search GatorTrader..."}
+        bind:value={searchQuery}
+        on:keypress={handleKeyPress}
+      />
+      <Button class="border-e-0 rounded-s-none !p-4" on:click={searchExecution}>
+        <SearchOutline class="w-5 h-5" />
+      </Button>
 
-    <!-- Search -->
-    <Search
-      size="sm"
-      class="rounded-none py-4 "
-      placeholder="Search GatorTrader..."
-      bind:value={searchQuery}
-      on:keypress={handleKeyPress}
-    />
-    <Button class="!p-2.5 rounded-s-none flex" on:click={searchExecution}>
-      <SearchOutline class="w-5 h-5" />
-    </Button>
+      <!-- Right side -->
+      <NavUl class="flex flex-row">
+        <NavLi href="/post" class="text-white text-2xl">Post</NavLi>
+        <NavLi href="/registration" class="text-white text-2xl">Login</NavLi>
+        <NavLi href="/dashboard" class="text-white text-2xl">Dashboard</NavLi>
+        <!-- {#if isLoggedIn}
+          <NavLi href="/dashboard" class="text-white text-2xl mb-4 sm:mb-0">Dashboard</NavLi>
+          {/if} -->
+      </NavUl>
+    </div>
   </div>
-
-  <!-- Right side -->
-  <NavUl class="flex flex-row">
-    <NavLi href="/post" class="text-white text-2xl mb-4 sm:mb-0">Post</NavLi>
-    <NavLi href="/about" class="text-white text-2xl mb-4 sm:mb-0">About</NavLi>
-    <NavLi href="/registration" class="text-white text-2xl mb-4 sm:mb-0"
-      >Login/SignUp</NavLi
-    >
-    <NavLi href="/dashboard" class="text-white text-2xl mb-4 sm:mb-0"
-      >Dashboard</NavLi
-    >
-    <!-- {#if isLoggedIn}
-    <NavLi href="/dashboard" class="text-white text-2xl mb-4 sm:mb-0">Dashboard</NavLi>
-  {/if} -->
-  </NavUl>
 </Navbar>
