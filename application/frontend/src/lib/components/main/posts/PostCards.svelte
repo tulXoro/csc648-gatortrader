@@ -15,10 +15,9 @@
 
   let isButtonClicked = false;
 
-  function handleClick(){
+  function handleClick() {
     isButtonClicked = true;
   }
-
 </script>
 
 <div
@@ -41,15 +40,8 @@
         <p class="mr-2 mb-2 text-3xl font-black" style="text-align: right;">
           ${post.price}
         </p>
-        
-        {#if isButtonClicked}
-          <div>
-            <Message/>
-          </div>
-          {/if}
-          {#if !isButtonClicked}
-            <Button class="text-xl mt-auto" on:click={handleClick}>Message</Button>
-          {/if}
+
+        <Message />
       </div>
     </Card>
   {/each}
