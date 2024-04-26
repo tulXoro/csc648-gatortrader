@@ -98,14 +98,17 @@
 </script>
 
 <form method="POST" action="?/create" on:submit|preventDefault>
-  <div class="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
+  <div
+    class="mb-10 border border-gray-300 rounded-lg shadow-md w-1/2 mx-auto py-8 sm:px-6 lg:px-8"
+  >
     <div class="mb-6">
-      <P align="center" size="3xl" height="loose" weight="semibold"
+      <P align="center" size="4xl" height="loose" weight="semibold"
         >Upload Your Post</P
       >
       <Label for="title" class="mb-2 flex text-xl"
-        >Title <p class="text-gray-500 italic text-sm">* Required</p></Label
-      >
+        >Title
+        <!-- <p class="text-gray-500 italic text-sm">* Required</p> -->
+      </Label>
       <Input
         type="text"
         id="title"
@@ -117,8 +120,8 @@
     <div class="mb-6">
       <Label for="textarea-id" class="mb-2 flex text-xl"
         >Category
-        <p class="text-gray-500 italic text-sm">* Required</p></Label
-      >
+        <!-- <p class="text-gray-500 italic text-sm">* Required</p> -->
+      </Label>
       <Button
         style="background-color:steelblue; color: white;"
         class="border-primary-700"
@@ -145,8 +148,8 @@
       <div class="mb-6">
         <Label for="courseNumber" class="mb-2 flex text-xl"
           >Book Information
-          <p class="text-gray-500 italic text-sm">* Required</p></Label
-        >
+          <!-- <p class="text-gray-500 italic text-sm">* Required</p> -->
+        </Label>
         <Input
           type="text"
           id="bookInfo"
@@ -159,7 +162,7 @@
     <div class="mb-6">
       <Label for="textarea-id" class="mb-2 flex text-xl"
         >Description
-        <p class="text-gray-500 italic text-sm">(Optional)</p></Label
+        <p class="text-gray-500 italic text-sm">- Optional</p></Label
       >
       <Textarea
         id="textarea-id"
@@ -173,8 +176,8 @@
     <div class="mb-6">
       <Label for="price" class="mb-2 flex text-xl"
         >Price
-        <p class="text-gray-500 italic text-sm">* Required</p></Label
-      >
+        <!-- <p class="text-gray-500 italic text-sm">* Required</p> -->
+      </Label>
       <Input
         class="w-full md:w-48"
         type="text"
@@ -188,7 +191,7 @@
     <div class="mb-6">
       <Label for="textarea-id" class="mb-2 flex text-xl"
         >Upload Image
-        <p class="text-gray-500 italic text-sm">(Optional)</p></Label
+        <p class="text-gray-500 italic text-sm">- Optional</p></Label
       >
 
       <DropBox />
@@ -208,15 +211,3 @@
     >
   </div>
 </form>
-
-<style>
-  .container {
-    max-width: 600px;
-    margin-top: 50px;
-    margin-bottom: 50px;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-</style>

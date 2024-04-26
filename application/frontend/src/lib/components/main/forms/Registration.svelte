@@ -87,26 +87,40 @@
 </script>
 
 <form method="POST" action="?/create" on:submit|preventDefault>
-  <div class="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
+  <div
+    class="mb-10 border border-gray-300 rounded-lg shadow-md w-1/2 mx-auto py-8 sm:px-6 lg:px-8"
+  >
     <div class="mb-6">
-      <P align="center" size="3xl" height="loose" weight="semibold">Sign up</P>
+      <P align="center" size="4xl" height="loose" weight="semibold">Sign up</P>
     </div>
     <div class="grid gap-6 md:grid-cols-2">
       <div class="mb-6">
-        <Label for="firstName" class="mb-2">First name</Label>
+        <Label for="firstName" class="mb-2 flex text-xl"
+          >First name
+          <!-- <p class="text-gray-500 italic text-sm">* Required</p> -->
+        </Label>
         <Input type="text" id="firstName" bind:value={firstName} required />
       </div>
       <div class="mb-6">
-        <Label for="lastName" class="mb-2">Last name</Label>
+        <Label for="lastName" class="mb-2 flex text-xl"
+          >Last name
+          <!-- <p class="text-gray-500 italic text-sm">* Required</p> -->
+        </Label>
         <Input type="text" id="lastName" bind:value={lastName} required />
       </div>
     </div>
     <div class="mb-6">
-      <Label for="username" class="mb-2">Username</Label>
+      <Label for="username" class="mb-2 flex text-xl"
+        >Username
+        <!-- <p class="text-gray-500 italic text-sm">* Required</p> -->
+      </Label>
       <Input type="text" id="username" bind:value={username} required />
     </div>
     <div class="mb-6">
-      <Label for="email" class="mb-2">Email</Label>
+      <Label for="email" class="mb-2 flex text-xl"
+        >Email
+        <!-- <p class="text-gray-500 italic text-sm">* Required</p> -->
+      </Label>
       <Input
         type="email"
         id="email"
@@ -118,7 +132,10 @@
     </div>
 
     <div class="mb-6">
-      <Label for="password" class="mb-2">Password</Label>
+      <Label for="password" class="mb-2 flex text-xl"
+        >Password
+        <!-- <p class="text-gray-500 italic text-sm">* Required</p> -->
+      </Label>
       <ButtonGroup class="w-full">
         <Input
           id="password"
@@ -142,7 +159,10 @@
       </ButtonGroup>
     </div>
     <div class="mb-6">
-      <Label for="confirmPassword" class="mb-2">Confirm password</Label>
+      <Label for="confirmPassword" class="mb-2 flex text-xl"
+        >Confirm password
+        <!-- <p class="text-gray-500 italic text-sm">* Required</p> -->
+      </Label>
       <Input
         id="confirmPassword"
         type={showPW ? "text" : "password"}
@@ -209,26 +229,19 @@
       </div>
     </Popover>
 
-    <Checkbox class="flex justify-center" bind:checked={checkboxChecked}>
-      I agree with the<A href="#">terms and conditions</A>
+    <Checkbox
+      class="flex justify-center text-lg mb-3"
+      bind:checked={checkboxChecked}
+    >
+      I agree with the<A href="#" style=" color:slategray;"
+        >terms and conditions</A
+      >
     </Checkbox>
     <Button
-      class="w-full"
+      class="w-full text-xl"
       type="button"
       style="background-color:steelblue; color: white;"
       on:click={handleSubmit}>Submit</Button
     >
   </div>
 </form>
-
-<style>
-  .container {
-    max-width: 600px;
-    margin-top: 50px;
-    margin-bottom: 50px;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-</style>

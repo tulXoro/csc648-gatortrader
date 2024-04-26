@@ -52,7 +52,7 @@
   The marketplace for <Span highlight>SFSU</Span>. Buy and sell locally.
 </Heading>
 
-<div class="carousel-container relative">
+<div class="bg-gray-300 p-5 mb-10 border border-gray-300 rounded-lg shadow-md">
   <P align="left" weight="bold" size="2xl">Recent Posts</P>
   <Results />
   <div
@@ -91,15 +91,3 @@
     ><CaretRightOutline class="w-4 h-4" /></Button
   >
 </div>
-
-<style>
-  .carousel-container {
-    width: auto;
-    background-color: #ccc;
-    padding: 20px;
-    margin-bottom: 50px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-</style>
