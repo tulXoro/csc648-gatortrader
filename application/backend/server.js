@@ -6,6 +6,7 @@ import bodyParser from 'body-parser';
 
 import getPosts from './routes/getPosts.js';
 import registerUser from './routes/registerUser.js';
+import getCategories from './routes/getCategories.js';
 
 const app = express();
 const PORT = 3000;
@@ -17,6 +18,8 @@ app.get('/backtest', (req, res) => {
   res.send('Hello World');
 });
 
+
+app.use('/getCategories', getCategories);
 app.use('/getPosts', getPosts);
 
 app.use('/image', express.static(path.join(dirname(fileURLToPath(import.meta.url)), 'images')));
