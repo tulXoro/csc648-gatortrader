@@ -7,6 +7,7 @@ import bodyParser from 'body-parser';
 import getPosts from './routes/getPosts.js';
 import registerUser from './routes/registerUser.js';
 import getCategories from './routes/getCategories.js';
+import login from './routes/login.js';
 
 const app = express();
 const PORT = 3000;
@@ -26,6 +27,7 @@ app.use('/image', express.static(path.join(dirname(fileURLToPath(import.meta.url
 
 app.use(bodyParser.json());
 app.use('/registerUser', registerUser);
+app.use('/login', login);
 
 app.use(handler);
 
