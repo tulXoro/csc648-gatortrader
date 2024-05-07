@@ -1,24 +1,14 @@
 <script>
-  import Nav from "$lib/components/main/Nav.svelte";
-  import Footer from "$lib/components/main/Footer.svelte";
-  import Header from "$lib/components/main/Header.svelte";
-
-  import Profile from "../../Profile.svelte";
+  import img from "$lib/assets/image.jpg";
+  import Profile from "$lib/components/main/about/Profile.svelte";
 </script>
-
-<!-- Commented out because nav obstructs profile right now -->
-<!-- <Nav /> -->
-
-<Header />
-<Nav />
 
 <Profile
   name="Haley Park"
+  photo={img}
   bio="This is a bio"
   role="This is a role"
   github="https://github.com/jung-hyeon"
   linkedin="https://linkedin.com"
   email="jpark58@sfsu.edu"
 />
-
-<Footer />
