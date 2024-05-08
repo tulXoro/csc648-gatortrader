@@ -9,24 +9,29 @@ router.post("/", async (req, res) => {
         const { userName, password } = req.body;
 
         // Check userName
-        const sqlUserName = "SELECT * FROM t_user WHERE user_name = ?;";
-        const resultUserName = await db.query(sqlUserName, [userName]);
-        if (resultUserName[0].length === 0) {
-            throw new Error("User not found");
+        const sqlUserName = "SELECT * FROM t_user WHERE user_name = ?";
+        const [users] = await db.query(sqlUserName, [userName]);
+        users.forEach(user => {
+            console.log(user);
+        })
+
+        if (users.length === 0) {
+            return res.status(401).json({ message: 'Invalid username or password' });
         }
 
         // Check password
-        const sqlPassword = "SELECT password FROM t_user WHERE user_name = ?;";
-        const resultPassword = await db.query(sqlPassword, [userName]);
-        const isPasswordMatch = bcrypt.compareSync(password, resultPassword[0][0].password);
-        if (isPasswordMatch) {
-            console.log(`successful in comparing original and hashed passwords`);
-        } else {
-            console.log("Passwords do not match");
-            throw new Error('Passwords do not match');
-        }
+        const loginUser = users[0];
 
-        res.status(201).json({ message: `User ${userName} is logined successfully...` });
+        console.log("loginUser: ", loginUser);
+
+        const { password: hashedPassword, userId } = loginUser;
+        const isPasswordMatch = bcrypt.compareSync(password, hashedPassword);
+        if (!isPasswordMatch) {
+            console.log("Passwords do not match");
+            return res.status(401).json({ message: 'Invalid username or password' });
+        }
+        // req.session.user = { id: userId, username: userName };
+        res.status(200).json({ message: `User ${userName} is logined successfully...` });
 
         } catch (err) {
             res.status(500).send("Error in login..." + err);
