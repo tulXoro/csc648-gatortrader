@@ -1,3 +1,14 @@
+/**************************************************************
+* Class: CSC-648-03 Spring 2024
+* Team: 05
+* GitHub ID: csc648-sp24-03-team05
+* Project: SWE Final Project
+*
+* File: getPost.js
+* Description: API to to get all the product post or filter
+*              by category
+**************************************************************/ 
+
 import express from "express";
 import db from "../conf/database.js";
 
@@ -7,15 +18,15 @@ router.get("/", async (req, res) => {
   try {
     const { category, search } = req.query;
     if (category && search) {
-      const sql = `SELECT * FROM t_product_post WHERE
-                      category_id = ? AND
-                      (item_name LIKE '%${search}%' OR item_description LIKE '%${search}%') AND status = 'APPROVED'`;
+      const sql = `SELECT pp.*, t.couse_number, t.professor FROM t_product_post pp left outer join t_textbook t on pp.post_id = t.post_id WHERE
+                      pp.category_id = ? AND
+                      (pp.item_name LIKE '%${search}%' OR pp.item_description LIKE '%${search}%') AND pp.status = 'APPROVED'`;
       const [rows] = await db.query(sql, [category]);
       res.json(rows);
     }
     // when we receive a request to query by category
     else if (category) {
-      const [rows] = await db.query("SELECT * FROM t_product_post WHERE category_id = ? AND status = 'APPROVED'", [category]);
+      const [rows] = await db.query("SELECT pp.*, t.couse_number, t.professor FROM t_product_post pp left outer join t_textbook t on pp.post_id = t.post_id WHERE pp.category_id = 1 AND pp.status = 'APPROVED'", [category]);
       res.json(rows);
     }
     else if (search) {
