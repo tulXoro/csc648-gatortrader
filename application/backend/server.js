@@ -1,3 +1,14 @@
+/**************************************************************
+* Class: CSC-648-03 Spring 2024
+* Team: 05
+* GitHub ID: csc648-sp24-03-team05
+* Project: SWE Final Project
+*
+* File: getPost.js
+* Description: API to to get all the product post or filter
+*              by category
+**************************************************************/
+
 import express from 'express';
 import session from 'express-session';
 import Sequelize from 'sequelize';
@@ -18,46 +29,48 @@ const app = express();
 const PORT = 3000;
 
 // Initialize Sequelize instance
-// const sequelize = new Sequelize({
-//   dialect: 'mysql', // Choose your database dialect
-//   host: '34.210.12.165',
-//   username: 'admin',
-//   password: 'SweTE@m05',
-//   database: 'GatorTrader',
-// });
+const sequelize = new Sequelize({
+  dialect: 'mariadb', // Choose your database dialect
+  host: '34.210.12.165',
+  username: 'admin',
+  password: 'SweTE@m05',
+  database: 'GatorTrader',
+});
 
-// // Initialize SequelizeStore
-// const Store = SequelizeStore(session.Store);
-// const store = new Store({ db: sequelize });
+// Initialize SequelizeStore
+const Store = SequelizeStore(session.Store);
+const store = new Store({
+  db: sequelize,
+});
 
-// app.use(session({
-//   secret: 'SweTE@m05-secret-key',
-//   resave: false,
-//   saveUninitialized: false,
-//   store: store
-// }));
+app.use(session({
+  secret: 'SweTE@m05-secret-key',
+  resave: false,
+  saveUninitialized: false,
+  store: store
+}));
 
-// const { DataTypes } = Sequelize;
+// Sync the session store with the database
+store.sync();
 
-// const User = sequelize.define('t_user', {
-//     username: {
-//         type: DataTypes.STRING,
-//         allowNull: false,
-//         unique: true
-//     },
-//     password: {
-//         type: DataTypes.STRING,
-//         allowNull: false
-//     }
-// });
+// Test database connection
+(async () => {
+  try {
+    await sequelize.authenticate();
+    console.log('Connection has been established successfully.');
+  } catch (error) {
+    console.error('Unable to connect to the database:', error);
+  }
+})();
 
 const requireSession = (req, res, next) => {
-  if (req.session && req.session.userId || req.path === "login") {
-      // Session exists and user is logged in
-      next(); // Proceed to the next middleware or route handler
+  console.log("session check", req.session);
+  if (req.session?.user?.username || req.path === "login") {
+    // Session exists and user is logged in
+    next(); // Proceed to the next middleware or route handler
   } else {
-      // Session doesn't exist or user is not logged in
-      res.status(401).send('Unauthorized'); // Respond with unauthorized status
+    // Session doesn't exist or user is not logged in
+    res.status(401).send('Unauthorized'); // Respond with unauthorized status
   }
 };
 
@@ -68,7 +81,7 @@ app.get('/backtest', (req, res) => {
 app.use(bodyParser.json());
 app.use('/login', login);
 
-// app.use('/', requireSession);
+app.use('/', requireSession);
 
 // Use CORS middleware 
 // app.use(cors()); 
