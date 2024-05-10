@@ -4,9 +4,8 @@
 * GitHub ID: csc648-sp24-03-team05
 * Project: SWE Final Project
 *
-* File: getPost.js
-* Description: API to to get all the product post or filter
-*              by category
+* File: server.js
+* Description: Entry point for end points and session management
 **************************************************************/
 
 import express from 'express';
