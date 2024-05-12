@@ -47,11 +47,11 @@ router.get("/", async (req, res) => {
 
 router.delete("/", async (req, res) => {
     try {
-        const messageId = req.body.message_id;
+        const { messageId } = req.query;
         const sql = "DELETE FROM t_purchase_message WHERE message_id = ?";
         const result = await db.query(sql, [messageId]);
  
-        res.status(201).json({ message: `Message is deleted successfully...` });
+        res.status(200).json({ message: `Message is deleted successfully...` });
       } catch (err) {
         res.status(500).send("Error deleting message from database... " + err);
       }

@@ -18,7 +18,7 @@ import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import bodyParser from 'body-parser';
 
-import getPosts from './routes/getPosts.js';
+import posts from './routes/posts.js';
 import registerUser from './routes/registerUser.js';
 import getCategories from './routes/getCategories.js';
 import login from './routes/login.js';
@@ -87,7 +87,7 @@ app.use('/login', login);
 // app.use(cors()); 
 
 app.use('/getCategories', getCategories);
-app.use('/getPosts', getPosts);
+app.use('/posts', posts);
 
 app.use('/image', express.static(path.join(dirname(fileURLToPath(import.meta.url)), 'images')));
 
