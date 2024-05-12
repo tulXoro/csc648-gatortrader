@@ -23,6 +23,7 @@ import registerUser from './routes/registerUser.js';
 import getCategories from './routes/getCategories.js';
 import login from './routes/login.js';
 import uploadImage from './routes/uploadImage.js';
+import message from './routes/message.js';
 
 const app = express();
 const PORT = 3000;
@@ -93,6 +94,7 @@ app.use('/image', express.static(path.join(dirname(fileURLToPath(import.meta.url
 app.use(bodyParser.json());
 app.use('/registerUser', registerUser);
 app.use('/upload', uploadImage);
+app.use('/message', message);
 
 app.use(handler);
 
