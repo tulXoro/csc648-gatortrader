@@ -32,10 +32,12 @@ router.post("/", async (req, res) => {
 
 router.get("/", async (req, res) => {
     try {
-      const userId = req.body.user_id;
+      // console.log(req.query);
+      const { userId } = req.query;
+      console.log("userId", userId);
       const sql = "SELECT * FROM t_purchase_message WHERE receiver_id = ?";
       const [rows] = await db.query(sql, [userId]);
-    //   console.log(rows);
+      // console.log(rows);
       res.json(rows);
       res.status(201).json({ message: `Messages are get successfully...` });
     } catch (err) {

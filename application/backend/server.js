@@ -64,7 +64,7 @@ store.sync();
 })();
 
 const requireSession = (req, res, next) => {
-  console.log("session check", req.session);
+  // console.log("requireSession check", req, res);
   if (req.session?.user?.username || req.path === "login") {
     // Session exists and user is logged in
     next(); // Proceed to the next middleware or route handler
@@ -81,7 +81,7 @@ app.get('/backtest', (req, res) => {
 app.use(bodyParser.json());
 app.use('/login', login);
 
-app.use('/', requireSession);
+// app.use('/', requireSession);
 
 // Use CORS middleware 
 // app.use(cors()); 
