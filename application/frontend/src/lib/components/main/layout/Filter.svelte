@@ -9,24 +9,38 @@
 * Description: Component will be a sidebar with togglable filter buttons.
 **************************************************************/ -->
 <script>
-    import { Sidebar, SidebarGroup, SidebarItem, SidebarWrapper, Range, Label, Checkbox } from 'flowbite-svelte';
-    import { ChartPieSolid, GridSolid, CartSolid, MailBoxSolid, UserSolid, ArrowRightToBracketOutline, EditOutline } from 'flowbite-svelte-icons';
-    let spanClass = 'flex-1 ms-3 whitespace-nowrap';
-    let stepValue = 2.5;
-  </script>
+  import { Label, Checkbox } from "flowbite-svelte";
+  import { derived } from "svelte/store";
+  import { posts } from "$lib/stores/store";
 
-<div class="rounded border border-gray-200 dark:border-gray-700" style="padding-bottom:10px">
-    <Label>Price Range</Label>
-    <Checkbox>Under $20</Checkbox>
-    <Checkbox>$20 to $50</Checkbox>
-    <Checkbox>Over $50</Checkbox>
+  let sortOrder = "lowToHigh";
+
+  const sortedPosts = derived([posts, sortOrder], ([$posts, $sortOrder]) => {
+    if ($sortOrder === "lowToHigh") {
+      return $posts.slice().sort((a, b) => a.price - b.price);
+    } else {
+      return $posts.slice().sort((a, b) => b.price - a.price);
+    }
+  });
+</script>
+
+<div
+  class="rounded border border-gray-200 dark:border-gray-700"
+  style="padding-bottom:10px"
+>
+  <Label>Sort By:</Label>
+  <Checkbox>Price: Low to high</Checkbox>
+  <Checkbox>Price: High to low</Checkbox>
 </div>
 
-<div class="rounded border border-gray-200 dark:border-gray-700" style="padding-bottom:10px">
-    <Label>Post Date</Label>
-    <Checkbox>Less than 3 days ago</Checkbox>
-    <Checkbox>3 days to 2 weeks</Checkbox>
-    <Checkbox>Over 2 weeks</Checkbox>
+<div
+  class="rounded border border-gray-200 dark:border-gray-700"
+  style="padding-bottom:10px"
+>
+  <Label>Post Date</Label>
+  <Checkbox>Less than 3 days ago</Checkbox>
+  <Checkbox>3 days to 2 weeks</Checkbox>
+  <Checkbox>Over 2 weeks</Checkbox>
 </div>
 
 <!-- <Range id="range-steps" min="0" max="9999" bind:value={stepValue} step="0.25" />

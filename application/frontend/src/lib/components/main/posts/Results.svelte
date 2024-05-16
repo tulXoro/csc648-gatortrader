@@ -13,7 +13,13 @@
 <script lang="ts">
   import { derived } from "svelte/store";
   import { posts, searchQuery } from "../../../stores/store.js";
-  import { Button, Dropdown, DropdownItem } from "flowbite-svelte";
+  import {
+    Button,
+    Checkbox,
+    Dropdown,
+    DropdownItem,
+    Label,
+  } from "flowbite-svelte";
   import { ChevronDownOutline } from "flowbite-svelte-icons";
 
   let searchInput = "";

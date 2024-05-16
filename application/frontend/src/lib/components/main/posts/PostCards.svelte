@@ -9,15 +9,10 @@
 * Description: Component to display posts in a uniform fashion. 
 **************************************************************/ -->
 <script>
-  import { Card, Button, A } from "flowbite-svelte";
+  import { Card } from "flowbite-svelte";
+  import { derived } from "svelte/store";
   import { posts } from "../../../stores/store.js";
   import Message from "../popUps/Message.svelte";
-
-  let isButtonClicked = false;
-
-  function handleClick() {
-    isButtonClicked = true;
-  }
 </script>
 
 <div
@@ -36,7 +31,8 @@
       </a>
 
       <div class="flex-grow flex flex-col justify-end bg-white">
-        <p class="ml-2 mb-2 text-2xl font-black">{post.item_name}</p>
+        <p class="ml-2 text-2xl font-black">{post.item_name}</p>
+        <p class="ml-2 text-lg font-light">{post.description}</p>
         <p class="mr-2 mb-2 text-3xl font-black" style="text-align: right;">
           ${post.price}
         </p>

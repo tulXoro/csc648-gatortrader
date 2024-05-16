@@ -13,8 +13,6 @@
     Input,
     Label,
     Button,
-    Checkbox,
-    A,
     P,
     Textarea,
     Dropdown,
