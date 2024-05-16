@@ -47,7 +47,7 @@
   <Tabs>
     <TabItem open title="Posts">
       <p class="text-sm text-gray-500 dark:text-gray-400">
-    
+
       </p>
       <PostCards />
     </TabItem>
@@ -62,34 +62,7 @@
     </TabItem>
   </Tabs>
 </div>
-<<<<<<< HEAD
-<Tabs>
-  <TabItem open title="Your Posts">
-    <p class="text-sm text-gray-500 dark:text-gray-400">
-      <b>Profile:</b>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-      incididunt ut labore et dolore magna aliqua.
-    </p>
-    <PostCards />
-  </TabItem>
-  <TabItem title="Messages">
-    <p class="text-sm text-gray-500 dark:text-gray-400">
-      <b>Settings:</b>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-      incididunt ut labore et dolore magna aliqua.
-    </p>
-  </TabItem>
-</Tabs>
+
+
 
 <Footer />
-
-<style>
-    .dashboard-profile{
-        width: 800px;
-        padding: 20px;
-    }
-  </style>
-=======
-
-<Footer />
->>>>>>> 1e1eb1a (Responsive design for all components successful)
