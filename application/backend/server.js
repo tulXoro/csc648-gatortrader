@@ -18,11 +18,12 @@ import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import bodyParser from 'body-parser';
 
-import getPosts from './routes/getPosts.js';
+import posts from './routes/posts.js';
 import registerUser from './routes/registerUser.js';
 import getCategories from './routes/getCategories.js';
 import login from './routes/login.js';
 import uploadImage from './routes/uploadImage.js';
+import message from './routes/message.js';
 
 const app = express();
 const PORT = 3000;
@@ -63,7 +64,7 @@ store.sync();
 })();
 
 const requireSession = (req, res, next) => {
-  console.log("session check", req.session);
+  // console.log("requireSession check", req, res);
   if (req.session?.user?.username || req.path === "login") {
     // Session exists and user is logged in
     next(); // Proceed to the next middleware or route handler
@@ -80,19 +81,20 @@ app.get('/backtest', (req, res) => {
 app.use(bodyParser.json());
 app.use('/login', login);
 
-app.use('/', requireSession);
+// app.use('/', requireSession);
 
 // Use CORS middleware 
 // app.use(cors()); 
 
 app.use('/getCategories', getCategories);
-app.use('/getPosts', getPosts);
+app.use('/posts', posts);
 
 app.use('/image', express.static(path.join(dirname(fileURLToPath(import.meta.url)), 'images')));
 
 app.use(bodyParser.json());
 app.use('/registerUser', registerUser);
 app.use('/upload', uploadImage);
+app.use('/message', message);
 
 app.use(handler);
 

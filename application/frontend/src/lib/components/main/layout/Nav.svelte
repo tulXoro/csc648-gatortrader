@@ -60,7 +60,7 @@
   async function handleSearch(): Promise<void> {
     try {
       // Construct the URL with search parameters
-      const url = new URL("/getPosts", window.location.origin);
+      const url = new URL("/posts", window.location.origin);
       if (selectedCategory !== 0) {
         url.searchParams.append("category", selectedCategory.toString());
       }
