@@ -75,11 +75,12 @@ const requireSession = (req, res, next) => {
   }
 };
 
-const guestPaths = ["/login", "/getCategories", "/registerUser"];
+const restrictedPaths = ["/getSellerPosts", "/message", "/upload"];
 const allowGuestUsers = req => {
   const { path, method } = req;
-  // console.log("path", path, "method", method);
-  return guestPaths.includes(path) || path === "/posts" && method.toLowerCase() === "get";
+  console.log("path", path, "method", method);
+  return !restrictedPaths.includes(path) 
+            && !(path === "/posts" && method.toLowerCase() === "post");
 };
 
 app.get('/backtest', (req, res) => {
