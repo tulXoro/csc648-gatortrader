@@ -16,20 +16,44 @@
   import { searchState } from "../../../stores/searchStore";
   import { get } from "svelte/store";
 
+  interface Category {
+    id: number;
+    label: string;
+  }
+
   export let selectedCategory = 0;
   export let searchQuery = "";
+  export let categories: Category[] = [];
 
   const dispatch = createEventDispatcher();
-  const categories = [
-    { id: 0, label: "All" },
-    { id: 1, label: "Electronics" },
-    { id: 2, label: "Furniture" },
-    { id: 3, label: "Textbooks" },
-    { id: 4, label: "Misc." },
-  ];
+  // const categories = [
+  //   { id: 0, label: "All" },
+  //   { id: 1, label: "Electronics" },
+  //   { id: 2, label: "Furniture" },
+  //   { id: 3, label: "Textbooks" },
+  //   { id: 4, label: "Misc." },
+  // ];
 
   // Load search state from the store
   $: ({ selectedCategory, searchQuery } = get(searchState));
+
+  async function loadCategories() {
+    try {
+      const response = await fetch("/getCategories");
+      if (!response.ok) {
+        throw new Error("Failed to fetch categories");
+      }
+      const data = await response.json();
+      console.log("Fetched categories:", data); // Log the fetched data
+      categories = data.map((category: any) => ({
+        id: category.id,
+        label: category.name, // Adjust this if the field name is different
+      }));
+      console.log("Processed categories:", categories); // Log the processed categories
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  }
 
   function loadURL() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -108,7 +132,10 @@
     }
   }
 
-  onMount(loadURL);
+  onMount(() => {
+    loadCategories();
+    loadURL();
+  });
 </script>
 
 <Navbar class="bg-gray-900 text-white sticky top-0 md:py-5">
@@ -127,7 +154,7 @@
         class="rounded-e-none border-e-0 !p-4"
         style="background-color:lightgray; color: black;"
       >
-        {categories[selectedCategory].label}
+        {categories[selectedCategory]?.label || "All"}
         <ChevronDownOutline class="w-5 h-5" />
       </Button>
       <Dropdown>

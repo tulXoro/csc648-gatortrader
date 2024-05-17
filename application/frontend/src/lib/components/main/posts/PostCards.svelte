@@ -31,7 +31,8 @@
 
       <div class="flex-grow flex flex-col justify-end bg-white">
         <p class="ml-2 text-2xl font-black">{post.item_name}</p>
-        <p class="ml-2 text-lg font-light">{post.description}</p>
+        <p class="ml-2 text-lg font-light">{post.item_description}</p>
+        <p class="ml-2 text-lg font-light">{post.timestamp}</p>
         <p class="mr-2 mb-2 text-3xl font-black" style="text-align: right;">
           ${post.price}
         </p>

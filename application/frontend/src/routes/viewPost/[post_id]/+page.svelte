@@ -2,7 +2,7 @@
   import Header from "$lib/components/main/layout/Header.svelte";
   import Nav from "$lib/components/main/layout/Nav.svelte";
   import Footer from "$lib/components/main/layout/Footer.svelte";
-  import { Avatar, Button, Card } from "flowbite-svelte";
+  import { Avatar } from "flowbite-svelte";
   import img from "$lib/assets/image.jpg";
   import { posts } from "$lib/stores/store.js";
   import Message from "$lib/components/main/popUps/Message.svelte";
@@ -10,7 +10,7 @@
   import { page } from "$app/stores";
   import { searchState } from "$lib/stores/searchStore";
   import { get } from "svelte/store";
-  import Results from "$lib/components/main/posts/Results.svelte";
+  import { formatDistanceToNow } from "date-fns";
 
   // Define the interface for the product post
   interface ProductPost {
@@ -41,6 +41,11 @@
     url.searchParams.set("category", selectedCategory.toString());
     url.searchParams.set("search", searchQuery);
     window.history.replaceState({}, "", url.toString());
+  }
+
+  // Function to calculate the time difference
+  function getTimeDifference(timestamp: string) {
+    return formatDistanceToNow(new Date(timestamp), { addSuffix: true });
   }
 </script>
 
@@ -82,7 +87,7 @@
         class="text-xl dark:text-black mb-5"
         style="border-bottom:1px solid grey; padding-bottom: 20px"
       >
-        Posted on: {new Date(post.timestamp).toLocaleDateString()}
+        Posted: {getTimeDifference(post.timestamp)}
       </p>
       <div
         class="md:flex md:items-center md:space-x-4 md:rtl:space-x-reverse md:pb-20"
