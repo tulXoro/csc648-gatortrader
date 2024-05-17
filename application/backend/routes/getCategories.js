@@ -15,7 +15,7 @@ const router = express.Router();
 
 router.get("/", async (req, res) => {
     try {
-        const [rows] = await db.query("SELECT * FROM t_category");
+        const [rows] = await db.query("SELECT * FROM t_category ORDER BY id asc");
         res.json(rows);
     } catch (err) {
         res.status(500).send("Error retrieving posts from database" + err);
