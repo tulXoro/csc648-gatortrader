@@ -38,8 +38,8 @@ router.get("/", async (req, res) => {
       const sql = "SELECT * FROM t_purchase_message WHERE receiver_id = ?";
       const [rows] = await db.query(sql, [userId]);
       // console.log(rows);
-      res.json(rows);
-      res.status(201).json({ message: `Messages are get successfully...` });
+      res.status(200).json(rows);
+      // res.status(201).json({ message: `Messages are get successfully...` });
     } catch (err) {
       res.status(500).send("Error getting messages from database... " + err);
     }

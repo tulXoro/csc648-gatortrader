@@ -47,7 +47,7 @@ router.post('/', upload.single('file'), async (req, res, next) => {
       return next(err);
     }    
     // Send a response indicating the file has been saved
-    res.send('File uploaded and saved successfully');
+    res.status(200).json({ imageFile: req.file.originalname, message: "File uploaded and saved successfully" });
   });
 });
 
