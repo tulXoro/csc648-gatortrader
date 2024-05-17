@@ -18,13 +18,11 @@
   import Results from "./Results.svelte";
 
   // Filter and sort posts
-  $: filteredPosts = $posts
-    .filter((post) => post.status === "APPROVED")
-    .sort((a, b) => {
-      const timestampA = new Date(a.timestamp).getTime();
-      const timestampB = new Date(b.timestamp).getTime();
-      return timestampB - timestampA; // Sort by timestamp descending
-    });
+  $: filteredPosts = $posts.sort((a, b) => {
+    const timestampA = new Date(a.timestamp).getTime();
+    const timestampB = new Date(b.timestamp).getTime();
+    return timestampB - timestampA; // Sort by timestamp descending
+  });
 
   let currentIndex = 0;
   const itemsPerPage = 5;
