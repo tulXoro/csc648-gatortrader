@@ -21,13 +21,14 @@
   import { ChevronDownOutline } from "flowbite-svelte-icons";
   import DropBox from "../popUps/DropBox.svelte";
   import SignUpPop from "../popUps/SignUpPop.svelte";
+  import { goto } from "$app/navigation";
 
   let title = "";
+  let selectedCategory = 0;
+  let bookInfo = "";
   let description = "";
   let price = "";
-  let selectedCategory = 0;
-  let checkboxChecked = false;
-  let bookInfo = "";
+  let image_file: File | null = null;
 
   const categories = [
     { id: 0, label: "Choose one" },
@@ -82,7 +83,15 @@
   }
 
   // Function to handle form submission
-  function handleSubmit(): void {
+  async function handleSubmit() {
+    console.log("Form Data:", {
+      title,
+      selectedCategory,
+      bookInfo,
+      description,
+      price,
+      image_file,
+    });
     if (!checkRequiredFields()) {
       alert("Please fill in all required fields.");
       return;
@@ -91,7 +100,38 @@
       alert("Please select a category.");
       return;
     }
-    alert("Form submitted successfully!");
+
+    try {
+      const response = await fetch("/posts", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          itemName: title,
+          categoryId: selectedCategory,
+          bookInfo: bookInfo,
+          itemDescription: description,
+          price: parseFloat(price), // Convert price to float
+          userId: 2, // Example user ID, replace with actual user ID
+          status: "PENDING", // Example status, adjust as needed
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      // Redirect to home page after successful post
+      goto("/");
+
+      const responseData = await response.json();
+      alert(responseData.message);
+    } catch (error) {
+      console.error("There was a problem with the fetch operation:", error);
+      alert(
+        "There was an error creating the product post. Please try again later."
+      );
+    }
   }
 </script>
 
@@ -187,18 +227,36 @@
       />
     </div>
     <div class="mb-6">
-      <Label for="textarea-id" class="mb-2 flex text-xl"
-        >Upload Image
-        <p class="text-gray-500 italic text-sm">- Optional</p></Label
-      >
-
-      <DropBox />
+      <Label for="image" class="mb-2 flex text-xl">
+        Upload Image
+        <p class="text-gray-500 italic text-sm">- Optional</p>
+      </Label>
+      <Input
+        type="file"
+        id="image"
+        accept="image/*"
+        bind:files={image_file}
+        required
+      />
+      <!-- <DropBox
+        bind:value={image_file}
+        on:change={(event: Event) => {
+          const input = event.target as HTMLInputElement;
+          if (input.files && input.files.length > 0) {
+            image_file = input.files[0];
+          } else {
+            image_file = null;
+          }
+        }}
+        
+      /> -->
     </div>
+
     <SignUpPop />
 
-    <!-- <Button class="w-full mb-3" type="button" on:click={handleSubmit}
+    <Button class="w-full mb-3" type="button" on:click={handleSubmit}
       >Submit</Button
-    > -->
+    >
     <P
       align="center"
       italic

@@ -1,17 +1,16 @@
 /**************************************************************
-* Class: CSC-648-03 Spring 2024
-* Team: 05
-* GitHub ID: csc648-sp24-03-team05
-* Project: SWE Final Project
-*
-* File: registerUser.js
-* Description: API to register new users
-**************************************************************/ 
+ * Class: CSC-648-03 Spring 2024
+ * Team: 05
+ * GitHub ID: csc648-sp24-03-team05
+ * Project: SWE Final Project
+ *
+ * File: registerUser.js
+ * Description: API to register new users
+ **************************************************************/
 
 import express from "express";
 import db from "../conf/database.js";
 import bcrypt from "bcrypt";
-
 
 const router = express.Router();
 
@@ -30,9 +29,21 @@ router.post("/", async (req, res) => {
     //     console.log(`successful in comparing original and hashed passwords: ${result}`);
     //   }
     // })
-    const sql = "INSERT INTO t_user (user_name, password, last_name, first_name, email) values (?, ?, ?, ?, ?)";
-    const result = await db.query(sql, [userName, hashedPassword, lastName, firstName, email]);
-    res.status(201).json({ message: `User ${userName} is registered successfully...` });
+    const sql =
+      "INSERT INTO t_user (user_name, password, last_name, first_name, email) values (?, ?, ?, ?, ?)";
+    const result = await db.query(sql, [
+      userName,
+      hashedPassword,
+      lastName,
+      firstName,
+      email,
+    ]);
+
+    // After successful registration, automatically log in the user by setting their session information
+    req.session.user = { id: result.insertId, username: userName };
+    res
+      .status(201)
+      .json({ message: `User ${userName} is registered successfully...` });
     // console.log(result);
   } catch (err) {
     res.status(500).send("Error in registering user..." + err);

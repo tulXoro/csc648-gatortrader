@@ -1,5 +1,5 @@
 <script lang="ts">
-  // Import Svelte components
+  import { goto } from "$app/navigation";
   import {
     Input,
     Label,
@@ -75,6 +75,10 @@
       alert("Please fill in all required fields.");
       return;
     }
+    if (!checkNameFields()) {
+      alert("Please enter your first and last name.");
+      return;
+    }
     if (!validateEmail()) {
       alert("Please enter a valid email address ending with @sfsu.edu.");
       return;
@@ -110,6 +114,9 @@
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
+
+      // Redirect to dashboard after successful registration
+      goto("/dashboard");
 
       const responseData = await response.json();
       alert(responseData.message);
