@@ -1,15 +1,4 @@
-<!-- /**************************************************************
-* Class: CSC-648-03 Spring 2024
-* Team: 05
-* GitHub ID: csc648-sp24-03-team05
-* Project: SWE Final Project
-*
-* File: +page.svelte
-*
-* Description: page dedicated to viewing post details when 
-* clicked on 
-**************************************************************/ -->
-<script>
+<script lang="ts">
   import Header from "$lib/components/main/layout/Header.svelte";
   import Nav from "$lib/components/main/layout/Nav.svelte";
   import Footer from "$lib/components/main/layout/Footer.svelte";
@@ -18,22 +7,40 @@
   import { posts } from "$lib/stores/store.js";
   import Message from "$lib/components/main/popUps/Message.svelte";
   import { onMount } from "svelte";
+  import { page } from "$app/stores";
+  import { searchState } from "$lib/stores/searchStore";
+  import { get } from "svelte/store";
+  import Results from "$lib/components/main/posts/Results.svelte";
 
-  let post;
+  // Define the interface for the product post
+  interface ProductPost {
+    post_id: number;
+    image_file: string;
+    item_name: string;
+    item_description: string;
+    price: number;
+    timestamp: string;
+    status: string;
+  }
 
-  onMount(() => {
-    // Retrieve post ID from URL
-    const urlParts = window.location.pathname.split("/");
-    const postId = parseInt(urlParts[urlParts.length - 1]);
+  let post: ProductPost | null = null;
 
-    // Find post with matching post ID
-    post = $posts.find((post) => post.post_id === postId);
-  });
+  // Get the post details based on the route parameter
+  $: {
+    const { post_id } = $page.params;
+    const foundPost = $posts.find(
+      (post: ProductPost) => post.post_id === parseInt(post_id)
+    );
+    post = foundPost ? foundPost : null;
+  }
 
-  let isButtonClicked = false;
-
-  function handleClick() {
-    isButtonClicked = true;
+  // Sync search state with URL
+  $: {
+    const { selectedCategory, searchQuery } = get(searchState);
+    const url = new URL(window.location.href);
+    url.searchParams.set("category", selectedCategory.toString());
+    url.searchParams.set("search", searchQuery);
+    window.history.replaceState({}, "", url.toString());
   }
 </script>
 
@@ -44,22 +51,25 @@
 
 <!-- Main content -->
 <div class="container">
-  <!-- Image detail -->
-  <div class="image-detail">
-    <div class="image-container mb-10">
-      <img src="https://fakeimg.pl/1000x500/?text=Image" alt="image" />
-    </div>
+  <!-- Check if post exists -->
+  {#if post}
+    <!-- Image detail -->
+    <div class="image-detail">
+      <div class="image-container mb-10">
+        <img
+          class="object-cover w-full h-64"
+          src={`/image/${post.image_file}`}
+          alt={post.item_name}
+        />
+      </div>
 
-    <!-- Description -->
-    <div class="description-container">
-      <p class="text-5xl dark:text-black mb-5">Description</p>
-
-      <!-- <p>{post.description}}</p> -->
+      <!-- Description -->
+      <div class="description-container">
+        <p class="text-5xl dark:text-black mb-5">Description</p>
+        <p>{post.item_description}</p>
+      </div>
     </div>
-  </div>
-  <!-- Product details -->
-  {#each $posts.filter((post) => post.status === "APPROVED") as post}
-    <!-- <Card> -->
+    <!-- Product details -->
     <div class="ml-10">
       <p
         class="text-5xl dark:text-black mb-5"
@@ -69,24 +79,15 @@
       </p>
       <p class="text-3xl dark:text-black mb-3">${post.price}</p>
       <p
-        class="text-3xl dark:text-black mb-3"
-        style="border-bottom:1px solid grey; padding-bottom: 20px"
-      >
-        $XX.XX
-      </p>
-      <p
         class="text-xl dark:text-black mb-5"
         style="border-bottom:1px solid grey; padding-bottom: 20px"
       >
-        Posted on: April 17, 2024
+        Posted on: {new Date(post.timestamp).toLocaleDateString()}
       </p>
       <div
         class="md:flex md:items-center md:space-x-4 md:rtl:space-x-reverse md:pb-20"
         style="padding:15px;"
       >
-        <!-- <p class="text-5xl dark:text-black mb-5">{post.item_name}</p> -->
-        <!-- <p class="text-3xl dark:text-black mb-3">${post.price}</p> -->
-
         <Avatar src={img} rounded class="w-20 h-20" />
         <div class="mt-4 md:mt-0 md:flex md:flex-col md:justify-center">
           <div class="text-xl font-medium dark:text-white">Seller's Name</div>
@@ -96,19 +97,11 @@
         </div>
       </div>
       <!-- Message Button -->
-
-      {#if isButtonClicked}
-        <div>
-          <Message />
-        </div>
-      {/if}
-      {#if !isButtonClicked}
-        <Button class="message-button w-full" on:click={handleClick}
-          >Message</Button
-        >
-      {/if}
+      <div>
+        <Message />
+      </div>
     </div>
-  {/each}
+  {/if}
 </div>
 
 <Footer />
