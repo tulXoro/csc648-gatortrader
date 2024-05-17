@@ -12,55 +12,24 @@
  * alerts based on validation results.
  **************************************************************/
 
-// WORK IN PROGRESS STILL TRYING TO IMPORT MIDDLEWARE CORRECTLY
+// Function to check if at least one of the names is filled in
+export function checkNameFields(firstName, lastName) {
+  return !!firstName.trim() && !!lastName.trim();
+}
 
-// email criteria
-export let email = "";
-export function validateEmail() {
+// Function to validate email format
+export function validateEmail(email) {
   if (!email.trim()) return false; // if empty
   return email.trim().toLowerCase().endsWith("@sfsu.edu");
 }
 
-// Function to handle form submission
-// will do API call soon
-export function handleSubmit() {
-  checkPasswordCriteria(); // Check password criteria
-  const isValidEmail = validateEmail();
-  const isValidPassword = Object.values(criteria).every((c) => c === true);
-
-  if (!isValidEmail && !isValidPassword) {
-    alert(
-      "Please enter a valid email ending with '@sfsu.edu' and make sure your password meets all criteria."
-    );
-  } else if (!isValidEmail) {
-    alert("Please enter a valid email ending with '@sfsu.edu'.");
-  } else if (!isValidPassword) {
-    alert("Please make sure your password meets all criteria.");
-  } else {
-    // Proceed with form submission
-    console.log("Email and password are valid:", email, password);
-    // Add your form submission logic here
-  }
+// Function to validate confirm password
+export function validateConfirmPassword(password, confirmPassword) {
+  return password === confirmPassword;
 }
 
-// show password
-export let showPW = false;
-
-// password criteria
-export let password = "";
-export let criteria = {
-  length: false,
-  number: false,
-  uppercase: false,
-  lowercase: false,
-  specialChar: false,
-};
-
-// real-time validator
-export function checkPasswordCriteria() {
-  criteria.length = password.length >= 8;
-  criteria.number = /\d/.test(password);
-  criteria.uppercase = /[A-Z]/.test(password);
-  criteria.lowercase = /[a-z]/.test(password);
-  criteria.specialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+// Function to check if all required fields are filled in except first name or last name
+export function checkRequiredFields(username, email, password) {
+  const requiredInputs = [username, email, password];
+  return requiredInputs.every((input) => !!input.trim());
 }

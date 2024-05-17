@@ -15,7 +15,6 @@
   import { posts } from "../../../stores/store.js";
   import { searchState } from "../../../stores/searchStore";
   import { get } from "svelte/store";
-  import SignUpPop from "../popUps/SignUpPop.svelte";
 
   export let selectedCategory = 0;
   export let searchQuery = "";
