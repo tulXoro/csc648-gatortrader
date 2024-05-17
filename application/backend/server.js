@@ -24,6 +24,7 @@ import getCategories from './routes/getCategories.js';
 import login from './routes/login.js';
 import uploadImage from './routes/uploadImage.js';
 import message from './routes/message.js';
+import getSellerPosts from './routes/getSellerPosts.js';
 
 const app = express();
 const PORT = 3000;
@@ -88,6 +89,7 @@ app.use('/login', login);
 
 app.use('/getCategories', getCategories);
 app.use('/posts', posts);
+app.use('/getSellerPosts', getSellerPosts);
 
 app.use('/image', express.static(path.join(dirname(fileURLToPath(import.meta.url)), 'images')));
 
