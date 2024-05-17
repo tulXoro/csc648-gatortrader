@@ -65,14 +65,21 @@ store.sync();
 })();
 
 const requireSession = (req, res, next) => {
-  // console.log("requireSession check", req, res);
-  if (req.session?.user?.username || req.path === "login") {
+  // console.log("requireSession check", req);
+  if (req.session?.user?.username || allowGuestUsers(req)) {
     // Session exists and user is logged in
     next(); // Proceed to the next middleware or route handler
   } else {
     // Session doesn't exist or user is not logged in
     res.status(401).send('Unauthorized'); // Respond with unauthorized status
   }
+};
+
+const guestPaths = ["/login", "/getCategories", "/registerUser"];
+const allowGuestUsers = req => {
+  const { path, method } = req;
+  // console.log("path", path, "method", method);
+  return guestPaths.includes(path) || path === "/posts" && method.toLowerCase() === "get";
 };
 
 app.get('/backtest', (req, res) => {
@@ -82,7 +89,7 @@ app.get('/backtest', (req, res) => {
 app.use(bodyParser.json());
 app.use('/login', login);
 
-// app.use('/', requireSession);
+app.use('/', requireSession);
 
 // Use CORS middleware 
 // app.use(cors()); 

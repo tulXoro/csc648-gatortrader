@@ -53,7 +53,7 @@ router.post("/", async (req, res) => {
     const sql = "INSERT INTO t_product_post (item_name, item_description, price, user_id, status, category_id) values (?, ?, ?, ?, ?, ?)";
     const result = await db.query(sql, [itemName, itemDescription, price, userId, status, categoryId]);    
     res.status(201).json({ message: `Product post from userId ${userId} is created successfully...` });
-    console.log(result);
+    // console.log(result);
   } catch (err) {
     res.status(500).send("Error in create a product post..." + err);
   }
