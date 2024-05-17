@@ -21,8 +21,7 @@
   <!-- Filter using only APPROVED posts by Admin -->
   {#each $posts.filter((post) => post.status === "APPROVED") as post}
     <Card padding="none">
-      <!-- <a href={`viewPost/${post.post_id}`} target="_blank"> -->
-      <a href="/viewPost" target="_blank">
+      <a href={`/viewPost/${post.post_id}`} target="_blank">
         <img
           class="object-cover w-full h-64"
           src={`/image/${post.image_file}`}

@@ -9,8 +9,8 @@
     ButtonGroup,
     InputAddon,
     P,
+    Popover,
   } from "flowbite-svelte";
-  import { Popover } from "flowbite-svelte";
   import { EyeOutline, EyeSlashOutline } from "flowbite-svelte-icons";
 
   let firstName = "";
@@ -61,7 +61,16 @@
   }
 
   // Function to handle form submission
-  function handleSubmit() {
+  async function handleSubmit() {
+    console.log("Form Data:", {
+      firstName,
+      lastName,
+      username,
+      email,
+      password,
+      confirmPassword,
+      checkboxChecked,
+    });
     if (!checkRequiredFields()) {
       alert("Please fill in all required fields.");
       return;
@@ -82,7 +91,32 @@
       alert("Password does not meet all criteria.");
       return;
     }
-    alert("Form submitted successfully!");
+
+    try {
+      const response = await fetch("/registerUser", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userName: username,
+          password: password,
+          lastName: lastName,
+          firstName: firstName,
+          email: email,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const responseData = await response.json();
+      alert(responseData.message);
+    } catch (error) {
+      console.error("There was a problem with the fetch operation:", error);
+      alert("There was an error registering the user. Please try again later.");
+    }
   }
 </script>
 
