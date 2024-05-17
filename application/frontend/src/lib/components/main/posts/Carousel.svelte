@@ -60,8 +60,8 @@
   >
     {#each filteredPosts.slice(currentIndex, currentIndex + itemsPerPage) as post}
       <Card padding="none">
-        <a href="/viewPost" target="_blank"
-          ><img
+        <a href={`/viewPost/${post.post_id}`}>
+          <img
             class="object-cover w-full h-64"
             src={`/image/${post.image_file}`}
             alt={post.item_name}

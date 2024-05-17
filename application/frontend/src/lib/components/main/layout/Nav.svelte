@@ -1,15 +1,3 @@
-<!-- /**************************************************************
-* Class: CSC-648-03 Spring 2024
-* Team: 05
-* GitHub ID: csc648-sp24-03-team05
-* Project: SWE Final Project
-*
-* File: Nav.svelte
-*
-* Description: Main component that handles all the API calls, and 
-* search functionality occurs here.
-**************************************************************/ -->
-
 <script lang="ts">
   import {
     Button,
@@ -25,6 +13,9 @@
   import SFSULogo from "$lib/assets/SFSU.png";
   import { onMount, createEventDispatcher } from "svelte";
   import { posts } from "../../../stores/store.js";
+  import { searchState } from "../../../stores/searchStore";
+  import { get } from "svelte/store";
+  import SignUpPop from "../popUps/SignUpPop.svelte";
 
   export let selectedCategory = 0;
   export let searchQuery = "";
@@ -38,6 +29,9 @@
     { id: 4, label: "Misc." },
   ];
 
+  // Load search state from the store
+  $: ({ selectedCategory, searchQuery } = get(searchState));
+
   function loadURL() {
     const urlParams = new URLSearchParams(window.location.search);
     const category = urlParams.get("category");
@@ -45,10 +39,12 @@
 
     if (category) {
       selectedCategory = parseInt(category);
+      searchState.update((state) => ({ ...state, selectedCategory }));
     }
 
     if (search) {
       searchQuery = search;
+      searchState.update((state) => ({ ...state, searchQuery }));
     }
 
     // Perform search if on the home page
@@ -72,6 +68,7 @@
       if (response.ok) {
         const data = await response.json();
         posts.set(data);
+        searchState.update((state) => ({ ...state, results: data }));
       } else {
         console.error("Failed to fetch posts");
       }
@@ -87,6 +84,7 @@
   // Function to update selected category without triggering search
   function updateCategory(categoryId: number): void {
     selectedCategory = categoryId;
+    searchState.update((state) => ({ ...state, selectedCategory }));
   }
 
   // provides search results
@@ -167,8 +165,8 @@
       <!-- Right side -->
       <NavUl class="flex flex-row">
         <NavLi href="/post" class="text-white text-2xl">Post</NavLi>
-        <NavLi href="/dashboard" class="text-white text-2xl">Dashboard</NavLi>
-        <NavLi href="/registration" class="text-white text-2xl">Login</NavLi>
+        <!-- <NavLi href="/dashboard" class="text-white text-2xl">Dashboard</NavLi> -->
+        <NavLi href="/registration" class="text-white text-2xl">Register</NavLi>
         <!-- {#if isLoggedIn}
           <NavLi href="/dashboard" class="text-white text-2xl mb-4 sm:mb-0">Dashboard</NavLi>
           {/if} -->

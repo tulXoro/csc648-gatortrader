@@ -1,13 +1,13 @@
 /**************************************************************
-* Class: CSC-648-03 Spring 2024
-* Team: 05
-* GitHub ID: csc648-sp24-03-team05
-* Project: SWE Final Project
-*
-* File: getPost.js
-* Description: API to to get all the product post or filter
-*              by category
-**************************************************************/ 
+ * Class: CSC-648-03 Spring 2024
+ * Team: 05
+ * GitHub ID: csc648-sp24-03-team05
+ * Project: SWE Final Project
+ *
+ * File: getPost.js
+ * Description: API to to get all the product post or filter
+ *              by category
+ **************************************************************/
 
 import express from "express";
 import db from "../conf/database.js";
@@ -26,16 +26,20 @@ router.get("/", async (req, res) => {
     }
     // when we receive a request to query by category
     else if (category) {
-      const [rows] = await db.query("SELECT pp.*, t.couse_number, t.professor FROM t_product_post pp left outer join t_textbook t on pp.post_id = t.post_id WHERE pp.category_id = 1 AND pp.status = 'APPROVED'", [category]);
+      const [rows] = await db.query(
+        "SELECT pp.*, t.couse_number, t.professor FROM t_product_post pp left outer join t_textbook t on pp.post_id = t.post_id WHERE pp.category_id = 1 AND pp.status = 'APPROVED'",
+        [category]
+      );
       res.json(rows);
-    }
-    else if (search) {
+    } else if (search) {
       const sql = `SELECT * FROM t_product_post WHERE (item_name LIKE '%${search}%' OR item_description LIKE '%${search}%')
                       AND status = 'APPROVED'`;
       const [rows] = await db.query(sql);
       res.json(rows);
     } else {
-      const [rows] = await db.query("SELECT * FROM t_product_post WHERE status = 'APPROVED'");
+      const [rows] = await db.query(
+        "SELECT * FROM t_product_post WHERE status = 'APPROVED'"
+      );
       res.json(rows);
     }
 
@@ -49,11 +53,22 @@ router.post("/", async (req, res) => {
   try {
     // Extract user data from the request body
     // console.log(req.body);
-    const { itemName, itemDescription, price, userId, status, categoryId } = req.body;
-    const sql = "INSERT INTO t_product_post (item_name, item_description, price, user_id, status, category_id) values (?, ?, ?, ?, ?, ?)";
-    const result = await db.query(sql, [itemName, itemDescription, price, userId, status, categoryId]);    
-    res.status(201).json({ message: `Product post from userId ${userId} is created successfully...` });
-    // console.log(result);
+    const { itemName, itemDescription, price, userId, status, categoryId } =
+      req.body;
+    const sql =
+      "INSERT INTO t_product_post (item_name, item_description, price, user_id, status, category_id) values (?, ?, ?, ?, ?, ?)";
+    const result = await db.query(sql, [
+      itemName,
+      itemDescription,
+      price,
+      userId,
+      status,
+      categoryId,
+    ]);
+    res.status(201).json({
+      message: `Product post from userId ${userId} is created successfully...`,
+    });
+    console.log(result);
   } catch (err) {
     res.status(500).send("Error in create a product post..." + err);
   }
