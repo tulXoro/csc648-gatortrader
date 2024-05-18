@@ -6,7 +6,7 @@
 *
 * File: Post.svelte
 *
-* Description: Component to display a form for registration. 
+* Description: Component to display a form for registration.
 **************************************************************/ -->
 <script lang="ts">
   import {
@@ -14,7 +14,6 @@
     Label,
     Button,
     P,
-    Fileupload,
     Textarea,
     Dropdown,
     DropdownItem,
@@ -28,10 +27,7 @@
   let bookInfo = "";
   let description = "";
   let price = "";
-  let image_file = "";
-  let fileuploadprops = {
-    id: "user_avatar",
-  };
+  let image_file: File | null = null;
 
   const categories = [
     { id: 0, label: "Choose one" },
@@ -85,6 +81,15 @@
     price = formattedValue;
   }
 
+  // Ensure the event parameter is of the correct type
+  function handleFileChange(event: Event) {
+    const target = event.target as HTMLInputElement;
+    const files = target.files;
+    if (files && files.length > 0) {
+      image_file = files[0];
+    }
+  }
+
   // Function to handle form submission
   async function handleSubmit() {
     console.log("Form Data:", {
@@ -96,14 +101,14 @@
       image_file,
     });
 
-    // if (!checkRequiredFields()) {
-    //   alert("Please fill in all required fields.");
-    //   return;
-    // }
-    // if (!selectedCategory) {
-    //   alert("Please select a category.");
-    //   return;
-    // }
+    if (!checkRequiredFields()) {
+      alert("Please fill in all required fields.");
+      return;
+    }
+    if (!selectedCategory) {
+      alert("Please select a category.");
+      return;
+    }
     if (!image_file) {
       alert("Please select an image file to upload.");
       return;
@@ -111,37 +116,17 @@
 
     try {
       // Upload image first
-      const imageData = new FormData();
-      imageData.append("file", image_file!);
+      const formData = new FormData();
+      formData.append("file", image_file!);
+      formData.append("title", title);
+      formData.append("categoryId", selectedCategory?.toString());
+      formData.append("description", description);
+      formData.append("price", price);
+      formData.append("bookInfo", bookInfo);
 
-      const imageResponse = await fetch("/images", {
+      const response = await fetch("/upload", {
         method: "POST",
-        body: imageData,
-      });
-
-      // Check if the upload was successful
-      if (!imageResponse.ok) {
-        throw new Error("File upload failed");
-      }
-
-      const imagePath = await imageResponse.text();
-
-      // Then create post with image path
-      const response = await fetch("/posts", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          itemName: title,
-          categoryId: selectedCategory,
-          bookInfo: bookInfo,
-          itemDescription: description,
-          price: parseFloat(price),
-          userId: 3, // Example user ID, replace with actual user ID
-          status: "PENDING", // Example status, adjust as needed
-          imagePath: imagePath, // Assuming the response contains the image path
-        }),
+        body: formData,
       });
 
       if (!response.ok) {
@@ -257,12 +242,12 @@
         Upload Image
         <p class="text-gray-500 italic text-sm">- Optional</p>
       </Label>
-      <!-- <input type="file" id="image" accept="image/*" required /> -->
-      <Fileupload
-        {...fileuploadprops}
-        bind:value={image_file}
+      <input
+        type="file"
+        id="image"
         accept="image/*"
         required
+        on:change={handleFileChange}
       />
     </div>
 
