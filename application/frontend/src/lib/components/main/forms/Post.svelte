@@ -19,7 +19,6 @@
     DropdownItem,
   } from "flowbite-svelte";
   import { ChevronDownOutline } from "flowbite-svelte-icons";
-  import DropBox from "../popUps/DropBox.svelte";
   import SignUpPop from "../popUps/SignUpPop.svelte";
   import { goto } from "$app/navigation";
 
@@ -28,7 +27,7 @@
   let bookInfo = "";
   let description = "";
   let price = "";
-  let image_file: File | null = null;
+  let image_file = "";
 
   const categories = [
     { id: 0, label: "Choose one" },
@@ -82,6 +81,10 @@
     price = formattedValue;
   }
 
+  const handleFileChange = (event: { target: { files: string[]; }; }) => {
+    image_file = event.target.files[0];
+  };
+  
   // Function to handle form submission
   async function handleSubmit() {
     console.log("Form Data:", {
@@ -92,30 +95,33 @@
       price,
       image_file,
     });
-    if (!checkRequiredFields()) {
-      alert("Please fill in all required fields.");
-      return;
-    }
-    if (!selectedCategory) {
-      alert("Please select a category.");
+
+    // if (!checkRequiredFields()) {
+    //   alert("Please fill in all required fields.");
+    //   return;
+    // }
+    // if (!selectedCategory) {
+    //   alert("Please select a category.");
+    //   return;
+    // }
+    if (!image_file) {
+      alert("Please select an image file to upload.");
       return;
     }
 
     try {
-      const response = await fetch("/posts", {
+      // Upload image first
+      const formData = new FormData();
+      formData.append("file", image_file!);
+      formData.append("title", title);
+      formData.append("categoryId", selectedCategory?.toString());
+      formData.append("description", description);
+      formData.append("price", price);
+      formData.append("bookInfo", bookInfo);
+
+      const response = await fetch("/upload", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          itemName: title,
-          categoryId: selectedCategory,
-          bookInfo: bookInfo,
-          itemDescription: description,
-          price: parseFloat(price), // Convert price to float
-          userId: 2, // Example user ID, replace with actual user ID
-          status: "PENDING", // Example status, adjust as needed
-        }),
+        body: formData,
       });
 
       if (!response.ok) {
@@ -231,25 +237,7 @@
         Upload Image
         <p class="text-gray-500 italic text-sm">- Optional</p>
       </Label>
-      <Input
-        type="file"
-        id="image"
-        accept="image/*"
-        bind:files={image_file}
-        required
-      />
-      <!-- <DropBox
-        bind:value={image_file}
-        on:change={(event: Event) => {
-          const input = event.target as HTMLInputElement;
-          if (input.files && input.files.length > 0) {
-            image_file = input.files[0];
-          } else {
-            image_file = null;
-          }
-        }}
-        
-      /> -->
+      <input type="file" id="image" accept="image/*" required on:change={handleFileChange}/>
     </div>
 
     <SignUpPop />
