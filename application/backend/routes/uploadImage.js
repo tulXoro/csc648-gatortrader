@@ -13,6 +13,7 @@ import express from "express";
 import multer from "multer";
 import sharp from "sharp";
 import fs from "fs";
+import db from "../conf/database.js";
 
 const router = express.Router();
 
@@ -38,15 +39,54 @@ router.post("/", upload.single("file"), async (req, res, next) => {
     if (err) {
       return next(err);
     }
+    const username = req.session?.user?.username ?? "joseph";
     // Create a thumbnail
     try {
       await sharp(destinationPath).resize(100, 100).toFile(thumbnailPath);
+
+      // create product post
+      const userId = await getUserId(username);
+      saveProductPost({
+        ...req.body,
+        imageFile: req.file.originalname,
+        userId,
+      });
     } catch (err) {
       return next(err);
     }
-    // Send a response indicating the file has been saved
-    res.send("File uploaded and saved successfully");
+    // Send a response indicating the product post has been created
+    res.status(201).json({
+      message: `Product post from ${username} is created successfully...`,
+    });
   });
 });
+
+const saveProductPost = async ({
+  title,
+  description,
+  price,
+  categoryId,
+  imageFile,
+  userId,
+}) => {
+  const sql =
+    "INSERT INTO t_product_post (item_name, item_description, price, user_id, status, category_id, image_file) values (?, ?, ?, ?, ?, ?, ?)";
+  const result = await db.query(sql, [
+    title,
+    description,
+    price,
+    Number(userId),
+    "PENDING",
+    categoryId,
+    imageFile,
+  ]);
+};
+
+const getUserId = async (username) => {
+  const sql = "SELECT * FROM t_user WHERE user_name = ?";
+  const [rows] = await db.query(sql, [username]);
+  const { user_id } = rows[0];
+  return user_id;
+};
 
 export default router;

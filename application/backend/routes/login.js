@@ -22,15 +22,12 @@ router.post("/", async (req, res) => {
         // Check password
         const loginUser = users[0];
 
-        // console.log("loginUser: ", loginUser);
-
         const { password: hashedPassword, userId } = loginUser;
         const isPasswordMatch = bcrypt.compareSync(password, hashedPassword);
         if (!isPasswordMatch) {
             console.log("Passwords do not match");
             return res.status(401).json({ message: 'Invalid username or password' });
         }
-        // console.log("session:", req.session);
         req.session.user = { id: userId, username: userName };
         res.status(200).json({ message: `User ${userName} is logined successfully...` });
 
