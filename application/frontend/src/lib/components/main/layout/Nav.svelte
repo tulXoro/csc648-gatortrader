@@ -47,7 +47,7 @@
       console.log("Fetched categories:", data); // Log the fetched data
       categories = data.map((category: any) => ({
         id: category.id,
-        label: category.name, // Adjust this if the field name is different
+        label: category.name,
       }));
       console.log("Processed categories:", categories); // Log the processed categories
     } catch (error) {
@@ -192,7 +192,9 @@
       <NavUl class="flex flex-row">
         <NavLi href="/post" class="text-white text-2xl">Post</NavLi>
         <!-- <NavLi href="/dashboard" class="text-white text-2xl">Dashboard</NavLi> -->
-        <NavLi href="/registration" class="text-white text-2xl">Register</NavLi>
+        <NavLi href="/registration" class="text-white text-2xl"
+          >Login/SignUp</NavLi
+        >
         <!-- {#if isLoggedIn}
           <NavLi href="/dashboard" class="text-white text-2xl mb-4 sm:mb-0">Dashboard</NavLi>
           {/if} -->
