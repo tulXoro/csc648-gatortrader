@@ -63,7 +63,7 @@
       <div class="image-container mb-10">
         <img
           class="object-cover w-full h-64"
-          src={`/image/${post.image_file}`}
+          src={`/image/uploads/${post.image_file}`}
           alt={post.item_name}
         />
       </div>
