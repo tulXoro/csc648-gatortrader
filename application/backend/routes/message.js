@@ -6,7 +6,7 @@
 *
 * File: message.js
 * Description: API to post, get and delete message
-**************************************************************/ 
+**************************************************************/
 
 import express from "express";
 import db from "../conf/database.js";
@@ -39,7 +39,6 @@ router.get("/", async (req, res) => {
       const [rows] = await db.query(sql, [userId]);
       // console.log(rows);
       res.status(200).json(rows);
-      // res.status(201).json({ message: `Messages are get successfully...` });
     } catch (err) {
       res.status(500).send("Error getting messages from database... " + err);
     }
@@ -50,7 +49,7 @@ router.delete("/", async (req, res) => {
         const { messageId } = req.query;
         const sql = "DELETE FROM t_purchase_message WHERE message_id = ?";
         const result = await db.query(sql, [messageId]);
- 
+
         res.status(200).json({ message: `Message is deleted successfully...` });
       } catch (err) {
         res.status(500).send("Error deleting message from database... " + err);
