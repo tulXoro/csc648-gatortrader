@@ -61,7 +61,7 @@
         <a href={`/viewPost/${post.post_id}`}>
           <img
             class="object-cover w-full h-64"
-            src={`/image/${post.image_file}`}
+            src={`/image/thumbnails/${post.image_file}`}
             alt={post.item_name}
           /></a
         >

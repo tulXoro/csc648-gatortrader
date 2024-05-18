@@ -14,7 +14,6 @@
     Label,
     Button,
     P,
-    Fileupload,
     Textarea,
     Dropdown,
     DropdownItem,
@@ -28,7 +27,7 @@
   let bookInfo = "";
   let description = "";
   let price = "";
-  let image_file = "";
+  let image_file: File | null = null;
 
   const categories = [
     { id: 0, label: "Choose one" },
@@ -82,9 +81,14 @@
     price = formattedValue;
   }
 
-  const handleFileChange = (event: { target: { files: string[] } }) => {
-    image_file = event.target.files[0];
-  };
+  // Ensure the event parameter is of the correct type
+  function handleFileChange(event: Event) {
+    const target = event.target as HTMLInputElement;
+    const files = target.files;
+    if (files && files.length > 0) {
+      image_file = files[0];
+    }
+  }
 
   // Function to handle form submission
   async function handleSubmit() {
@@ -97,14 +101,14 @@
       image_file,
     });
 
-    // if (!checkRequiredFields()) {
-    //   alert("Please fill in all required fields.");
-    //   return;
-    // }
-    // if (!selectedCategory) {
-    //   alert("Please select a category.");
-    //   return;
-    // }
+    if (!checkRequiredFields()) {
+      alert("Please fill in all required fields.");
+      return;
+    }
+    if (!selectedCategory) {
+      alert("Please select a category.");
+      return;
+    }
     if (!image_file) {
       alert("Please select an image file to upload.");
       return;
