@@ -14,12 +14,12 @@
     Label,
     Button,
     P,
+    Fileupload,
     Textarea,
     Dropdown,
     DropdownItem,
   } from "flowbite-svelte";
   import { ChevronDownOutline } from "flowbite-svelte-icons";
-  import DropBox from "../popUps/DropBox.svelte";
   import SignUpPop from "../popUps/SignUpPop.svelte";
   import { goto } from "$app/navigation";
 
@@ -28,7 +28,10 @@
   let bookInfo = "";
   let description = "";
   let price = "";
-  let image_file: File | null = null;
+  let image_file = "";
+  let fileuploadprops = {
+    id: "user_avatar",
+  };
 
   const categories = [
     { id: 0, label: "Choose one" },
@@ -92,16 +95,38 @@
       price,
       image_file,
     });
-    if (!checkRequiredFields()) {
-      alert("Please fill in all required fields.");
-      return;
-    }
-    if (!selectedCategory) {
-      alert("Please select a category.");
+
+    // if (!checkRequiredFields()) {
+    //   alert("Please fill in all required fields.");
+    //   return;
+    // }
+    // if (!selectedCategory) {
+    //   alert("Please select a category.");
+    //   return;
+    // }
+    if (!image_file) {
+      alert("Please select an image file to upload.");
       return;
     }
 
     try {
+      // Upload image first
+      const imageData = new FormData();
+      imageData.append("file", image_file!);
+
+      const imageResponse = await fetch("/images", {
+        method: "POST",
+        body: imageData,
+      });
+
+      // Check if the upload was successful
+      if (!imageResponse.ok) {
+        throw new Error("File upload failed");
+      }
+
+      const imagePath = await imageResponse.text();
+
+      // Then create post with image path
       const response = await fetch("/posts", {
         method: "POST",
         headers: {
@@ -112,9 +137,10 @@
           categoryId: selectedCategory,
           bookInfo: bookInfo,
           itemDescription: description,
-          price: parseFloat(price), // Convert price to float
-          userId: 2, // Example user ID, replace with actual user ID
+          price: parseFloat(price),
+          userId: 3, // Example user ID, replace with actual user ID
           status: "PENDING", // Example status, adjust as needed
+          imagePath: imagePath, // Assuming the response contains the image path
         }),
       });
 
@@ -231,25 +257,13 @@
         Upload Image
         <p class="text-gray-500 italic text-sm">- Optional</p>
       </Label>
-      <Input
-        type="file"
-        id="image"
+      <!-- <input type="file" id="image" accept="image/*" required /> -->
+      <Fileupload
+        {...fileuploadprops}
+        bind:value={image_file}
         accept="image/*"
-        bind:files={image_file}
         required
       />
-      <!-- <DropBox
-        bind:value={image_file}
-        on:change={(event: Event) => {
-          const input = event.target as HTMLInputElement;
-          if (input.files && input.files.length > 0) {
-            image_file = input.files[0];
-          } else {
-            image_file = null;
-          }
-        }}
-        
-      /> -->
     </div>
 
     <SignUpPop />
