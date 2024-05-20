@@ -15,3 +15,5 @@ import { writable } from "svelte/store";
 
 export const posts = writable([]);
 export const searchQuery = writable("");
+export const updateTrigger = writable(0); //0: nothing, 1: dsc, 2: asc
+
