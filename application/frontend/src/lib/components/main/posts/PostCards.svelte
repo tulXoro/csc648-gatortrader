@@ -36,7 +36,7 @@
           ${post.price}
         </p>
 
-        <Message />
+        <Message {post} />
       </div>
     </Card>
   {/each}

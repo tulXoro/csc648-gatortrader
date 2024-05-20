@@ -94,7 +94,7 @@
       }
     }
 
-    const endpoint = isSignUp ? "/registerUser" : "/loginUser";
+    const endpoint = isSignUp ? "/registerUser" : "/login";
     const payload = isSignUp
       ? {
           userName: username,
@@ -118,9 +118,18 @@
         throw new Error("Network response was not ok");
       }
 
+      const responseData = await response.json();
+
+      // Check if the response contains user authentication data
+      if (responseData.user && responseData.token) {
+        // Store user data and token in session storage or cookies
+        sessionStorage.setItem("userData", JSON.stringify(responseData.user));
+        sessionStorage.setItem("token", responseData.token);
+      }
+
+      // if successful, redirect to dashboard
       goto("/dashboard");
 
-      const responseData = await response.json();
       alert(responseData.message);
     } catch (error) {
       console.error("There was a problem with the fetch operation:", error);

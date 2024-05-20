@@ -46,6 +46,8 @@
   ];
 </script>
 
+<title>GatorTrader | About Us</title>
+
 <Header />
 <Nav />
 <div

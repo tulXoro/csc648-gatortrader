@@ -12,21 +12,14 @@
 **************************************************************/ -->
 <script>
   import { Button, Modal, A, P, Textarea } from "flowbite-svelte";
+  export let post; // Add this line to receive the post data
 
   let formModal = false;
-
-  // will use middleware to auth.js
   let message = "";
 
   // TEST ONLY
   function handleSubmit() {
     console.log("Submitted message in Message Modal:", message);
-  }
-
-  let isButtonClicked = true;
-
-  function handleClick() {
-    isButtonClicked = false;
   }
 
   function handleClose() {
@@ -41,20 +34,21 @@
 >
 
 <Modal bind:open={formModal} size="sm" autoclose={false}>
-  <!-- Method is ? -->
   <div class="justify-center">
-    <P align="center" size="3xl" weight="semibold" class="mb-6">Title</P>
+    <P align="center" size="3xl" weight="semibold" class="mb-6"
+      >{post.item_name}</P
+    >
     <div class="message-detail">
       <div class="flex mb-10">
-        <!-- Place post_id's img_file -->
-        <img
-          src="https://fakeimg.pl/80x80/?text=Post Image"
-          alt="post-image"
-          class="flex"
-        />
+        <div class="w-32 h-32 flex-shrink-0">
+          <img
+            class="object-cover w-full h-full"
+            src={`/image/thumbnails/${post.image_file}`}
+            alt={post.item_name}
+          />
+        </div>
         <div class="flex-column ml-3">
-          <!-- Fetch title and price of post-->
-          <P align="left" size="lg" weight="normal">Price: $00.00</P>
+          <P align="left" size="lg" weight="normal">Price: ${post.price}</P>
         </div>
       </div>
 
