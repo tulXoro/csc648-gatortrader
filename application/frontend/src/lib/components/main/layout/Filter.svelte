@@ -8,20 +8,81 @@
 *
 * Description: Component will be a sidebar with togglable filter buttons.
 **************************************************************/ -->
-<script>
-  import { Label, Checkbox } from "flowbite-svelte";
+<script lang="ts">
+  import { Label, Checkbox, A } from "flowbite-svelte";
   import { derived } from "svelte/store";
-  import { posts } from "$lib/stores/store";
+  import { posts, updateTrigger } from "$lib/stores/store";
 
-  let sortOrder = "lowToHigh";
 
-  const sortedPosts = derived([posts, sortOrder], ([$posts, $sortOrder]) => {
-    if ($sortOrder === "lowToHigh") {
-      return $posts.slice().sort((a, b) => a.price - b.price);
-    } else {
-      return $posts.slice().sort((a, b) => b.price - a.price);
+
+  let sortOrder = "dsc";
+  // Derived store to filter and sort posts
+  // const filteredPosts = derived(posts, $posts => {
+  //   return $posts
+  //     .filter(post => post.status === "APPROVED")
+  //     .sort((a, b) => {
+  //       const priceA = a.price;
+  //       const priceB = b.price;
+  //       if (sortOrder === "asc") {
+  //         return priceA - priceB;
+  //       } else {
+  //         return priceB - priceA;
+  //       }
+  //     });
+  // });
+
+  $: filteredPosts = $posts
+    .filter((post) => post.status === "APPROVED")
+   
+    .sort((a, b) => {
+      const priceA = a.price;
+      const priceB = b.price;
+      if(sortOrder === "asc"){
+        
+      return priceB - priceA;
+      } else {
+        return priceA - priceB;
+      }
+
+    });
+ 
+  let priceLowToHigh = false;
+  let priceHighToLow = false;
+  
+
+  function handleCheckboxClick(event) {
+    const { id, checked } = event.target;
+    console.log('SOMETHING IS HAPPENING');
+    switch(id) {
+      case 'priceLowToHigh':
+        priceLowToHigh = checked;
+        if (checked) {
+          console.log('ascneding order');
+          sortOrder = "asc";
+          priceHighToLow = false;
+        }
+        break;
+      case 'priceHighToLow':
+        priceHighToLow = checked;
+        if (checked) {
+          console.log('dscending order');
+          sortOrder = "dsc";
+          priceLowToHigh = false;
+        }
+        break;
+      default:
+        break;
     }
-  });
+
+    console.log(filteredPosts);
+    if(sortOrder === 'dsc'){
+      updateTrigger.set(1);
+    } else if(sortOrder==='asc'){
+      updateTrigger.set(2);
+    }
+  }
+
+
 </script>
 
 <div
@@ -29,19 +90,23 @@
   style="padding-bottom:10px"
 >
   <Label>Sort By:</Label>
-  <Checkbox>Price: Low to high</Checkbox>
-  <Checkbox>Price: High to low</Checkbox>
+  <Checkbox id="priceLowToHigh" checked={priceLowToHigh} on:click={handleCheckboxClick}>Price: Low to high</Checkbox>
+  <Checkbox id="priceHighToLow" checked={priceHighToLow} on:click={handleCheckboxClick}>Price: High to low</Checkbox>
+
 </div>
 
-<div
+
+
+<!-- <div
   class="rounded border border-gray-200 dark:border-gray-700"
   style="padding-bottom:10px"
 >
   <Label>Post Date</Label>
-  <Checkbox>Less than 3 days ago</Checkbox>
-  <Checkbox>3 days to 2 weeks</Checkbox>
-  <Checkbox>Over 2 weeks</Checkbox>
-</div>
+  <Checkbox id="lessThan3Days" checked={lessThan3Days} on:click={handleCheckboxClick}>Less than 3 days ago</Checkbox>
+  <Checkbox id="days3To2Weeks" checked={days3To2Weeks} on:click={handleCheckboxClick}>3 days to 2 weeks</Checkbox>
+  <Checkbox id="over2Weeks" checked={over2Weeks} on:click={handleCheckboxClick}>Over 2 weeks</Checkbox>
+
+</div> -->
 
 <!-- <Range id="range-steps" min="0" max="9999" bind:value={stepValue} step="0.25" />
 <p>Value: {stepValue}</p> -->
