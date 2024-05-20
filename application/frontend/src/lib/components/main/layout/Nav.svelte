@@ -24,15 +24,11 @@
   export let selectedCategory = 0;
   export let searchQuery = "";
   export let categories: Category[] = [];
+  export let isLoggedIn = false;
+  export let username = "";
+  let showLogoutDropdown = false;
 
   const dispatch = createEventDispatcher();
-  // const categories = [
-  //   { id: 0, label: "All" },
-  //   { id: 1, label: "Electronics" },
-  //   { id: 2, label: "Furniture" },
-  //   { id: 3, label: "Textbooks" },
-  //   { id: 4, label: "Misc." },
-  // ];
 
   // Load search state from the store
   $: ({ selectedCategory, searchQuery } = get(searchState));
@@ -44,16 +40,57 @@
         throw new Error("Failed to fetch categories");
       }
       const data = await response.json();
-      console.log("Fetched categories:", data); // Log the fetched data
+      // console.log("Fetched categories:", data);
       categories = data.map((category: any) => ({
         id: category.id,
         label: category.name,
       }));
-      console.log("Processed categories:", categories); // Log the processed categories
+      // console.log("Processed categories:", categories);
     } catch (error) {
       console.error("Error fetching categories:", error);
     }
   }
+
+  async function checkSessionStatus() {
+    try {
+      const response = await fetch("/login/status");
+      if (response.ok) {
+        const data = await response.json();
+        isLoggedIn = data.isLoggedIn;
+        if (isLoggedIn) {
+          username = data.username;
+        }
+      } else {
+        console.error("Failed to fetch session status:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error checking login status:", error);
+    }
+  }
+
+  async function logout() {
+    try {
+      const response = await fetch("/login/logout", {
+        method: "POST",
+      });
+      if (response.ok) {
+        isLoggedIn = false;
+        username = "";
+        // Optionally, redirect to the home page or login page
+        window.location.href = "/";
+      } else {
+        console.error("Failed to log out:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  }
+
+  onMount(async () => {
+    loadCategories();
+    loadURL();
+    await checkSessionStatus();
+  });
 
   function loadURL() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -131,11 +168,6 @@
       searchExecution();
     }
   }
-
-  onMount(() => {
-    loadCategories();
-    loadURL();
-  });
 </script>
 
 <Navbar class="bg-gray-900 text-white sticky top-0 md:py-5">
@@ -191,14 +223,25 @@
       <!-- Right side -->
       <NavUl class="flex flex-row">
         <NavLi href="/post" class="text-white text-2xl">Post</NavLi>
-        <!-- <NavLi href="/dashboard" class="text-white text-2xl">Dashboard</NavLi> -->
-        <NavLi href="/registration" class="text-white text-2xl"
-          >Login/SignUp</NavLi
-        >
-        <!-- {#if isLoggedIn}
-          <NavLi href="/dashboard" class="text-white text-2xl mb-4 sm:mb-0">Dashboard</NavLi>
-          {/if} -->
+        {#if isLoggedIn}
+          <NavLi class="text-white text-2xl relative cursor-pointer">
+            Welcome, {username}
+            <ChevronDownOutline class=" w-3 h-3" />
+          </NavLi>
+          <Dropdown class="w-40">
+            <DropdownItem href="/dashboard" class="text-black"
+              >Dashboard</DropdownItem
+            >
+            <DropdownItem slot="footer" class="text-black" on:click={logout}
+              >Sign out</DropdownItem
+            >
+          </Dropdown>
+        {:else}
+          <NavLi href="/registration" class="text-white text-2xl"
+            >Register</NavLi
+          >
+        {/if}
       </NavUl>
     </div>
-  </div>
-</Navbar>
+  </div></Navbar
+>
