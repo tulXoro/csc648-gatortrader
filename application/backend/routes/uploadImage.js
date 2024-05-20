@@ -9,18 +9,11 @@
  *              product post
  **************************************************************/
 
-<<<<<<< HEAD
-import express from "express";
-import multer from "multer";
-import sharp from "sharp";
-import fs from "fs";
-=======
 import express from 'express';
 import multer from 'multer';
 import sharp from 'sharp';
 import fs from 'fs';
 import db from "../conf/database.js";
->>>>>>> af3c8fe (P:roposed fix for upload and create post in single api)
 
 const router = express.Router();
 
