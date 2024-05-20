@@ -1,3 +1,13 @@
+<!-- /**************************************************************
+* Class: CSC-648-03 Spring 2024
+* Team: 05
+* GitHub ID: csc648-sp24-03-team05
+* Project: SWE Final Project
+*
+* File: Registration.svelte
+*
+* Description: Registration form component for user sign up and sign in.
+**************************************************************/ -->
 <script lang="ts">
   import { goto } from "$app/navigation";
   import {
