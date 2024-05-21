@@ -39,10 +39,10 @@
   on:searchQueryChange={handleSearchQueryChange}
   on:searchButtonClick={handleSearchButtonClick}
 /> -->
-{#if showCarousel}
+<!-- {#if showCarousel} -->
   <Carousel />
-{/if}
-{#if showFilters}
+<!-- {/if} -->
+<!-- {#if showFilters}
   <Results />
   <div style="display: flex">
     <div
@@ -53,5 +53,5 @@
     <div style="flex-direction: column; padding: 5px"></div>
     <PostCards />
   </div>
-{/if}
+{/if} -->
 <!-- <Footer /> -->
