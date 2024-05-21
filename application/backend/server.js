@@ -18,11 +18,13 @@ import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import bodyParser from 'body-parser';
 
-import getPosts from './routes/getPosts.js';
+import posts from './routes/posts.js';
 import registerUser from './routes/registerUser.js';
 import getCategories from './routes/getCategories.js';
 import login from './routes/login.js';
 import uploadImage from './routes/uploadImage.js';
+import message from './routes/message.js';
+import getSellerPosts from './routes/getSellerPosts.js';
 
 const app = express();
 const PORT = 3000;
@@ -63,14 +65,22 @@ store.sync();
 })();
 
 const requireSession = (req, res, next) => {
-  console.log("session check", req.session);
-  if (req.session?.user?.username || req.path === "login") {
+  // console.log("requireSession check", req);
+  if (req.session?.user?.username || allowGuestUsers(req)) {
     // Session exists and user is logged in
     next(); // Proceed to the next middleware or route handler
   } else {
     // Session doesn't exist or user is not logged in
     res.status(401).send('Unauthorized'); // Respond with unauthorized status
   }
+};
+
+const restrictedPaths = ["/getSellerPosts", "/message", "/upload"];
+const allowGuestUsers = req => {
+  const { path, method } = req;
+  console.log("path", path, "method", method);
+  return !restrictedPaths.includes(path)
+            && !(path === "/posts" && method.toLowerCase() === "post");
 };
 
 app.get('/backtest', (req, res) => {
@@ -82,17 +92,19 @@ app.use('/login', login);
 
 app.use('/', requireSession);
 
-// Use CORS middleware 
-// app.use(cors()); 
+// Use CORS middleware
+// app.use(cors());
 
 app.use('/getCategories', getCategories);
-app.use('/getPosts', getPosts);
+app.use('/posts', posts);
+app.use('/getSellerPosts', getSellerPosts);
 
 app.use('/image', express.static(path.join(dirname(fileURLToPath(import.meta.url)), 'images')));
 
 app.use(bodyParser.json());
 app.use('/registerUser', registerUser);
 app.use('/upload', uploadImage);
+app.use('/message', message);
 
 app.use(handler);
 

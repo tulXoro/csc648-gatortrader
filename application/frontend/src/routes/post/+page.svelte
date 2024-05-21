@@ -6,7 +6,7 @@
 *
 * File: +page.svelte
 *
-* Description: page dedicated to uploading posts 
+* Description: page dedicated to uploading posts
 **************************************************************/ -->
 <script>
   import Header from "$lib/components/main/layout/Header.svelte";
@@ -18,7 +18,7 @@
 
 <title>GatorTrader | Registration</title>
 
-<Header />
-<Nav />
+<!-- <Header />
+<Nav /> -->
 <Post />
-<Footer />
+<!-- <Footer /> -->
