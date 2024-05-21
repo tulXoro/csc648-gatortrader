@@ -28,6 +28,7 @@
   let description = "";
   let price = "";
   let image_file: File | null = null;
+  let isLoggedIn = false;
 
   const categories = [
     { id: 0, label: "Choose one" },
@@ -92,6 +93,10 @@
 
   // Function to handle form submission
   async function handleSubmit() {
+    if (!isLoggedIn) {
+      alert("You must be logged in to post.");
+      return;
+    }
     console.log("Form Data:", {
       title,
       selectedCategory,
@@ -109,10 +114,10 @@
       alert("Please select a category.");
       return;
     }
-    if (!image_file) {
-      alert("Please select an image file to upload.");
-      return;
-    }
+    // if (!image_file) {
+    //   alert("Please select an image file to upload.");
+    //   return;
+    // }
 
     try {
       // Upload image first

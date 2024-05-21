@@ -26,7 +26,6 @@
   export let categories: Category[] = [];
   export let isLoggedIn = false;
   export let username = "";
-  let showLogoutDropdown = false;
 
   const dispatch = createEventDispatcher();
 

@@ -71,7 +71,7 @@
           <p class="mr-2 mb-2 text-3xl font-black" style="text-align: right;">
             ${post.price}
           </p>
-          <Message />
+          <Message {post} />
         </div>
       </Card>
     {/each}

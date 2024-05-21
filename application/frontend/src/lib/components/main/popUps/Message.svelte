@@ -12,14 +12,62 @@
 **************************************************************/ -->
 <script>
   import { Button, Modal, A, P, Textarea } from "flowbite-svelte";
-  export let post; // Add this line to receive the post data
+  import { onMount } from "svelte";
+
+  export let post;
+  let userId;
 
   let formModal = false;
   let message = "";
+  let isLoggedIn = false;
 
-  // TEST ONLY
-  function handleSubmit() {
-    console.log("Submitted message in Message Modal:", message);
+  onMount(async () => {
+    try {
+      const response = await fetch("/login/status");
+      const data = await response.json();
+      isLoggedIn = data.isLoggedIn;
+      userId = data.userId; // Set the userId from the login status
+    } catch (error) {
+      console.error("Failed to fetch login status:", error);
+    }
+  });
+
+  async function sendMessage() {
+    if (!isLoggedIn) {
+      alert("You must be logged in to send a message.");
+      return;
+    }
+    if (!message.trim()) {
+      alert("Message cannot be empty");
+      return;
+    }
+
+    try {
+      const response = await fetch("/message", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          sender_id: userId,
+          receiver_id: post.user_id,
+          message: message,
+          post_id: post.post_id,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const responseData = await response.json();
+      alert(responseData.message);
+      message = "";
+      formModal = false;
+    } catch (error) {
+      console.error("There was a problem with the fetch operation:", error);
+      alert("There was an error sending the message. Please try again later.");
+    }
   }
 
   function handleClose() {
@@ -71,7 +119,7 @@ Please include contact info such as email or phone number!"
           type="submit"
           align="text-right"
           style="background-color:steelblue; color: white;"
-          on:click={handleSubmit}>Send message</Button
+          on:click={sendMessage}>Send message</Button
         >
       </div>
     </div>
