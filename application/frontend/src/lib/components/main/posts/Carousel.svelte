@@ -84,7 +84,6 @@
 
 <div class="bg-gray-300 p-5 mb-10 border border-gray-300 rounded-lg shadow-md">
   <P align="left" weight="bold" size="2xl">Recent Posts</P>
-  <Results />
   <div
     class="grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 relative overflow-hidden"
   >
