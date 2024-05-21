@@ -21,7 +21,7 @@ router.get("/", async (req, res) => {
     let page = parseInt(req.query.page);
 
     if (!limit || limit > 30 || isNaN(limit) || limit < 1) {
-      limit = 10;
+      limit = 30;
     }
     if (!page || page < 1 || isNaN(page)) {
       page = 1;
