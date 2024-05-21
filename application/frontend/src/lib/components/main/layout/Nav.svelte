@@ -27,11 +27,13 @@
   import { searchState } from "../../../stores/searchStore";
   import { get } from "svelte/store";
 
+  // Define the interface for categories
   interface Category {
     id: number;
     label: string;
   }
 
+  // Define exported props for the component
   export let selectedCategory = 0;
   export let searchQuery = "";
   export let categories: Category[] = [];
@@ -44,6 +46,7 @@
   // Load search state from the store
   $: ({ selectedCategory, searchQuery } = get(searchState));
 
+  // Function to load categories from the server
   async function loadCategories() {
     try {
       const response = await fetch("/getCategories");
@@ -51,17 +54,16 @@
         throw new Error("Failed to fetch categories");
       }
       const data = await response.json();
-      // console.log("Fetched categories:", data);
       categories = data.map((category: any) => ({
         id: category.id,
         label: category.name,
       }));
-      // console.log("Processed categories:", categories);
     } catch (error) {
       console.error("Error fetching categories:", error);
     }
   }
 
+  // Function to check the session status of the user
   async function checkSessionStatus() {
     try {
       const response = await fetch("/login/status");
@@ -79,6 +81,7 @@
     }
   }
 
+  // Function to log the user out
   async function logout() {
     try {
       const response = await fetch("/login/logout", {
@@ -87,7 +90,6 @@
       if (response.ok) {
         isLoggedIn = false;
         username = "";
-        // Optionally, redirect to the home page or login page
         window.location.href = "/";
       } else {
         console.error("Failed to log out:", response.statusText);
@@ -97,12 +99,23 @@
     }
   }
 
+  // onMount lifecycle hook to perform initial setup
   onMount(async () => {
-    loadCategories();
-    loadURL();
-    await checkSessionStatus();
+    loadCategories(); // Load categories from the server
+    await checkSessionStatus(); // Check if the user is logged in
+    loadURL(); // Load the current search state from the URL
+
+    if (isBrowsePage()) {
+      performSearch(); // Perform the search if we are on the browse page
+    }
   });
 
+  // Function to check if the current page is the browse page
+  function isBrowsePage(): boolean {
+    return window.location.pathname === "/browse";
+  }
+
+  // Function to load search state from the URL
   function loadURL() {
     const urlParams = new URLSearchParams(window.location.search);
     const category = urlParams.get("category");
@@ -117,13 +130,9 @@
       searchQuery = search;
       searchState.update((state) => ({ ...state, searchQuery }));
     }
-
-    // Perform search if on the home page
-    if (window.location.pathname === "/") {
-      handleSearch();
-    }
   }
 
+  // Function to handle the search request
   async function handleSearch(): Promise<void> {
     try {
       // Construct the URL with search parameters
@@ -135,6 +144,7 @@
         url.searchParams.append("search", searchQuery.trim());
       }
 
+      // Fetch the search results
       const response = await fetch(url.toString());
       if (response.ok) {
         const data = await response.json();
@@ -144,36 +154,40 @@
         console.error("Failed to fetch posts");
       }
 
-      // Update browser history with new search parameters without triggering a page reload
-      const newUrl = `${window.location.pathname}${url.search}`;
-      window.history.pushState({ path: newUrl }, "", newUrl);
+      // Update the URL without reloading the page
+      const newUrl = `/browse${url.search}`;
+      if (!isBrowsePage()) {
+        window.location.href = newUrl;
+      } else {
+        window.history.pushState({ path: newUrl }, "", newUrl);
+      }
     } catch (error) {
       console.error("Error fetching posts:", error);
     }
   }
 
-  // Function to update selected category without triggering search
+  // Function to perform the search
+  async function performSearch() {
+    await handleSearch();
+  }
+
+  // Function to update the selected category
   function updateCategory(categoryId: number): void {
     selectedCategory = categoryId;
     searchState.update((state) => ({ ...state, selectedCategory }));
   }
 
-  // provides search results
+  // Function to execute the search when the search button is clicked
   async function searchExecution() {
-    // Check if search query exceeds 40 characters to prevent injection
     if (searchQuery.trim().length > 40) {
       alert("Search query is too long. Please limit it to 40 characters.");
       return;
-    } else if (searchQuery.trim() !== "") {
-      await handleSearch();
-      dispatch("searchButtonClick");
-    } else {
-      // If empty, perform search based on selected category
-      handleSearch();
     }
+    await handleSearch();
+    dispatch("searchButtonClick");
   }
 
-  // if "Enter" key is press redirect
+  // Function to handle the Enter key press in the search input
   function handleKeyPress(event: KeyboardEvent): void {
     if (event.key === "Enter") {
       searchExecution();
@@ -181,8 +195,8 @@
   }
 </script>
 
+<!-- Navigation bar layout -->
 <Navbar class="bg-gray-900 text-white sticky top-0 md:py-5">
-  <!-- Left side -->
   <div class="flex">
     <NavBrand href="/">
       <img src={SFSULogo} class="me-5 h-20" alt="SFSU Logo" />
@@ -192,7 +206,6 @@
       <NavUl>
         <NavLi href="/about" class="text-white text-2xl">About</NavLi>
       </NavUl>
-      <!-- Middle: Search query -->
       <Button
         class="rounded-e-none border-e-0 !p-4"
         style="background-color:lightgray; color: black;"
@@ -203,9 +216,7 @@
       <Dropdown>
         {#each categories as { id, label }}
           <DropdownItem
-            on:click={() => {
-              updateCategory(id);
-            }}
+            on:click={() => updateCategory(id)}
             class={selectedCategory === id ? "underline" : ""}
             style="color: black;"
           >
@@ -214,7 +225,6 @@
         {/each}
       </Dropdown>
 
-      <!-- Search -->
       <Search
         class="flex-grow rounded-none py-3 mr-4 w-full"
         placeholder={selectedCategory === 3
@@ -231,7 +241,6 @@
         <SearchOutline class="w-5 h-5" />
       </Button>
 
-      <!-- Right side -->
       <NavUl class="flex flex-row">
         <NavLi href="/post" class="text-white text-2xl">Post</NavLi>
         {#if isLoggedIn}
@@ -240,19 +249,13 @@
             <ChevronDownOutline class=" w-3 h-3" />
           </NavLi>
           <Dropdown class="w-40">
-            <DropdownItem href="/dashboard" class="text-black"
-              >Dashboard</DropdownItem
-            >
-            <DropdownItem slot="footer" class="text-black" on:click={logout}
-              >Sign out</DropdownItem
-            >
+            <DropdownItem href="/dashboard" class="text-black">Dashboard</DropdownItem>
+            <DropdownItem slot="footer" class="text-black" on:click={logout}>Sign out</DropdownItem>
           </Dropdown>
         {:else}
-          <NavLi href="/registration" class="text-white text-2xl"
-            >Register</NavLi
-          >
+          <NavLi href="/registration" class="text-white text-2xl">Register</NavLi>
         {/if}
       </NavUl>
     </div>
-  </div></Navbar
->
+  </div>
+</Navbar>
