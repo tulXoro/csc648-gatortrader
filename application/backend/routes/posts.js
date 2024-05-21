@@ -28,7 +28,7 @@ router.get("/", async (req, res) => {
     }
     const offset = (page - 1) * limit;
     if (category && search) {
-      const sql = `SELECT pp.*, t.couse_number, t.professor FROM t_product_post pp left outer join t_textbook t on pp.post_id = t.post_id WHERE
+      const sql = `SELECT pp.*, t.course_number, t.professor FROM t_product_post pp left outer join t_textbook t on pp.post_id = t.post_id WHERE
                       pp.category_id = ? AND
                       (pp.item_name LIKE '%${search}%' OR pp.item_description LIKE '%${search}%') AND pp.status = 'APPROVED' ORDER BY timestamp DESC LIMIT ? OFFSET ?`;
       const [rows] = await db.query(sql, [category, limit, offset]);

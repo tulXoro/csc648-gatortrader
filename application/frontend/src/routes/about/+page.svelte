@@ -1,9 +1,6 @@
 <!-- This this the about-us page  -->
 
 <script>
-  import Header from "$lib/components/main/layout/Header.svelte";
-  import Footer from "$lib/components/main/layout/Footer.svelte";
-  import Nav from "$lib/components/main/layout/Nav.svelte";
   import { Card } from "flowbite-svelte";
 
   let teamMembers = [
@@ -64,4 +61,3 @@
     </Card>
   {/each}
 </div>
-<!-- <Footer /> -->
