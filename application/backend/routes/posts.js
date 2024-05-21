@@ -16,7 +16,10 @@ const router = express.Router();
 
 router.get("/", async (req, res) => {
   try {
-    const { category, search, limit, page } = req.query;
+    const { category, search } = req.query;
+    let limit = parseInt(req.query.limit);
+    let page = parseInt(req.query.page);
+
     if (!limit || limit > 30 || isNaN(limit) || limit < 1) {
       limit = 10;
     }

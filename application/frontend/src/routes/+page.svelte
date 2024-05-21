@@ -41,6 +41,7 @@
 /> -->
 <!-- {#if showCarousel} -->
   <Carousel />
+
 <!-- {/if} -->
 <!-- {#if showFilters}
   <Results />

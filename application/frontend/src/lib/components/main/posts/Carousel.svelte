@@ -6,23 +6,25 @@
 *
 * File: Carousel.svelte
 *
-* Description: Component to display recent posts based on 
+* Description: Component to display recent posts based on
 * Status (APPROVED) and Timestamp (LASTEST).
 **************************************************************/ -->
 
 <script>
+  import { onMount } from "svelte";
   import { Card, Button, Heading, P, Span } from "flowbite-svelte";
-  import { posts } from "../../../stores/store.js";
+  // import { posts } from "../../../stores/store.js";
   import { CaretLeftOutline, CaretRightOutline } from "flowbite-svelte-icons";
   import Message from "../popUps/Message.svelte";
   import Results from "./Results.svelte";
 
-  // Filter and sort posts
-  $: filteredPosts = $posts.sort((a, b) => {
-    const timestampA = new Date(a.timestamp).getTime();
-    const timestampB = new Date(b.timestamp).getTime();
-    return timestampB - timestampA; // Sort by timestamp descending
-  });
+  // // Filter and sort posts
+  // $: filteredPosts = $posts.sort((a, b) => {
+  //   const timestampA = new Date(a.timestamp).getTime();
+  //   const timestampB = new Date(b.timestamp).getTime();
+  //   return timestampB - timestampA; // Sort by timestamp descending
+  // });
+  let posts = [];
 
   let currentIndex = 0;
   const itemsPerPage = 5;
@@ -31,7 +33,7 @@
   function handleNext() {
     currentIndex = Math.min(
       currentIndex + itemsPerPage,
-      filteredPosts.length - itemsPerPage
+      posts.length - itemsPerPage
     );
   }
 
@@ -44,6 +46,32 @@
   function handleClick() {
     isButtonClicked = true;
   }
+
+  onMount(() => {
+  const params = new URLSearchParams({
+    limit: "10",
+    page: "1",
+  });
+
+  fetch(`/posts?${params.toString()}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+  .then((res) => {
+    if (!res.ok) {
+      throw new Error(`Server responded with status: ${res.status}`);
+    }
+    return res.json();
+  })
+  .then((data) => {
+    posts = data;
+  })
+  .catch((err) => {
+    console.error("Failed to fetch posts:", err);
+  });
+  });
 </script>
 
 <Heading tag="h1" class="mb-5" align="center">
@@ -52,11 +80,10 @@
 
 <div class="bg-gray-300 p-5 mb-10 border border-gray-300 rounded-lg shadow-md">
   <P align="left" weight="bold" size="2xl">Recent Posts</P>
-  <Results />
   <div
     class="grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 relative overflow-hidden"
   >
-    {#each filteredPosts.slice(currentIndex, currentIndex + itemsPerPage) as post}
+    {#each posts.slice(currentIndex, currentIndex + itemsPerPage) as post}
       <Card padding="none">
         <a href={`/viewPost/${post.post_id}`}>
           <img
