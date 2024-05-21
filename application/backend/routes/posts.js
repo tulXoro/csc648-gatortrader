@@ -16,7 +16,8 @@ const router = express.Router();
 
 router.get("/", async (req, res) => {
   try {
-    const { category, search } = req.query;
+    const { category, search, limit, page } = req.query;
+    if (limit)
     if (category && search) {
       const sql = `SELECT pp.*, t.couse_number, t.professor FROM t_product_post pp left outer join t_textbook t on pp.post_id = t.post_id WHERE
                       pp.category_id = ? AND
