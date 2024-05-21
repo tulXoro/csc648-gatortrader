@@ -151,8 +151,8 @@
       // const isInitialSearch = !sessionStorage.getItem('initialSearch');
       // if (isInitialSearch) {
       //   sessionStorage.setItem('initialSearch', 'true');
-        window.location.href = newUrl;
-        console.log("test");
+      window.location.href = newUrl;
+      console.log("test");
       // } else {
       //   window.history.pushState({ path: newUrl }, "", newUrl);
       //   console.log("not test");
