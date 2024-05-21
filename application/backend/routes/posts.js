@@ -27,9 +27,11 @@ router.get("/", async (req, res) => {
       page = 1;
     }
     const offset = (page - 1) * limit;
+    const selectClause =  `SELECT u.user_name, pp.*, t.couse_number, t.professor FROM t_product_post pp 
+                              join t_user u on pp.user_id = u.user_id
+                              left outer join t_textbook t on pp.post_id = t.post_id`;
     if (category && search) {
-      const sql = `SELECT pp.*, t.couse_number, t.professor FROM t_product_post pp left outer join t_textbook t on pp.post_id = t.post_id WHERE
-                      pp.category_id = ? AND
+      const sql = `${selectClause} WHERE pp.category_id = ? AND
                       (pp.item_name LIKE '%${search}%' OR pp.item_description LIKE '%${search}%') AND pp.status = 'APPROVED' ORDER BY timestamp DESC LIMIT ? OFFSET ?`;
       const [rows] = await db.query(sql, [category, limit, offset]);
       res.json(rows);
@@ -37,18 +39,18 @@ router.get("/", async (req, res) => {
     // when we receive a request to query by category
     else if (category) {
       const [rows] = await db.query(
-        "SELECT pp.*, t.couse_number, t.professor FROM t_product_post pp left outer join t_textbook t on pp.post_id = t.post_id WHERE pp.category_id = 1 AND pp.status = 'APPROVED' LIMIT ? OFFSET ?",
+        `${selectClause} WHERE pp.category_id = 1 AND pp.status = 'APPROVED' LIMIT ? OFFSET ?`,
         [category]
       );
       res.json(rows);
     } else if (search) {
-      const sql = `SELECT * FROM t_product_post WHERE (item_name LIKE '%${search}%' OR item_description LIKE '%${search}%')
-                      AND status = 'APPROVED' ORDER BY timestamp DESC LIMIT ? OFFSET ?`;
+      const sql = `${selectClause} WHERE (pp.item_name LIKE '%${search}%' OR pp.item_description LIKE '%${search}%')
+                              AND pp.status = 'APPROVED' ORDER BY pp.timestamp DESC LIMIT ? OFFSET ?`;
       const [rows] = await db.query(sql, [limit, offset]);
       res.json(rows);
     } else {
       const [rows] = await db.query(
-        "SELECT * FROM t_product_post WHERE status = 'APPROVED' ORDER BY timestamp DESC LIMIT ? OFFSET ?",
+        `${selectClause} WHERE pp.status = 'APPROVED' ORDER BY pp.timestamp DESC LIMIT ? OFFSET ?`,
         [limit, offset]
       );
       res.json(rows);
@@ -64,7 +66,7 @@ router.post("/", async (req, res) => {
   try {
     // Extract user data from the request body
     // console.log(req.body);
-    const { itemName, itemDescription, price, userId, status, categoryId } =
+    const { itemName, itemDescription, price, userId, status, categoryId, courseNumber, professor } =
       req.body;
     const sql =
       "INSERT INTO t_product_post (item_name, item_description, price, user_id, status, category_id) values (?, ?, ?, ?, ?, ?)";
@@ -76,10 +78,17 @@ router.post("/", async (req, res) => {
       status,
       categoryId,
     ]);
+    console.log('inserted a post', result);
+    if (courseNumber && professor) {
+      const { insertId } = result[0];
+      const sql2 = "INSERT INTO t_textbook (post_id, course_number, professor) values (?, ?, ?)";
+      const result2 = await db.query(sql2, [insertId, courseNumber, professor]);      
+    }
+
     res.status(201).json({
       message: `Product post from userId ${userId} is created successfully...`,
     });
-    console.log(result);
+    // console.log(result);
   } catch (err) {
     res.status(500).send("Error in create a product post..." + err);
   }
