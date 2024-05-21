@@ -10,7 +10,6 @@
 **************************************************************/ -->
 <script lang="ts">
   import Carousel from "$lib/components/main/posts/Carousel.svelte";
-  import Gallery from "$lib/components/main/posts/Gallery.svelte";
   import PostCards from "$lib/components/main/posts/PostCards.svelte";
 
   let showCarousel = true;
@@ -37,7 +36,6 @@
 /> -->
 <!-- {#if showCarousel} -->
 <Carousel />
-<PostCards />
 
 <!-- {/if} -->
 <!-- {#if showFilters}

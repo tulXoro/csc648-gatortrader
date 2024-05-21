@@ -2,6 +2,7 @@
   import { Card } from "flowbite-svelte";
   import Message from "../popUps/Message.svelte";
   import { formatDistanceToNow } from "date-fns";
+  import { posts } from "$lib/stores/store";
 
   export let post;
   // Function to calculate the time difference
