@@ -13,7 +13,12 @@
 
 import { writable } from "svelte/store";
 
+// const initialPosts =JSON.parse(localStorage.getItem('posts')) || [];
+// export const posts = writable(initialPosts);
 export const posts = writable([]);
 export const searchQuery = writable("");
 export const updateTrigger = writable(0); //0: nothing, 1: dsc, 2: asc
 
+// posts.subscribe((value) => {
+//     localStorage.setItem('posts', JSON.stringify(value));
+// });

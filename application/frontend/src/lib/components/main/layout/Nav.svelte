@@ -37,6 +37,7 @@
   export let isLoggedIn = false;
   export let username = "";
   let showLogoutDropdown = false;
+  let initialSearch = true;
 
   const dispatch = createEventDispatcher();
 
@@ -120,9 +121,9 @@
     }
 
     // Perform search if on the home page
-    if (window.location.pathname === "/") {
-      handleSearch();
-    }
+    // if (window.location.pathname === "/") {
+    //   handleSearch(true);
+    // }
   }
 
   async function handleSearch(): Promise<void> {
@@ -146,8 +147,16 @@
       }
 
       // Update browser history with new search parameters without triggering a page reload
-      const newUrl = `${window.location.pathname}${url.search}`;
-      window.history.pushState({ path: newUrl }, "", newUrl);
+      const newUrl = `/browse${url.search}`;
+      // const isInitialSearch = !sessionStorage.getItem('initialSearch');
+      // if (isInitialSearch) {
+      //   sessionStorage.setItem('initialSearch', 'true');
+        window.location.href = newUrl;
+        console.log("test");
+      // } else {
+      //   window.history.pushState({ path: newUrl }, "", newUrl);
+      //   console.log("not test");
+      // }
     } catch (error) {
       console.error("Error fetching posts:", error);
     }
