@@ -1,3 +1,14 @@
+<!-- /**************************************************************
+* Class: CSC-648-03 Spring 2024
+* Team: 05
+* GitHub ID: csc648-sp24-03-team05
+* Project: SWE Final Project
+*
+* File: Nav.svelte
+*
+* Description: Navigation bar component for the application.
+**************************************************************/ -->
+
 <script lang="ts">
   import {
     Button,
@@ -26,6 +37,7 @@
   export let categories: Category[] = [];
   export let isLoggedIn = false;
   export let username = "";
+  let showLogoutDropdown = false;
 
   const dispatch = createEventDispatcher();
 

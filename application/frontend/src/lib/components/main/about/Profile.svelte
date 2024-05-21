@@ -6,7 +6,7 @@
 *
 * File: Profile.svelte
 *
-* Description: Page route to display detailed information 
+* Description: Page route to display detailed information
 * of a team member.
 **************************************************************/ -->
 
@@ -29,8 +29,8 @@
   $: document.title = `GatorTrader | About Us - ${name}`;
 </script>
 
-<Header />
-<Nav />
+<!-- <Header />
+<Nav /> -->
 <main>
   <div
     class="bg-white dark:bg-gray-800 text-black-500 dark:text-gray-400 rounded-lg
@@ -80,4 +80,4 @@
     </div>
   </div>
 </main>
-<Footer />
+<!-- <Footer /> -->

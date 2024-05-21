@@ -19,22 +19,22 @@
 
   $: filteredPosts = $posts
     .filter((post) => post.status === "APPROVED")
-   
+
     .sort((a, b) => {
       const priceA = a.price;
       const priceB = b.price;
       if(sortOrder === "asc"){
-        
+
       return priceB - priceA;
       } else {
         return priceA - priceB;
       }
 
     });
- 
+
   let priceLowToHigh = false;
   let priceHighToLow = false;
-  
+
 
   function handleCheckboxClick(event) {
     const { id, checked } = event.target;
@@ -80,4 +80,3 @@
   <Checkbox id="priceHighToLow" checked={priceHighToLow} on:click={handleCheckboxClick}>Price: High to low</Checkbox>
 
 </div>
-

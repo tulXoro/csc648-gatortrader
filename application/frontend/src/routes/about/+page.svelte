@@ -48,8 +48,6 @@
 
 <title>GatorTrader | About Us</title>
 
-<Header />
-<Nav />
 <div
   class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 justify-items-center"
 >
@@ -66,4 +64,4 @@
     </Card>
   {/each}
 </div>
-<Footer />
+<!-- <Footer /> -->

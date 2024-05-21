@@ -1,3 +1,13 @@
+<!-- /**************************************************************
+* Class: CSC-648-03 Spring 2024
+* Team: 05
+* GitHub ID: csc648-sp24-03-team05
+* Project: SWE Final Project
+*
+* File: DropBox.svelte
+*
+* Description: DropBox component for uploading files.
+**************************************************************/ -->
 <script lang="ts">
   import { onMount, createEventDispatcher } from "svelte";
   import { Dropzone } from "flowbite-svelte";

@@ -17,7 +17,7 @@
 
 <title>GatorTrader | Registration</title>
 
-<Header />
-<Nav />
+<!-- <Header />
+<Nav /> -->
 <Registration />
-<Footer />
+<!-- <Footer /> -->

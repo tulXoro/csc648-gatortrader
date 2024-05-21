@@ -6,7 +6,7 @@
 *
 * File: +page.svelte
 *
-* Description: pages dedicated to registered users only 
+* Description: pages dedicated to registered users only
 **************************************************************/ -->
 <script>
   import Header from "$lib/components/main/layout/Header.svelte";
@@ -20,8 +20,7 @@
 
 <title>GatorTrader | Dashboard</title>
 
-<Header />
-<Nav />
+
 <div class="container mx-auto px-4">
   <div
     class="md:flex md:items-center md:space-x-4 md:rtl:space-x-reverse md:pb-20"
@@ -47,4 +46,4 @@
   </Tabs>
 </div>
 
-<Footer />
+<!-- <Footer /> -->

@@ -3,6 +3,8 @@
   import Profile from "$lib/components/main/about/Profile.svelte";
 </script>
 
+<title>GatorTrader | About Us - {name}</title>
+
 <Profile
   name="Cole Douglas"
   photo={img}

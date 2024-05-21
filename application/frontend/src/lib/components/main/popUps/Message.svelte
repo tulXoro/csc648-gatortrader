@@ -6,8 +6,8 @@
 *
 * File: Message.svelte
 *
-* Description: Component for a modal message form. The message 
-* content allow user(s) to send a message to a seller and cancel 
+* Description: Component for a modal message form. The message
+* content allow user(s) to send a message to a seller and cancel
 * the operation if needed.
 **************************************************************/ -->
 <script>
@@ -103,7 +103,7 @@
       <div class="mb-6">
         <Textarea
           id="textarea-id"
-          placeholder="Please type your message to seller... 
+          placeholder="Please type your message to seller...
 Please include contact info such as email or phone number!"
           rows="6"
           name="message"

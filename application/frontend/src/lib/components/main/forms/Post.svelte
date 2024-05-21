@@ -6,7 +6,7 @@
 *
 * File: Post.svelte
 *
-* Description: Component to display a form for registration. 
+* Description: Component to display a form for registration.
 **************************************************************/ -->
 <script lang="ts">
   import {
