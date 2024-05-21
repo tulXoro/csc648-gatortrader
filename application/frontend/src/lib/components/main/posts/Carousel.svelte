@@ -12,22 +12,28 @@
 
 <script>
   import { onMount } from "svelte";
-  import { Card, Button, Heading, P, Span } from "flowbite-svelte";
+  import { Button, Heading, P, Span } from "flowbite-svelte";
   // import { posts } from "../../../stores/store.js";
-  import { CaretLeftOutline, CaretRightOutline } from "flowbite-svelte-icons";
-  import Message from "../popUps/Message.svelte";
-  import Results from "./Results.svelte";
+  import {
+    CaretLeftOutline,
+    CaretLeftSolid,
+    CaretRightOutline,
+    CaretRightSolid,
+  } from "flowbite-svelte-icons";
+  import ProductPost from "./ProductPost.svelte";
 
-  // // Filter and sort posts
-  // $: filteredPosts = $posts.sort((a, b) => {
-  //   const timestampA = new Date(a.timestamp).getTime();
-  //   const timestampB = new Date(b.timestamp).getTime();
-  //   return timestampB - timestampA; // Sort by timestamp descending
-  // });
   let posts = [];
-
   let currentIndex = 0;
   const itemsPerPage = 5;
+
+  // Function to sort posts by timestamp
+  function sortPostsByTimestamp() {
+    posts.sort((a, b) => {
+      const timestampA = new Date(a.timestamp).getTime();
+      const timestampB = new Date(b.timestamp).getTime();
+      return timestampB - timestampA; // Sort by timestamp descending
+    });
+  }
 
   // scroll buttons
   function handleNext() {
@@ -41,36 +47,31 @@
     currentIndex = Math.max(currentIndex - itemsPerPage, 0);
   }
 
-  let isButtonClicked = false;
-
-  function handleClick() {
-    isButtonClicked = true;
-  }
-
   onMount(() => {
-  const params = new URLSearchParams({
-    limit: "10",
-    page: "1",
-  });
+    const params = new URLSearchParams({
+      limit: "10",
+      page: "1",
+    });
 
-  fetch(`/posts?${params.toString()}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
-  .then((res) => {
-    if (!res.ok) {
-      throw new Error(`Server responded with status: ${res.status}`);
-    }
-    return res.json();
-  })
-  .then((data) => {
-    posts = data;
-  })
-  .catch((err) => {
-    console.error("Failed to fetch posts:", err);
-  });
+    fetch(`/posts?${params.toString()}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`Server responded with status: ${res.status}`);
+        }
+        return res.json();
+      })
+      .then((data) => {
+        posts = data;
+        sortPostsByTimestamp();
+      })
+      .catch((err) => {
+        console.error("Failed to fetch posts:", err);
+      });
   });
 </script>
 
@@ -78,42 +79,29 @@
   The marketplace for <Span highlight>SFSU</Span>. Buy and sell locally.
 </Heading>
 
-<div class="bg-gray-300 p-5 mb-10 border border-gray-300 rounded-lg shadow-md">
-  <P align="left" weight="bold" size="2xl">Recent Posts</P>
-  <Results />
+<div class="bg-slate-700 p-5 mb-10 border border-gray-300 rounded-lg shadow-md">
+  <p class="text-white font-bold text-2xl">Recent Posts</p>
   <div
     class="grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 relative overflow-hidden"
   >
     {#each posts.slice(currentIndex, currentIndex + itemsPerPage) as post}
-      <Card padding="none">
-        <a href={`/viewPost/${post.post_id}`}>
-          <img
-            class="object-cover w-full h-64"
-            src={`/image/thumbnails/${post.image_file}`}
-            alt={post.item_name}
-          /></a
-        >
-
-        <div class="flex-grow flex flex-col justify-end bg-white">
-          <p class="ml-2 mb-2 text-2xl font-black">{post.item_name}</p>
-          <p class="mr-2 mb-2 text-3xl font-black" style="text-align: right;">
-            ${post.price}
-          </p>
-          <Message {post} />
-        </div>
-      </Card>
+      <ProductPost {post} />
     {/each}
+
+    <Button
+      on:click={handlePrev}
+      class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-slate-500/25 px-4 py-64 rounded-lg"
+      style="background-color: slate; color: white; border: none;"
+    >
+      <CaretLeftSolid class="w-4 h-8" />
+    </Button>
+
+    <Button
+      on:click={handleNext}
+      class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-slate-500/25 px-4 py-64 rounded-lg"
+      style="background-color: slate; color: white; border: none;"
+    >
+      <CaretRightSolid class="w-4 h-8" />
+    </Button>
   </div>
-  <Button
-    pill={true}
-    on:click={handlePrev}
-    class="absolute left-0 transform -translate-y-1/2 bg-red-300/50 "
-    ><CaretLeftOutline class="w-4 h-4" /></Button
-  >
-  <Button
-    pill={true}
-    on:click={handleNext}
-    class="absolute right-0 transform -translate-y-1/2 bg-red-300/50"
-    ><CaretRightOutline class="w-4 h-4" /></Button
-  >
 </div>

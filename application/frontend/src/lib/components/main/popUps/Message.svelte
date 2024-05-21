@@ -10,7 +10,8 @@
 * content allow user(s) to send a message to a seller and cancel
 * the operation if needed.
 **************************************************************/ -->
-<script>
+<script lang="ts">
+  import { formatDistanceToNow } from "date-fns";
   import { Button, Modal, A, P, Textarea } from "flowbite-svelte";
   import { onMount } from "svelte";
 
@@ -31,6 +32,11 @@
       console.error("Failed to fetch login status:", error);
     }
   });
+
+  // Function to calculate the time difference
+  function getTimeDifference(timestamp: string) {
+    return formatDistanceToNow(new Date(timestamp), { addSuffix: true });
+  }
 
   async function sendMessage() {
     if (!isLoggedIn) {
@@ -81,30 +87,50 @@
   style="background-color:steelblue; color: white;">Message</Button
 >
 
-<Modal bind:open={formModal} size="sm" autoclose={false}>
+<Modal bind:open={formModal} size="lg" autoclose={false}>
   <div class="justify-center">
-    <P align="center" size="3xl" weight="semibold" class="mb-6"
+    <P
+      align="center"
+      size="3xl"
+      weight="semibold"
+      class="mb-6 rtl:space-x-reverse pb-5 mb-5 border-b border-gray-300"
       >{post.item_name}</P
     >
     <div class="message-detail">
-      <div class="flex mb-10">
+      <div
+        class="flex mb-10 rtl:space-x-reverse pb-5 mb-5 border-b border-gray-300"
+      >
         <div class="w-32 h-32 flex-shrink-0">
-          <img
-            class="object-cover w-full h-full"
-            src={`/image/thumbnails/${post.image_file}`}
-            alt={post.item_name}
-          />
+          {#if post.image_file}
+            <img
+              class="object-cover w-full h-full"
+              src={`/image/thumbnails/${post.image_file}`}
+              alt={post.item_name}
+            />
+          {:else}
+            <!-- Use a stock image -->
+            <img
+              class="object-cover w-full h-full"
+              src={`/image/no_image.jpg`}
+              alt="Stock Image"
+            />
+          {/if}
         </div>
+
         <div class="flex-column ml-3">
           <P align="left" size="lg" weight="normal">Price: ${post.price}</P>
+          <P align="left" size="sm" weight="normal">
+            Posted: {getTimeDifference(post.timestamp)}
+          </P>
         </div>
       </div>
 
       <div class="mb-6">
         <Textarea
           id="textarea-id"
-          placeholder="Please type your message to seller...
-Please include contact info such as email or phone number!"
+          placeholder="Please type your message to the seller...
+Ex. Hi there! I'm interested in purchasing your item.
+You can reach me at john.doe@example.com or by phone at +1 (415) 123-4567."
           rows="6"
           name="message"
           bind:value={message}
