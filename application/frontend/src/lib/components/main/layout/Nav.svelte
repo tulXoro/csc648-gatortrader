@@ -210,72 +210,79 @@
 </script>
 
 <!-- Navigation bar layout -->
-<Navbar class="bg-gray-900 text-white sticky top-0 md:py-5">
-  <div class="flex">
-    <NavBrand href="/">
-      <img src={SFSULogo} class="me-5 h-20" alt="SFSU Logo" />
-      <span class="text-6xl font-bold dark:text-white">GatorTrader</span>
-    </NavBrand>
-    <div class="flex items-center ml-10">
-      <NavUl>
-        <NavLi href="/about" class="text-white text-2xl">About</NavLi>
+<nav class="bg-gray-900 text-white sticky top-0 md:py-10">
+  <div class="flex items-center justify-center w-full">
+    <a href="/" class="flex item-center">
+      <img src={SFSULogo} class="mr-3 ml-5 h-20" alt="SFSU Logo" />
+      <span class="text-7xl font-bold dark:text-white">GatorTrader</span>
+    </a>
+    <div class="flex items-center flex-grow">
+      <NavUl class="flex items-center">
+        <NavLi href="/about" class=" ml-5 mr-5 text-white text-2xl">About</NavLi
+        >
       </NavUl>
-      <Button
-        class="rounded-e-none border-e-0 !p-4"
-        style="background-color:lightgray; color: black;"
-      >
-        {categories[selectedCategory]?.label || "All"}
-        <ChevronDownOutline class="w-5 h-5" />
-      </Button>
-      <Dropdown>
-        {#each categories as { id, label }}
-          <DropdownItem
-            on:click={() => updateCategory(id)}
-            class={selectedCategory === id ? "underline" : ""}
-            style="color: black;"
-          >
-            {label}
-          </DropdownItem>
-        {/each}
-      </Dropdown>
+      <div class="flex items-center space-x-0">
+        <Button
+          class="rounded-e-none border-e-0 !p-5"
+          style="background-color:lightgray; color: black;"
+        >
+          {categories[selectedCategory]?.label || "All"}
+          <ChevronDownOutline class="w-5 h-5" />
+        </Button>
+        <Dropdown>
+          {#each categories as { id, label }}
+            <DropdownItem
+              on:click={() => updateCategory(id)}
+              class={selectedCategory === id ? "underline" : ""}
+              style="color: black;"
+            >
+              {label}
+            </DropdownItem>
+          {/each}
+        </Dropdown>
+        <Search
+          class="rounded-none py-4"
+          style="width: 650px;"
+          placeholder={selectedCategory === 3
+            ? "Search by course, title, or professor"
+            : "Search GatorTrader..."}
+          bind:value={searchQuery}
+          on:keypress={handleKeyPress}
+        />
+        <Button
+          class="border-e-0 rounded-s-none !p-5"
+          style="background-color:steelblue; color: white;"
+          on:click={searchExecution}
+        >
+          <SearchOutline class="flex w-5 h-5" />
+        </Button>
+      </div>
 
-      <Search
-        class="flex-grow rounded-none py-3 mr-4 w-full"
-        placeholder={selectedCategory === 3
-          ? "Search by course, title, or professor"
-          : "Search GatorTrader..."}
-        bind:value={searchQuery}
-        on:keypress={handleKeyPress}
-      />
-      <Button
-        class="border-e-0 rounded-s-none !p-4"
-        style="background-color:steelblue; color: white;"
-        on:click={searchExecution}
-      >
-        <SearchOutline class="w-5 h-5" />
-      </Button>
-
-      <NavUl class="flex flex-row">
-        <NavLi href="/post" class="text-white text-2xl">Post</NavLi>
+      <NavUl class="flex items-center space-x-4">
+        <NavLi href="/post" class="ml-5 text-white text-2xl">Post</NavLi>
         {#if isLoggedIn}
-          <NavLi class="text-white text-2xl relative cursor-pointer">
-            Welcome, {username}
-            <ChevronDownOutline class=" w-3 h-3" />
-          </NavLi>
-          <Dropdown class="w-40">
-            <DropdownItem href="/dashboard" class="text-black"
-              >Dashboard</DropdownItem
+          <div class="flex items-center space-x-2">
+            <NavLi
+              class="text-white text-2xl relative cursor-pointer flex items-center space-x-2"
             >
-            <DropdownItem slot="footer" class="text-black" on:click={logout}
-              >Sign out</DropdownItem
-            >
-          </Dropdown>
+              <span class="text-white text-2xl">Welcome, {username}</span>
+              <ChevronDownOutline class=" flex w-5 h-5" />
+            </NavLi>
+            <Dropdown class="w-40">
+              <DropdownItem href="/dashboard" class="text-black"
+                >Dashboard</DropdownItem
+              >
+              <DropdownItem slot="footer" class="text-black" on:click={logout}
+                >Sign out</DropdownItem
+              >
+            </Dropdown>
+          </div>
         {:else}
-          <NavLi href="/registration" class="text-white text-2xl"
+          <NavLi href="/registration" class="ml-5 text-white text-2xl"
             >Register</NavLi
           >
         {/if}
       </NavUl>
     </div>
   </div>
-</Navbar>
+</nav>
