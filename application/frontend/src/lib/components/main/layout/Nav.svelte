@@ -37,7 +37,6 @@
   export let isLoggedIn = false;
   export let username = "";
   let showLogoutDropdown = false;
-  let initialSearch = true;
 
   const dispatch = createEventDispatcher();
 
@@ -51,12 +50,10 @@
         throw new Error("Failed to fetch categories");
       }
       const data = await response.json();
-      // console.log("Fetched categories:", data);
       categories = data.map((category: any) => ({
         id: category.id,
         label: category.name,
       }));
-      // console.log("Processed categories:", categories);
     } catch (error) {
       console.error("Error fetching categories:", error);
     }
@@ -87,7 +84,6 @@
       if (response.ok) {
         isLoggedIn = false;
         username = "";
-        // Optionally, redirect to the home page or login page
         window.location.href = "/";
       } else {
         console.error("Failed to log out:", response.statusText);
@@ -98,25 +94,17 @@
   }
 
   onMount(async () => {
-    // load categories
     loadCategories();
-
-    loadURL();
     await checkSessionStatus();
-    //Check if we are on the browse page
-    if(isBrowsePage()){
-      console.log("its on browse ");
-      //load posts from store if they exist
-      // if(get(posts).length > 0){
-      //   searchState.update((state) => ({...state, results: get(posts)}));
-      // }
+    loadURL();
+
+    if (isBrowsePage()) {
+      performSearch();
     }
   });
 
   function isBrowsePage(): boolean {
-    
-    return window.location.pathname ==="/browse";
-    
+    return window.location.pathname === "/browse";
   }
 
   function loadURL() {
@@ -133,16 +121,10 @@
       searchQuery = search;
       searchState.update((state) => ({ ...state, searchQuery }));
     }
-
-    // Perform search if on the home page
-    // if (window.location.pathname !== "/") {
-    //   handleSearch(true);
-    // }
   }
 
   async function handleSearch(): Promise<void> {
     try {
-      // Construct the URL with search parameters
       const url = new URL("/posts", window.location.origin);
       if (selectedCategory !== 0) {
         url.searchParams.append("category", selectedCategory.toString());
@@ -160,48 +142,35 @@
         console.error("Failed to fetch posts");
       }
 
-      // Update browser history with new search parameters without triggering a page reload
       const newUrl = `/browse${url.search}`;
-      // const isInitialSearch = !sessionStorage.getItem('initialSearch');
-      // if (isInitialSearch) {
-      //   sessionStorage.setItem('initialSearch', 'true');
-      if(!isBrowsePage()){
+      if (!isBrowsePage()) {
         window.location.href = newUrl;
-        
-      } else{
+      } else {
         window.history.pushState({ path: newUrl }, "", newUrl);
       }
-      // } else {
-      //   window.history.pushState({ path: newUrl }, "", newUrl);
-      //   console.log("not test");
-      // }
     } catch (error) {
       console.error("Error fetching posts:", error);
     }
   }
 
-  // Function to update selected category without triggering search
+  async function performSearch() {
+    await handleSearch();
+  }
+
   function updateCategory(categoryId: number): void {
     selectedCategory = categoryId;
     searchState.update((state) => ({ ...state, selectedCategory }));
   }
 
-  // provides search results
   async function searchExecution() {
-    // Check if search query exceeds 40 characters to prevent injection
     if (searchQuery.trim().length > 40) {
       alert("Search query is too long. Please limit it to 40 characters.");
       return;
-    } else if (searchQuery.trim() !== "") {
-      await handleSearch();
-      dispatch("searchButtonClick");
-    } else {
-      // If empty, perform search based on selected category
-      handleSearch();
     }
+    await handleSearch();
+    dispatch("searchButtonClick");
   }
 
-  // if "Enter" key is press redirect
   function handleKeyPress(event: KeyboardEvent): void {
     if (event.key === "Enter") {
       searchExecution();
@@ -210,7 +179,6 @@
 </script>
 
 <Navbar class="bg-gray-900 text-white sticky top-0 md:py-5">
-  <!-- Left side -->
   <div class="flex">
     <NavBrand href="/">
       <img src={SFSULogo} class="me-5 h-20" alt="SFSU Logo" />
@@ -220,7 +188,6 @@
       <NavUl>
         <NavLi href="/about" class="text-white text-2xl">About</NavLi>
       </NavUl>
-      <!-- Middle: Search query -->
       <Button
         class="rounded-e-none border-e-0 !p-4"
         style="background-color:lightgray; color: black;"
@@ -231,9 +198,7 @@
       <Dropdown>
         {#each categories as { id, label }}
           <DropdownItem
-            on:click={() => {
-              updateCategory(id);
-            }}
+            on:click={() => updateCategory(id)}
             class={selectedCategory === id ? "underline" : ""}
             style="color: black;"
           >
@@ -242,7 +207,6 @@
         {/each}
       </Dropdown>
 
-      <!-- Search -->
       <Search
         class="flex-grow rounded-none py-3 mr-4 w-full"
         placeholder={selectedCategory === 3
@@ -259,7 +223,6 @@
         <SearchOutline class="w-5 h-5" />
       </Button>
 
-      <!-- Right side -->
       <NavUl class="flex flex-row">
         <NavLi href="/post" class="text-white text-2xl">Post</NavLi>
         {#if isLoggedIn}
@@ -268,19 +231,13 @@
             <ChevronDownOutline class=" w-3 h-3" />
           </NavLi>
           <Dropdown class="w-40">
-            <DropdownItem href="/dashboard" class="text-black"
-              >Dashboard</DropdownItem
-            >
-            <DropdownItem slot="footer" class="text-black" on:click={logout}
-              >Sign out</DropdownItem
-            >
+            <DropdownItem href="/dashboard" class="text-black">Dashboard</DropdownItem>
+            <DropdownItem slot="footer" class="text-black" on:click={logout}>Sign out</DropdownItem>
           </Dropdown>
         {:else}
-          <NavLi href="/registration" class="text-white text-2xl"
-            >Register</NavLi
-          >
+          <NavLi href="/registration" class="text-white text-2xl">Register</NavLi>
         {/if}
       </NavUl>
     </div>
-  </div></Navbar
->
+  </div>
+</Navbar>
