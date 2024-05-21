@@ -36,11 +36,12 @@ router.post("/", async (req, res) => {
     req.session.user = { id: user_id, username: userName };
     console.log("Session user set:", req.session.user);
     res.status(200).json({
-      message: `${userName} is logged in successfully...`,
+      // this shows a red alert
+      message: `Log in successful.`,
       userId: user_id,
     });
   } catch (err) {
-    res.status(500).send("Error in login..." + err);
+    res.status(500).send("Error in login." + err);
   }
 });
 

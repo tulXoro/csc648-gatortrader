@@ -26,6 +26,7 @@
   import { posts } from "../../../stores/store.js";
   import { searchState } from "../../../stores/searchStore";
   import { get } from "svelte/store";
+  import { flashStore } from "$lib/stores/flashStore.js";
 
   // Define the interface for categories
   interface Category {
@@ -90,7 +91,12 @@
       if (response.ok) {
         isLoggedIn = false;
         username = "";
-        window.location.href = "/";
+        triggerSuccess("Logged out successfully.");
+
+        // Delay redirection to allow flash message to be displayed
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 1000);
       } else {
         console.error("Failed to log out:", response.statusText);
       }
@@ -180,7 +186,9 @@
   // Function to execute the search when the search button is clicked
   async function searchExecution() {
     if (searchQuery.trim().length > 40) {
-      alert("Search query is too long. Please limit it to 40 characters.");
+      triggerError(
+        "Search query is too long. Please limit it to 40 characters."
+      );
       return;
     }
     await handleSearch();
@@ -192,6 +200,12 @@
     if (event.key === "Enter") {
       searchExecution();
     }
+  }
+  function triggerError(message: string) {
+    flashStore.add(message, "error", 5000);
+  }
+  function triggerSuccess(message: string) {
+    flashStore.add(message, "success", 5000);
   }
 </script>
 
@@ -249,11 +263,17 @@
             <ChevronDownOutline class=" w-3 h-3" />
           </NavLi>
           <Dropdown class="w-40">
-            <DropdownItem href="/dashboard" class="text-black">Dashboard</DropdownItem>
-            <DropdownItem slot="footer" class="text-black" on:click={logout}>Sign out</DropdownItem>
+            <DropdownItem href="/dashboard" class="text-black"
+              >Dashboard</DropdownItem
+            >
+            <DropdownItem slot="footer" class="text-black" on:click={logout}
+              >Sign out</DropdownItem
+            >
           </Dropdown>
         {:else}
-          <NavLi href="/registration" class="text-white text-2xl">Register</NavLi>
+          <NavLi href="/registration" class="text-white text-2xl"
+            >Register</NavLi
+          >
         {/if}
       </NavUl>
     </div>

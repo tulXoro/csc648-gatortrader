@@ -10,6 +10,7 @@
 **************************************************************/ -->
 <script lang="ts">
   import { goto } from "$app/navigation";
+  import { flashStore } from "$lib/stores/flashStore";
   import {
     Input,
     Label,
@@ -78,28 +79,30 @@
 
   async function handleSubmit() {
     if (!checkRequiredFields()) {
-      alert("Please fill in all required fields.");
+      triggerError("Please fill in all required fields.");
       return;
     }
     if (isSignUp) {
       if (!checkNameFields()) {
-        alert("Please enter your first and last name.");
+        triggerError("Please enter your first and last name.");
         return;
       }
       if (!validateEmail()) {
-        alert("Please enter a valid email address ending with @sfsu.edu.");
+        triggerError(
+          "Please enter a valid email address ending with @sfsu.edu."
+        );
         return;
       }
       if (!validateConfirmPassword()) {
-        alert("Passwords do not match.");
+        triggerError("Passwords do not match.");
         return;
       }
       if (!checkboxChecked) {
-        alert("Please agree to the terms and conditions.");
+        triggerError("Please agree to the terms and conditions.");
         return;
       }
       if (!Object.values(criteria).every((value) => value)) {
-        alert("Password does not meet all criteria.");
+        triggerError("Password does not meet all criteria.");
         return;
       }
     }
@@ -137,14 +140,24 @@
         sessionStorage.setItem("token", responseData.token);
       }
 
-      // if successful, redirect to dashboard
+      if (isSignUp) {
+        // If it's a sign-up operation, trigger success message for registration
+        triggerSuccess("Registration successful!");
+      } else {
+        // If it's a login operation, trigger success message for login
+        triggerSuccess("Login successful!");
+      }
       goto("/dashboard");
-
-      alert(responseData.message);
     } catch (error) {
       console.error("There was a problem with the fetch operation:", error);
-      alert("There was an error. Please try again later.");
+      triggerError("Username or password does not match.");
     }
+  }
+  function triggerError(message: string) {
+    flashStore.add(message, "error", 5000);
+  }
+  function triggerSuccess(message: string) {
+    flashStore.add(message, "success", 5000);
   }
 </script>
 
