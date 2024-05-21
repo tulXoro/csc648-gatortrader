@@ -109,8 +109,6 @@
   {/if}
 </div>
 
-<Footer />
-
 <style>
   .container {
     display: flex;
