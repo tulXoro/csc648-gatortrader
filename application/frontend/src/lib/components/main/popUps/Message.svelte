@@ -11,6 +11,7 @@
 * the operation if needed.
 **************************************************************/ -->
 <script lang="ts">
+  import { flashStore } from "$lib/stores/flashStore";
   import { formatDistanceToNow } from "date-fns";
   import { Button, Modal, A, P, Textarea } from "flowbite-svelte";
   import { onMount } from "svelte";
@@ -40,11 +41,11 @@
 
   async function sendMessage() {
     if (!isLoggedIn) {
-      alert("You must be logged in to send a message.");
+      triggerError("You must be logged in to send a message.");
       return;
     }
     if (!message.trim()) {
-      alert("Message cannot be empty");
+      triggerError("Message cannot be empty");
       return;
     }
 
@@ -72,12 +73,21 @@
       formModal = false;
     } catch (error) {
       console.error("There was a problem with the fetch operation:", error);
-      alert("There was an error sending the message. Please try again later.");
+      triggerError(
+        "There was an error sending the message. Please try again later."
+      );
     }
   }
 
   function handleClose() {
     formModal = false;
+  }
+
+  function triggerError(message: string) {
+    flashStore.add(message, "error", 5000);
+  }
+  function triggerSuccess(message: string) {
+    flashStore.add(message, "success", 5000);
   }
 </script>
 
