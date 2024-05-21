@@ -97,7 +97,9 @@
   }
 
   onMount(async () => {
+    // load categories
     loadCategories();
+
     loadURL();
     await checkSessionStatus();
   });

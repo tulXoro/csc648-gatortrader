@@ -33,12 +33,12 @@
 </script>
 
 <title>GatorTrader | Homepage</title>
-
+<!--
 <Header />
 <Nav
   on:searchQueryChange={handleSearchQueryChange}
   on:searchButtonClick={handleSearchButtonClick}
-/>
+/> -->
 {#if showCarousel}
   <Carousel />
 {/if}
@@ -54,4 +54,4 @@
     <PostCards />
   </div>
 {/if}
-<Footer />
+<!-- <Footer /> -->

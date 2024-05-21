@@ -6,7 +6,7 @@
 *
 * File: Profile.svelte
 *
-* Description: Page route to display detailed information 
+* Description: Page route to display detailed information
 * of a team member.
 **************************************************************/ -->
 
@@ -26,11 +26,11 @@
   export let email = "";
 </script>
 
-<Header />
-<Nav />
+<!-- <Header />
+<Nav /> -->
 <main>
   <div class="bg-white dark:bg-gray-800 text-black-500 dark:text-gray-400 rounded-lg
-       border border-gray-200 dark:border-gray-700 divide-gray-200 dark:divide-gray-700 shadow-md flex justify-center items-center" 
+       border border-gray-200 dark:border-gray-700 divide-gray-200 dark:divide-gray-700 shadow-md flex justify-center items-center"
        style="padding:10px; text-align:center ">
     <div class="flex flex-wrap justify-center items-center gap-8">
       <div class="w-full md:w-1/2 flex justify-center">
@@ -72,4 +72,4 @@
     </div>
   </div>
 </main>
-<Footer />
+<!-- <Footer /> -->

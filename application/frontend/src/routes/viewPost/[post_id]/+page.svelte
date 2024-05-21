@@ -51,8 +51,8 @@
 
 <title>GatorTrader | View Post </title>
 
-<Header />
-<Nav />
+<!-- <Header />
+<Nav /> -->
 
 <!-- Main content -->
 <div class="container">
