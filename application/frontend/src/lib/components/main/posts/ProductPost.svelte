@@ -1,0 +1,49 @@
+<script lang="ts">
+  import { Card } from "flowbite-svelte";
+  import Message from "../popUps/Message.svelte";
+  import { formatDistanceToNow } from "date-fns";
+
+  export let post;
+  // Function to calculate the time difference
+  function getTimeDifference(timestamp: string) {
+    return formatDistanceToNow(new Date(timestamp), { addSuffix: true });
+  }
+</script>
+
+<Card
+  padding="none"
+  class="border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg"
+>
+  <a href={`/viewPost/${post.post_id}`}>
+    {#if post.image_file}
+      <img
+        class="object-cover w-full h-64"
+        src={`/image/thumbnails/${post.image_file}`}
+        alt={post.item_name}
+      />
+    {:else}
+      <!-- Use a stock image -->
+      <img
+        class="object-cover w-full h-64"
+        src={`/image/no_image.jpg`}
+        alt="Stock Image"
+      />
+    {/if}
+  </a>
+
+  <div class="p-4">
+    <p
+      class="text-2xl font-bold mb-2"
+      style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+    >
+      {post.item_name}
+    </p>
+    <p class="text-md font-semibold mb-4">{post.item_description}</p>
+    <p class="text-sm text-gray-700 mb-4">
+      Posted: {getTimeDifference(post.timestamp)}
+    </p>
+    <p class="text-3xl font-semibold text-right">${post.price}</p>
+  </div>
+
+  <Message {post} />
+</Card>

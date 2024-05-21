@@ -8,48 +8,75 @@
 *
 * Description: Component will be a sidebar with togglable filter buttons.
 **************************************************************/ -->
-<script>
-    import { Sidebar, SidebarGroup, SidebarItem, SidebarWrapper, Range, Label, Checkbox } from 'flowbite-svelte';
-    import { ChartPieSolid, GridSolid, CartSolid, MailBoxSolid, UserSolid, ArrowRightToBracketOutline, EditOutline } from 'flowbite-svelte-icons';
-    let spanClass = 'flex-1 ms-3 whitespace-nowrap';
-    let stepValue = 2.5;
-  </script>
+<script lang="ts">
+  import { Label, Checkbox, A } from "flowbite-svelte";
+  import { derived } from "svelte/store";
+  import { posts, updateTrigger } from "$lib/stores/store";
 
-<div class="rounded border border-gray-200 dark:border-gray-700" style="padding-bottom:10px">
-    <Label>Price Range</Label>
-    <Checkbox>Under $20</Checkbox>
-    <Checkbox>$20 to $50</Checkbox>
-    <Checkbox>Over $50</Checkbox>
+
+
+  let sortOrder = "dsc";
+
+  $: filteredPosts = $posts
+    .filter((post) => post.status === "APPROVED")
+
+    .sort((a, b) => {
+      const priceA = a.price;
+      const priceB = b.price;
+      if(sortOrder === "asc"){
+
+      return priceB - priceA;
+      } else {
+        return priceA - priceB;
+      }
+
+    });
+
+  let priceLowToHigh = false;
+  let priceHighToLow = false;
+
+
+  function handleCheckboxClick(event) {
+    const { id, checked } = event.target;
+    console.log('SOMETHING IS HAPPENING');
+    switch(id) {
+      case 'priceLowToHigh':
+        priceLowToHigh = checked;
+        if (checked) {
+          console.log('ascneding order');
+          sortOrder = "asc";
+          priceHighToLow = false;
+        }
+        break;
+      case 'priceHighToLow':
+        priceHighToLow = checked;
+        if (checked) {
+          console.log('dscending order');
+          sortOrder = "dsc";
+          priceLowToHigh = false;
+        }
+        break;
+      default:
+        break;
+    }
+
+    console.log(filteredPosts);
+    if(sortOrder === 'dsc'){
+      updateTrigger.set(1);
+    } else if(sortOrder==='asc'){
+      updateTrigger.set(2);
+    }
+  }
+
+
+</script>
+
+<div
+  class="rounded border border-gray-200 dark:border-gray-700"
+  style="padding-bottom:10px"
+>
+  <Label>Sort By:</Label>
+  <Checkbox id="priceLowToHigh" checked={priceLowToHigh} on:click={handleCheckboxClick}>Price: Low to high</Checkbox>
+  <Checkbox id="priceHighToLow" checked={priceHighToLow} on:click={handleCheckboxClick}>Price: High to low</Checkbox>
+
 </div>
-
-<div class="rounded border border-gray-200 dark:border-gray-700" style="padding-bottom:10px">
-    <Label>Post Date</Label>
-    <Checkbox>Less than 3 days ago</Checkbox>
-    <Checkbox>3 days to 2 weeks</Checkbox>
-    <Checkbox>Over 2 weeks</Checkbox>
-</div>
-
-<!-- <Range id="range-steps" min="0" max="9999" bind:value={stepValue} step="0.25" />
-<p>Value: {stepValue}</p> -->
-<!--   
-  <Sidebar>
-    <SidebarWrapper>
-      <SidebarGroup>
-        <SidebarItem label="Dashboard">
-          <svelte:fragment slot="icon">
-            <ChartPieSolid class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
-          </svelte:fragment>
-            
-        </SidebarItem>
-        <SidebarItem label="Price">
-            <Range id="range-steps" min="0" max="9999" bind:value={stepValue} step="0.25" />
-            <p>Value: {stepValue}</p>
-        </SidebarItem>
-     
-      
-       
-  
-        
-      </SidebarGroup>
-    </SidebarWrapper>
-  </Sidebar> -->

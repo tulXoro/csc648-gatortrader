@@ -6,31 +6,29 @@
 *
 * File: Post.svelte
 *
-* Description: Component to display a form for registration. 
+* Description: Component to display a form for registration.
 **************************************************************/ -->
 <script lang="ts">
   import {
     Input,
     Label,
     Button,
-    Checkbox,
-    A,
     P,
     Textarea,
     Dropdown,
     DropdownItem,
   } from "flowbite-svelte";
   import { ChevronDownOutline } from "flowbite-svelte-icons";
-  import DropBox from "../popUps/DropBox.svelte";
   import SignUpPop from "../popUps/SignUpPop.svelte";
+  import { goto } from "$app/navigation";
 
   let title = "";
+  let selectedCategory = 0;
+  let bookInfo = "";
   let description = "";
   let price = "";
-  let selectedCategory = 0;
-  let checkboxChecked = false;
-  let courseNumber = "";
-  let professor = "";
+  let image_file: File | null = null;
+  let isLoggedIn = false;
 
   const categories = [
     { id: 0, label: "Choose one" },
@@ -52,7 +50,7 @@
 
     // If the selected category is textbooks, also check if courseNumber and professor are filled
     if (selectedCategory === 3) {
-      return !!courseNumber.trim() && !!professor.trim();
+      return !!bookInfo.trim();
     }
 
     // Return true if all required fields are filled for other categories
@@ -84,8 +82,30 @@
     price = formattedValue;
   }
 
+  // Ensure the event parameter is of the correct type
+  function handleFileChange(event: Event) {
+    const target = event.target as HTMLInputElement;
+    const files = target.files;
+    if (files && files.length > 0) {
+      image_file = files[0];
+    }
+  }
+
   // Function to handle form submission
-  function handleSubmit(): void {
+  async function handleSubmit() {
+    if (!isLoggedIn) {
+      alert("You must be logged in to post.");
+      return;
+    }
+    console.log("Form Data:", {
+      title,
+      selectedCategory,
+      bookInfo,
+      description,
+      price,
+      image_file,
+    });
+
     if (!checkRequiredFields()) {
       alert("Please fill in all required fields.");
       return;
@@ -94,23 +114,55 @@
       alert("Please select a category.");
       return;
     }
-    if (!checkboxChecked) {
-      alert("Please agree to the terms and conditions.");
-      return;
+    // if (!image_file) {
+    //   alert("Please select an image file to upload.");
+    //   return;
+    // }
+
+    try {
+      // Upload image first
+      const formData = new FormData();
+      formData.append("file", image_file!);
+      formData.append("title", title);
+      formData.append("categoryId", selectedCategory?.toString());
+      formData.append("description", description);
+      formData.append("price", price);
+      formData.append("bookInfo", bookInfo);
+
+      const response = await fetch("/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      // Redirect to home page after successful post
+      goto("/");
+
+      const responseData = await response.json();
+      alert(responseData.message);
+    } catch (error) {
+      console.error("There was a problem with the fetch operation:", error);
+      alert(
+        "There was an error creating the product post. Please try again later."
+      );
     }
-    console.log("Form submitted successfully!");
   }
 </script>
 
 <form method="POST" action="?/create" on:submit|preventDefault>
-  <div class="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
+  <div
+    class="mb-10 border border-gray-300 rounded-lg shadow-md w-1/2 mx-auto py-8 sm:px-6 lg:px-8"
+  >
     <div class="mb-6">
-      <P align="center" size="3xl" height="loose" weight="semibold"
+      <P align="center" size="4xl" height="loose" weight="semibold"
         >Upload Your Post</P
       >
-    </div>
-    <div class="mb-6">
-      <Label for="title" class="mb-2">Title</Label>
+      <Label for="title" class="mb-2 flex text-xl"
+        >Title
+        <!-- <p class="text-gray-500 italic text-sm">* Required</p> -->
+      </Label>
       <Input
         type="text"
         id="title"
@@ -120,83 +172,91 @@
       />
     </div>
     <div class="mb-6">
-      <Label for="textarea-id" class="mb-2">Description</Label>
+      <Label for="textarea-id" class="mb-2 flex text-xl"
+        >Category
+        <!-- <p class="text-gray-500 italic text-sm">* Required</p> -->
+      </Label>
+      <Button
+        style="background-color:steelblue; color: white;"
+        class="border-primary-700"
+      >
+        {categories[selectedCategory].label}
+        <ChevronDownOutline class="w-2.5 h-2.5 ms-2.5" />
+      </Button>
+      <Dropdown class="w-40">
+        {#each categories as { id, label }}
+          <DropdownItem
+            on:click={() => {
+              updateCategory(id);
+            }}
+            bind:value={id}
+            class={selectedCategory === id ? "underline" : ""}
+            style="color: black;"
+          >
+            {label}
+          </DropdownItem>
+        {/each}
+      </Dropdown>
+    </div>
+    {#if selectedCategory === 3}
+      <div class="mb-6">
+        <Label for="courseNumber" class="mb-2 flex text-xl"
+          >Book Information
+          <!-- <p class="text-gray-500 italic text-sm">* Required</p> -->
+        </Label>
+        <Input
+          type="text"
+          id="bookInfo"
+          placeholder="Ex. CSC648 Spring 2024 book for html"
+          bind:value={bookInfo}
+          required
+        />
+      </div>
+    {/if}
+    <div class="mb-6">
+      <Label for="textarea-id" class="mb-2 flex text-xl"
+        >Description
+        <p class="text-gray-500 italic text-sm">- Optional</p></Label
+      >
       <Textarea
         id="textarea-id"
         placeholder="describe your post... (Please leave contact information for buyers to reach you!)"
         bind:value={description}
-        rows="5"
+        rows="6"
         name="message"
         style="resize: none;"
       />
     </div>
-    <div class="grid gap-6 md:grid-cols-2">
-      <div class="mb-6">
-        <Label for="textarea-id" class="mb-2">Category</Label>
-        <Button style="width: auto;" class=" border-primary-700">
-          {categories[selectedCategory].label}
-          <ChevronDownOutline class="w-2.5 h-2.5 ms-2.5" />
-        </Button>
-        <Dropdown class="w-40">
-          {#each categories as { id, label }}
-            <DropdownItem
-              on:click={() => {
-                updateCategory(id);
-              }}
-              bind:value={id}
-              class={selectedCategory === id ? "underline" : ""}
-              style="color: black;"
-            >
-              {label}
-            </DropdownItem>
-          {/each}
-        </Dropdown>
-      </div>
-      <div class="mb-6">
-        <Label for="price" class="mb-2">Price</Label>
-        <Input
-          class="w-full md:w-48"
-          type="text"
-          id="price"
-          placeholder="$"
-          bind:value={price}
-          on:input={handlePriceInput}
-          required
-        />
-      </div>
-      {#if selectedCategory === 3}
-        <div class="mb-6">
-          <Label for="courseNumber" class="mb-2">Course Number</Label>
-          <Input
-            type="text"
-            id="courseNumber"
-            placeholder="Ex. CSC648"
-            bind:value={courseNumber}
-            required
-          />
-        </div>
-        <div class="mb-6">
-          <Label for="professor" class="mb-2">Professor</Label>
-          <Input
-            type="text"
-            id="professor"
-            placeholder="Ex. Petkovic"
-            bind:value={professor}
-            required
-          />
-        </div>
-      {/if}
+    <div class="mb-6">
+      <Label for="price" class="mb-2 flex text-xl"
+        >Price
+        <!-- <p class="text-gray-500 italic text-sm">* Required</p> -->
+      </Label>
+      <Input
+        class="w-full md:w-48"
+        type="text"
+        id="price"
+        placeholder="$"
+        bind:value={price}
+        on:input={handlePriceInput}
+        required
+      />
     </div>
     <div class="mb-6">
-      <Label for="textarea-id" class="mb-2">Upload Image</Label>
+      <Label for="image" class="mb-2 flex text-xl">
+        Upload Image
+        <p class="text-gray-500 italic text-sm">- Optional</p>
+      </Label>
+      <input
+        type="file"
+        id="image"
+        accept="image/*"
+        required
+        on:change={handleFileChange}
+      />
     </div>
 
-    <DropBox />
-
-    <Checkbox class="flex justify-center mb-6" bind:checked={checkboxChecked}>
-      I agree with the<A href="#">terms and conditions</A>
-    </Checkbox>
-    <div class="modal mb-3"><SignUpPop /></div>
+    <SignUpPop />
 
     <Button class="w-full mb-3" type="button" on:click={handleSubmit}
       >Submit</Button
@@ -204,22 +264,10 @@
     <P
       align="center"
       italic
-      size="sm"
+      size="lg"
       weight="light"
       color="text-gray-500 dark:text-gray-400"
-      >Please allow up to 24 hours for post to publish</P
+      >Please allow up to 24 hours for post to publish.</P
     >
   </div>
 </form>
-
-<style>
-  .container {
-    max-width: 600px;
-    margin-top: 50px;
-    margin-bottom: 50px;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-</style>

@@ -13,7 +13,7 @@
   import { Footer, FooterCopyright } from "flowbite-svelte";
 </script>
 
-<div class="bg-gray-100 dark:bg-gray-800">
+<div class="bg-gray-100 dark:bg-gray-800 bottom-0">
   <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between items-center">
       <hr

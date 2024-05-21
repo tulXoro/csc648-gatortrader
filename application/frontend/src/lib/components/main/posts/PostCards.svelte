@@ -8,49 +8,40 @@
 *
 * Description: Component to display posts in a uniform fashion. 
 **************************************************************/ -->
-<script>
-  import { Card, Button, A } from "flowbite-svelte";
-  import { posts } from "../../../stores/store.js";
-  import Message from "../popUps/Message.svelte";
+<script lang="ts">
+  import { posts, updateTrigger } from "../../../stores/store.js";
+  import { get } from "svelte/store";
+  import ProductPost from "./ProductPost.svelte";
 
-  let isButtonClicked = false;
+  let postList = [];
+  // let filteredPosts = [];
 
-  function handleClick(){
-    isButtonClicked = true;
+  // Function to update the post list
+  function updatePostList() {
+    const allPosts = get(posts); // Get the current value of posts
+    postList = allPosts.filter((post) => post.status === "APPROVED");
+    if (get(updateTrigger) !== 0) {
+      postList = postList.sort((a, b) => {
+        const priceA = a.price;
+        const priceB = b.price;
+        if (get(updateTrigger) === 1) {
+          return priceB - priceA;
+        } else {
+          return priceA - priceB;
+        }
+      });
+    }
   }
 
+  // Initial update of post list
+  updatePostList();
 </script>
 
 <div
   class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
 >
   <!-- Filter using only APPROVED posts by Admin -->
-  {#each $posts.filter((post) => post.status === "APPROVED") as post}
-    <Card padding="none">
-      <!-- <a href={`viewPost/${post.post_id}`} target="_blank"> -->
-      <a href="/viewPost" target="_blank">
-        <img
-          class="object-cover w-full h-64"
-          src={`/image/${post.image_file}`}
-          alt={post.item_name}
-        />
-      </a>
-
-      <div class="flex-grow flex flex-col justify-end bg-white">
-        <p class="ml-2 mb-2 text-2xl font-black">{post.item_name}</p>
-        <p class="mr-2 mb-2 text-3xl font-black" style="text-align: right;">
-          ${post.price}
-        </p>
-        
-        {#if isButtonClicked}
-          <div>
-            <Message/>
-          </div>
-          {/if}
-          {#if !isButtonClicked}
-            <Button class="text-xl mt-auto" on:click={handleClick}>Message</Button>
-          {/if}
-      </div>
-    </Card>
+  {#each postList as post}
+    <ProductPost {post} />
   {/each}
 </div>

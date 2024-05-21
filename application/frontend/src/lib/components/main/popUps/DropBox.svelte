@@ -1,8 +1,19 @@
+<!-- /**************************************************************
+* Class: CSC-648-03 Spring 2024
+* Team: 05
+* GitHub ID: csc648-sp24-03-team05
+* Project: SWE Final Project
+*
+* File: DropBox.svelte
+*
+* Description: DropBox component for uploading files.
+**************************************************************/ -->
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { onMount, createEventDispatcher } from "svelte";
   import { Dropzone } from "flowbite-svelte";
 
-  let value: File | null = null; // Change type to File or null
+  let value: File | null = null;
+  const dispatch = createEventDispatcher();
 
   const dropHandle = (event: DragEvent) => {
     event.preventDefault();
@@ -13,6 +24,7 @@
             const file = item.getAsFile();
             if (file && isFileValid(file)) {
               value = file;
+              dispatch("change", value);
             }
           }
         }
@@ -31,21 +43,19 @@
       [...files].forEach((file: File, i: number) => {
         if (isFileValid(file)) {
           value = file;
+          dispatch("change", value);
         }
       });
     }
-    // Reset file input value to allow selecting the same file again
     fileInput.value = "";
   };
 
   const isFileValid = (file: File): boolean => {
     const maxSize = 3200000; // Maximum size in bytes (800x400px for PNG, JPG, and GIF)
-
     if (file.size > maxSize) {
       console.log(`File size exceeds maximum limit: ${file.size}`);
       return false;
     }
-
     return true;
   };
 
@@ -57,18 +67,18 @@
       concat += ",";
       concat += " ";
     });
-
     if (concat.length > 40) concat = concat.slice(0, 40);
     concat += "...";
     return concat;
   };
 
   onMount(() => {
-    document.body.appendChild(fileInput); // Append file input to the document body
-    fileInput.addEventListener("change", handleFileInputChange); // Listen for file input changes
+    document.body.appendChild(fileInput);
+    fileInput.addEventListener("change", handleFileInputChange);
   });
 </script>
 
+DropBox.svelte
 <Dropzone
   id="dropzone"
   on:drop={dropHandle}

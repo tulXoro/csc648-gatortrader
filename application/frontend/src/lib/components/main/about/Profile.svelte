@@ -6,7 +6,7 @@
 *
 * File: Profile.svelte
 *
-* Description: Page route to display detailed information 
+* Description: Page route to display detailed information
 * of a team member.
 **************************************************************/ -->
 
@@ -24,14 +24,19 @@
   export let github = "";
   export let linkedin = "";
   export let email = "";
+
+  // Reactive statement to set the page title
+  $: document.title = `GatorTrader | About Us - ${name}`;
 </script>
 
-<Header />
-<Nav />
+<!-- <Header />
+<Nav /> -->
 <main>
-  <div class="bg-white dark:bg-gray-800 text-black-500 dark:text-gray-400 rounded-lg
-       border border-gray-200 dark:border-gray-700 divide-gray-200 dark:divide-gray-700 shadow-md flex justify-center items-center" 
-       style="padding:10px; text-align:center ">
+  <div
+    class="bg-white dark:bg-gray-800 text-black-500 dark:text-gray-400 rounded-lg
+       border border-gray-200 dark:border-gray-700 divide-gray-200 dark:divide-gray-700 shadow-md flex justify-center items-center"
+    style="padding:10px; text-align:center "
+  >
     <div class="flex flex-wrap justify-center items-center gap-8">
       <div class="w-full md:w-1/2 flex justify-center">
         <Avatar src={photo} alt={name} rounded class="w-48 h-48" />
@@ -42,34 +47,37 @@
         <p class="mb-6">{bio}</p>
         <div class="space-x-4">
           <ButtonGroup>
-          {#if github}
-          <Button outline color="dark"
-              href={github}
-              target="_blank"
-              rel="noopener noreferrer"
-              >GitHub</Button
-            >
-          {/if}
-          {#if linkedin}
-          <Button outline color="dark"
-              href={linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              >LinkedIn</Button
-            >
-          {/if}
-          {#if email}
-          <Button outline color="dark"
-              href={"mailto:" + email}
-              target="_blank"
-              rel="noopener noreferrer"
-              >Email</Button
-            >
-          {/if}
+            {#if github}
+              <Button
+                outline
+                color="dark"
+                href={github}
+                target="_blank"
+                rel="noopener noreferrer">GitHub</Button
+              >
+            {/if}
+            {#if linkedin}
+              <Button
+                outline
+                color="dark"
+                href={linkedin}
+                target="_blank"
+                rel="noopener noreferrer">LinkedIn</Button
+              >
+            {/if}
+            {#if email}
+              <Button
+                outline
+                color="dark"
+                href={"mailto:" + email}
+                target="_blank"
+                rel="noopener noreferrer">Email</Button
+              >
+            {/if}
           </ButtonGroup>
         </div>
       </div>
     </div>
   </div>
 </main>
-<Footer />
+<!-- <Footer /> -->
