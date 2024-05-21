@@ -103,7 +103,21 @@
 
     loadURL();
     await checkSessionStatus();
+    //Check if we are on the browse page
+    if(isBrowsePage()){
+      console.log("its on browse ");
+      //load posts from store if they exist
+      // if(get(posts).length > 0){
+      //   searchState.update((state) => ({...state, results: get(posts)}));
+      // }
+    }
   });
+
+  function isBrowsePage(): boolean {
+    
+    return window.location.pathname ==="/browse";
+    
+  }
 
   function loadURL() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -121,7 +135,7 @@
     }
 
     // Perform search if on the home page
-    // if (window.location.pathname === "/") {
+    // if (window.location.pathname !== "/") {
     //   handleSearch(true);
     // }
   }
@@ -151,8 +165,12 @@
       // const isInitialSearch = !sessionStorage.getItem('initialSearch');
       // if (isInitialSearch) {
       //   sessionStorage.setItem('initialSearch', 'true');
-      window.location.href = newUrl;
-      console.log("test");
+      if(!isBrowsePage()){
+        window.location.href = newUrl;
+        
+      } else{
+        window.history.pushState({ path: newUrl }, "", newUrl);
+      }
       // } else {
       //   window.history.pushState({ path: newUrl }, "", newUrl);
       //   console.log("not test");
