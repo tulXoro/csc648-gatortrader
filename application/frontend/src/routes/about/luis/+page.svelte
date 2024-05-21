@@ -6,7 +6,7 @@
 <Profile
   name="Luis Angeles"
   photo={img}
-  bio="This is a bio"
+  bio="Aspiring software engineer, and an undergrad Senior at SFSU eagered to put my skills to the test. Agile work ethics and will to learn and improve my skills!"
   role="Front End Lead"
   github="https://github.com/langeles014"
   linkedin="https://linkedin.com/langeles014"
