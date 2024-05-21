@@ -26,11 +26,13 @@
   import { searchState } from "../../../stores/searchStore";
   import { get } from "svelte/store";
 
+  // Define the interface for categories
   interface Category {
     id: number;
     label: string;
   }
 
+  // Define exported props for the component
   export let selectedCategory = 0;
   export let searchQuery = "";
   export let categories: Category[] = [];
@@ -43,6 +45,7 @@
   // Load search state from the store
   $: ({ selectedCategory, searchQuery } = get(searchState));
 
+  // Function to load categories from the server
   async function loadCategories() {
     try {
       const response = await fetch("/getCategories");
@@ -59,6 +62,7 @@
     }
   }
 
+  // Function to check the session status of the user
   async function checkSessionStatus() {
     try {
       const response = await fetch("/login/status");
@@ -76,6 +80,7 @@
     }
   }
 
+  // Function to log the user out
   async function logout() {
     try {
       const response = await fetch("/login/logout", {
@@ -93,20 +98,23 @@
     }
   }
 
+  // onMount lifecycle hook to perform initial setup
   onMount(async () => {
-    loadCategories();
-    await checkSessionStatus();
-    loadURL();
+    loadCategories(); // Load categories from the server
+    await checkSessionStatus(); // Check if the user is logged in
+    loadURL(); // Load the current search state from the URL
 
     if (isBrowsePage()) {
-      performSearch();
+      performSearch(); // Perform the search if we are on the browse page
     }
   });
 
+  // Function to check if the current page is the browse page
   function isBrowsePage(): boolean {
     return window.location.pathname === "/browse";
   }
 
+  // Function to load search state from the URL
   function loadURL() {
     const urlParams = new URLSearchParams(window.location.search);
     const category = urlParams.get("category");
@@ -123,8 +131,10 @@
     }
   }
 
+  // Function to handle the search request
   async function handleSearch(): Promise<void> {
     try {
+      // Construct the URL with search parameters
       const url = new URL("/posts", window.location.origin);
       if (selectedCategory !== 0) {
         url.searchParams.append("category", selectedCategory.toString());
@@ -133,6 +143,7 @@
         url.searchParams.append("search", searchQuery.trim());
       }
 
+      // Fetch the search results
       const response = await fetch(url.toString());
       if (response.ok) {
         const data = await response.json();
@@ -142,6 +153,7 @@
         console.error("Failed to fetch posts");
       }
 
+      // Update the URL without reloading the page
       const newUrl = `/browse${url.search}`;
       if (!isBrowsePage()) {
         window.location.href = newUrl;
@@ -153,15 +165,18 @@
     }
   }
 
+  // Function to perform the search
   async function performSearch() {
     await handleSearch();
   }
 
+  // Function to update the selected category
   function updateCategory(categoryId: number): void {
     selectedCategory = categoryId;
     searchState.update((state) => ({ ...state, selectedCategory }));
   }
 
+  // Function to execute the search when the search button is clicked
   async function searchExecution() {
     if (searchQuery.trim().length > 40) {
       alert("Search query is too long. Please limit it to 40 characters.");
@@ -171,6 +186,7 @@
     dispatch("searchButtonClick");
   }
 
+  // Function to handle the Enter key press in the search input
   function handleKeyPress(event: KeyboardEvent): void {
     if (event.key === "Enter") {
       searchExecution();
@@ -178,6 +194,7 @@
   }
 </script>
 
+<!-- Navigation bar layout -->
 <Navbar class="bg-gray-900 text-white sticky top-0 md:py-5">
   <div class="flex">
     <NavBrand href="/">
