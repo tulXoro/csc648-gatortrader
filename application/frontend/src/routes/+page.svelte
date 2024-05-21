@@ -9,12 +9,8 @@
 * Description: Landing page for all
 **************************************************************/ -->
 <script lang="ts">
-  import Header from "$lib/components/main/layout/Header.svelte";
-  import Footer from "$lib/components/main/layout/Footer.svelte";
-  import Nav from "$lib/components/main/layout/Nav.svelte";
   import Carousel from "$lib/components/main/posts/Carousel.svelte";
-  import Results from "$lib/components/main/posts/Results.svelte";
-  import Filter from "$lib/components/main/layout/Filter.svelte";
+  import Gallery from "$lib/components/main/posts/Gallery.svelte";
   import PostCards from "$lib/components/main/posts/PostCards.svelte";
 
   let showCarousel = true;
@@ -40,7 +36,8 @@
   on:searchButtonClick={handleSearchButtonClick}
 /> -->
 <!-- {#if showCarousel} -->
-  <Carousel />
+<Carousel />
+<PostCards />
 
 <!-- {/if} -->
 <!-- {#if showFilters}
