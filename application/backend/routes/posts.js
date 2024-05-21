@@ -27,7 +27,7 @@ router.get("/", async (req, res) => {
       page = 1;
     }
     const offset = (page - 1) * limit;
-    const selectClause =  `SELECT u.user_name, pp.*, t.couse_number, t.professor FROM t_product_post pp 
+    const selectClause =  `SELECT u.user_name, pp.*, t.course_number, t.professor FROM t_product_post pp 
                               join t_user u on pp.user_id = u.user_id
                               left outer join t_textbook t on pp.post_id = t.post_id`;
     if (category && search) {

@@ -9,6 +9,6 @@
   bio="This is a bio"
   role="Back End Lead"
   github="https://github.com/jwong51"
-  linkedin="https://linkedin.com"
+  linkedin="https://www.linkedin.com/in/jayden-wong-b8a9a1292/"
   email="jwong51@mail.sfsu.edu"
 />
