@@ -14,13 +14,9 @@
   import { onMount } from "svelte";
   import { Button, Heading, P, Span } from "flowbite-svelte";
   // import { posts } from "../../../stores/store.js";
-  import {
-    CaretLeftOutline,
-    CaretLeftSolid,
-    CaretRightOutline,
-    CaretRightSolid,
-  } from "flowbite-svelte-icons";
+  import { CaretLeftSolid, CaretRightSolid } from "flowbite-svelte-icons";
   import ProductPost from "./ProductPost.svelte";
+  import Post from "../forms/Post.svelte";
 
   let posts = [];
   let currentIndex = 0;
@@ -66,11 +62,13 @@
         return res.json();
       })
       .then((data) => {
-        posts = data.sort((a, b) => {
-          const timestampA = new Date(a.timestamp).getTime();
-          const timestampB = new Date(b.timestamp).getTime();
-          return timestampB - timestampA;
-        });
+        posts = data;
+        sortPostsByTimestamp();
+        // posts = data.sort((a, b) => {
+        //   const timestampA = new Date(a.timestamp).getTime();
+        //   const timestampB = new Date(b.timestamp).getTime();
+        //   return timestampB - timestampA;
+        // });
       })
       .catch((err) => {
         console.error("Failed to fetch posts:", err);

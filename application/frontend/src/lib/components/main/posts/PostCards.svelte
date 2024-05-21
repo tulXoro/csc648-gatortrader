@@ -29,9 +29,20 @@
         } else {
           return priceA - priceB;
         }
+        console.log("Updated postList:", postList); // For debugging
       });
     }
   }
+  // Subscribe to the posts store
+  const unsubscribePosts = posts.subscribe(() => {
+    console.log("Posts updated");
+    updatePostList();
+  });
+  // Subscribe to the updateTrigger store
+  const unsubscribeUpdateTrigger = updateTrigger.subscribe(() => {
+    console.log("Update trigger fired");
+    updatePostList();
+  });
 
   // Initial update of post list
   updatePostList();
@@ -40,7 +51,6 @@
 <div
   class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
 >
-  <!-- Filter using only APPROVED posts by Admin -->
   {#each postList as post}
     <ProductPost {post} />
   {/each}

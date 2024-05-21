@@ -41,9 +41,9 @@ router.post("/", async (req, res) => {
 
     // After successful registration, automatically log in the user by setting their session information
     req.session.user = { id: result.insertId, username: userName };
-    res
-      .status(201)
-      .json({ message: `User ${userName} is registered successfully...` });
+    res.status(201).json({
+      message: `Your account, ${userName} has registered successfully...`,
+    });
     // console.log(result);
   } catch (err) {
     res.status(500).send("Error in registering user..." + err);
