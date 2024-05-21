@@ -17,10 +17,10 @@ const router = express.Router();
 router.get("/", async (req, res) => {
   try {
     const { category, search, limit, page } = req.query;
-    if (!limit || limit > 30) {
+    if (!limit || limit > 30 || isNaN(limit) || limit < 1) {
       limit = 10;
     }
-    if (!page) {
+    if (!page || page < 1 || isNaN(page)) {
       page = 1;
     }
     const offset = (page - 1) * limit;
