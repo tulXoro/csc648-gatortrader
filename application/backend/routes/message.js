@@ -22,6 +22,10 @@ router.post("/", async (req, res) => {
     const date = now();
     const postId = req.body.post_id;
 
+    console.log(
+      `Posting message from ${senderId} to ${receiverId}: ${message}`
+    );
+
     const sql =
       "INSERT INTO t_purchase_message (sender_id, receiver_id, message, date, post_id) values (?, ?, ?, ?, ?)";
     const result = await db.query(sql, [
@@ -31,12 +35,13 @@ router.post("/", async (req, res) => {
       date,
       postId,
     ]);
-    res
-      .status(201)
-      .json({
-        message: `Message from ${senderId} to ${receiverId} is delievered successfully...`,
-      });
+
+    console.log("Message inserted successfully:", result);
+    res.status(201).json({
+      message: `Your message has been sent successfully!`,
+    });
   } catch (err) {
+    console.error("Error posting messages from database:", err);
     res.status(500).send("Error posting messages from database... " + err);
   }
 });

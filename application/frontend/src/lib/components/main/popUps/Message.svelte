@@ -15,7 +15,7 @@
   import { onMount } from "svelte";
 
   export let post;
-  let userId;
+  export let userId;
 
   let formModal = false;
   let message = "";
@@ -26,7 +26,7 @@
       const response = await fetch("/login/status");
       const data = await response.json();
       isLoggedIn = data.isLoggedIn;
-      userId = data.userId; // Set the userId from the login status
+      userId = data.userId;
     } catch (error) {
       console.error("Failed to fetch login status:", error);
     }
