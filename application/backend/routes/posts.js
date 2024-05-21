@@ -30,7 +30,7 @@ router.get("/", async (req, res) => {
     if (category && search) {
       const sql = `SELECT pp.*, t.couse_number, t.professor FROM t_product_post pp left outer join t_textbook t on pp.post_id = t.post_id WHERE
                       pp.category_id = ? AND
-                      (pp.item_name LIKE '%${search}%' OR pp.item_description LIKE '%${search}%') AND pp.status = 'APPROVED' LIMIT ? OFFSET ?`;
+                      (pp.item_name LIKE '%${search}%' OR pp.item_description LIKE '%${search}%') AND pp.status = 'APPROVED' ORDER BY timestamp DESC LIMIT ? OFFSET ?`;
       const [rows] = await db.query(sql, [category, limit, offset]);
       res.json(rows);
     }
@@ -43,12 +43,12 @@ router.get("/", async (req, res) => {
       res.json(rows);
     } else if (search) {
       const sql = `SELECT * FROM t_product_post WHERE (item_name LIKE '%${search}%' OR item_description LIKE '%${search}%')
-                      AND status = 'APPROVED' LIMIT ? OFFSET ?`;
+                      AND status = 'APPROVED' ORDER BY timestamp DESC LIMIT ? OFFSET ?`;
       const [rows] = await db.query(sql, [limit, offset]);
       res.json(rows);
     } else {
       const [rows] = await db.query(
-        "SELECT * FROM t_product_post WHERE status = 'APPROVED' LIMIT ? OFFSET ?",
+        "SELECT * FROM t_product_post WHERE status = 'APPROVED' ORDER BY timestamp DESC LIMIT ? OFFSET ?",
         [limit, offset]
       );
       res.json(rows);
