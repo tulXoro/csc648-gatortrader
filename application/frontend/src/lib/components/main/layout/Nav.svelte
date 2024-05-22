@@ -268,7 +268,7 @@
             <NavLi
               class="text-white text-2xl relative cursor-pointer flex items-center space-x-2"
             >
-              <span class="text-white text-2xl">Welcome, {username}</span>
+              <span class="text-white text-2xl">Welcome, Gator</span>
               <ChevronDownOutline class=" flex w-5 h-5" />
             </NavLi>
             <Dropdown class="w-40">

@@ -152,7 +152,7 @@
 <title>GatorTrader | Gallery</title>
 
 <!-- <Results /> -->
-<div style="display: flex">
+<!-- <div style="display: flex">
   <div
     style="flex-direction: column; padding: 5px; border: 1px; width: 12%; border-radius: 3px; box-shadow: 1px 1px 2px 1px rgba(0,0,0,0.2);"
   >
@@ -163,7 +163,7 @@
     of
     <span class="font-semibold text-gray-900 dark:text-white">{helper.total}</span>
     Entries
-  </div>
+  </div> -->
     <!-- <Filter /> -->
     <div
       class="rounded border border-gray-200 dark:border-gray-700"
@@ -188,7 +188,7 @@
 
 <!-- Pagination -->
 
-<div class="flex flex-col items-center justify-center gap-2 mt-2">
+<!-- <div class="flex flex-col items-center justify-center gap-2 mt-2">
   <div class="text-sm text-gray-700 dark:text-gray-400">
     Showing <span class="font-semibold text-gray-900 dark:text-white">{helper.start}</span>
     to
@@ -207,5 +207,5 @@
   </div>
 </div>
 
-</div>
+</div> -->
 <!-- end pagination -->
