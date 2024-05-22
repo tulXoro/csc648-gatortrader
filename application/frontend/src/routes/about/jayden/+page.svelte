@@ -6,7 +6,7 @@
 <Profile
   name="Jayden Wong"
   photo={img}
-  bio="This is a bio"
+  bio="I am currently a undergraduate student attending San Francisco State University in order to obtain a degree in Computer Science. I plan to be a software engineer in the future."
   role="Back End Lead"
   github="https://github.com/jwong51"
   linkedin="https://linkedin.com"
