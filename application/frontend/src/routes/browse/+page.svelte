@@ -152,8 +152,8 @@
 <title>GatorTrader | Gallery</title>
 
 <!-- <Results /> -->
-<!-- <div style="display: flex">
-  <div
+<div style="display: flex">
+  <!-- <div
     style="flex-direction: column; padding: 5px; border: 1px; width: 12%; border-radius: 3px; box-shadow: 1px 1px 2px 1px rgba(0,0,0,0.2);"
   >
   <div class="text-sm text-gray-700 dark:text-gray-400">
