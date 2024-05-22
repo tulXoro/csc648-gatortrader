@@ -68,7 +68,9 @@
     <p class="text-3xl font-semibold text-right">
       ${post.price}
     </p>
+    <div class="grid grid-cols-1"><Message {post} /></div>
+
   </div>
 
-  <Message {post} />
+
 </Card>
