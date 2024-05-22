@@ -153,10 +153,10 @@
 
 <!-- <Results /> -->
 <div style="display: flex">
-  <!-- <div
+  <div
     style="flex-direction: column; padding: 5px; border: 1px; width: 12%; border-radius: 3px; box-shadow: 1px 1px 2px 1px rgba(0,0,0,0.2);"
   >
-  <div class="text-sm text-gray-700 dark:text-gray-400">
+  <!-- <div class="text-sm text-gray-700 dark:text-gray-400">
     Showing <span class="font-semibold text-gray-900 dark:text-white">{helper.start}</span>
     to
     <span class="font-semibold text-gray-900 dark:text-white">{helper.end}</span>
