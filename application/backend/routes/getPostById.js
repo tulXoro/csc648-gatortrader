@@ -16,12 +16,9 @@ const router = express.Router();
 router.get("/", async (req, res) => {
     try {
         const postId = req.query.id;
-        const sql = `SELECT u.user_name, u.last_name, u.first_name, p.* FROM t_product_post p 
+        const sql = `SELECT u.user_name, u.last_name, u.first_name, p.* FROM t_product_post p
                         LEFT OUTER JOIN t_user u ON p.user_id = u.user_id WHERE p.post_id = ?`;
         const [rows] = await db.query(sql, [postId]);
-        console.log(rows);
-        console.log(postId)
-        console.log(req.query)
 
         res.json(rows);
     } catch (err) {

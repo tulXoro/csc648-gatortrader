@@ -7,18 +7,7 @@
   import { page } from "$app/stores";
   import { formatDistanceToNow } from "date-fns";
 
-  // Define the interface for the product post
-  interface ProductPost {
-    post_id: number;
-    image_file: string;
-    item_name: string;
-    item_description: string;
-    price: number;
-    timestamp: string;
-    user_name?: string;
-  }
-
-  let post: ProductPost | null = null;
+  let post;
   $: isLoading = true;
 
   onMount(() => {
@@ -44,6 +33,7 @@
       .then((data) => {
         post = data[0];
         isLoading = false;
+        console.log(post);
       })
       .catch((err) => {
         console.error("Failed to fetch post:", err);
@@ -132,10 +122,8 @@
           >
             <Avatar src={img} rounded class="w-20 h-20" />
             <div class="mt-4 md:mt-0 flex flex-col justify-center">
-              <div class="text-xl font-medium dark:text-white">Seller</div>
-              <div class="text-sm text-gray-500 dark:text-gray-400">
-                Joined in August 2014
-              </div>
+              <div class="text-xl font-medium dark:text-white">{post.first_name} {post.last_name}</div>
+              <div class="text-sm dark:text-white">{post.user_name}</div>
             </div>
           </div>
           <Message {post} />

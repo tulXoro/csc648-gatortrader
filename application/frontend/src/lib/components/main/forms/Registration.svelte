@@ -9,6 +9,7 @@
 * Description: Registration form component for user sign up and sign in.
 **************************************************************/ -->
 <script lang="ts">
+  import { onMount } from "svelte";
   import { goto } from "$app/navigation";
   import { flashStore } from "$lib/stores/flashStore";
   import {
@@ -41,6 +42,14 @@
   };
 
   let isSignUp = true;
+
+  onMount(() => {
+    // Check if the user is already logged in
+    const userData = sessionStorage.getItem("userData");
+    if (userData) {
+      goto("/dashboard");
+    }
+  });
 
   function toggleMode() {
     isSignUp = !isSignUp;
