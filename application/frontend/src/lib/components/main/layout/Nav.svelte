@@ -28,6 +28,7 @@
   import { get } from "svelte/store";
   import { flashStore } from "$lib/stores/flashStore.js";
   import { username } from "$lib/stores/username.js";
+  import { searchTrigger } from "$lib/stores/searchTrigger.js";
 
   // Define the interface for categories
   interface Category {
@@ -151,14 +152,15 @@
       }
 
       // Fetch the search results
-      const response = await fetch(url.toString());
-      if (response.ok) {
-        const data = await response.json();
-        posts.set(data);
-        searchState.update((state) => ({ ...state, results: data }));
-      } else {
-        console.error("Failed to fetch posts");
-      }
+      // const response = await fetch(url.toString());
+      // if (response.ok) {
+      //   const data = await response.json();
+      //   posts.set(data);
+      //   searchState.update((state) => ({ ...state, results: data }));
+      // } else {
+      //   console.error("Failed to fetch posts");
+      // }
+
 
       // Update the URL without reloading the page
       const newUrl = `/browse${url.search}`;
@@ -167,6 +169,7 @@
       } else {
         window.history.pushState({ path: newUrl }, "", newUrl);
       }
+      searchTrigger.set(true);
     } catch (error) {
       console.error("Error fetching posts:", error);
     }

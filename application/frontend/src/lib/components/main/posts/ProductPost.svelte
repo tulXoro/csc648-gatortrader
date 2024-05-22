@@ -19,7 +19,7 @@
 >
 
   <div class="p-4 bg-slate-200">
-      <a href={`/viewPost/${post.post_id}`}>
+      <a href={`/viewPost/${post.post_id}`} target="_blank">
     {#if post.image_file}
       <img
         class="object-cover w-full h-64"
@@ -35,7 +35,7 @@
       />
     {/if}
   </a>
-  <a class="no-underline hover:underline border-gray-300 text-orange-600 hover:text-orange-800" href={`/viewPost/${post.post_id}`}>
+  <a target="_blank" class="no-underline hover:underline border-gray-300 text-orange-600 hover:text-orange-800" href={`/viewPost/${post.post_id}`}>
     <p
       class="text-2xl font-bold mb-2 border-b border-gray-300 pb-5 pt-2"
       style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"

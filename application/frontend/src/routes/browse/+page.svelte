@@ -15,7 +15,8 @@
   import PostCards from "$lib/components/main/posts/PostCards.svelte";
   import { } from "flowbite-svelte";
   import ProductPost from "$lib/components/main/posts/ProductPost.svelte";
-
+  import {searchState} from "$lib/stores/searchStore.js";
+  import {searchTrigger} from "$lib/stores/searchTrigger.js";
 
   import { Pagination, PaginationItem, Label, Checkbox, A } from 'flowbite-svelte';
     import { it } from "date-fns/locale";
@@ -25,6 +26,8 @@
   let itemsPerPage = 8;
   let priceDesc = false;
   let priceAsc = false;
+  let category;
+  let search;
   $: helper = {
     start: Math.min((page - 1) * itemsPerPage + 1, total),
     end: Math.min(page * itemsPerPage, total),
@@ -42,17 +45,14 @@
   $: posts = [];
 
   onMount(async() => {
-    const params = new URLSearchParams(
-      {
-        limit: itemsPerPage.toString(),
-        page: page.toString(),
-        sortByPrice: sortByPrice.toString(),}
-    );
     updatePosts();
-    const response = await fetch('/getPostsCount/');
-    const data = await response.json();
-    total = parseInt(data.count);
   })
+
+  $: if ($searchTrigger) {
+    // Update the page to reflect the search...
+    updatePosts();
+    searchTrigger.set(false); // Reset the trigger
+  }
 
   function getNextPosts() {
     page++;
@@ -73,11 +73,21 @@
   }
 
   function updatePosts() {
+    const urlParams = new URLSearchParams(window.location.search);
+    category = urlParams.get("category");
+    search = urlParams.get("search");
+
+    let searchCategory = category ? category : "";
+    let searchQuery = search ? search : "";
+
+
     const params = new URLSearchParams(
       {
         limit: itemsPerPage.toString(),
         page: page.toString(),
         sortByPrice: sortByPrice.toString(),
+        category: searchCategory,
+        search: searchQuery,
       }
     );
 

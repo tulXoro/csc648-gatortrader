@@ -37,7 +37,7 @@ router.get("/", async (req, res) => {
 
     console.log("orderByClause", orderByClause);
 
-    const selectClause =  `SELECT u.user_name, pp.*, t.course_number, t.professor FROM t_product_post pp 
+    const selectClause =  `SELECT u.user_name, pp.*, t.course_number, t.professor FROM t_product_post pp
                               join t_user u on pp.user_id = u.user_id
                               left outer join t_textbook t on pp.post_id = t.post_id`;
     if (category && search) {
@@ -49,8 +49,8 @@ router.get("/", async (req, res) => {
     // when we receive a request to query by category
     else if (category) {
       const [rows] = await db.query(
-        `${selectClause} WHERE pp.category_id = 1 AND pp.status = 'APPROVED'  ORDER BY ${orderByClause} LIMIT ? OFFSET ?`,
-        [category]
+        `${selectClause} WHERE pp.category_id = ? AND pp.status = 'APPROVED' ORDER BY ${orderByClause} LIMIT ? OFFSET ?`,
+        [category, limit, offset]
       );
       res.json(rows);
     } else if (search) {
@@ -92,7 +92,7 @@ router.post("/", async (req, res) => {
     if (courseNumber && professor) {
       const { insertId } = result[0];
       const sql2 = "INSERT INTO t_textbook (post_id, course_number, professor) values (?, ?, ?)";
-      const result2 = await db.query(sql2, [insertId, courseNumber, professor]);      
+      const result2 = await db.query(sql2, [insertId, courseNumber, professor]);
     }
 
     res.status(201).json({
