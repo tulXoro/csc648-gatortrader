@@ -74,7 +74,7 @@
         <!-- Product details -->
         <div
           class="flex-1 flex flex-col justify-between ml-0 lg:ml-5 mr-5 lg:mr-0"
-          style="width: 400px; height: 500px; border: 2px solid #ccc; border-radius: 8px; padding: 20px;"
+          style="width: 400px; height: 500px; border: 2px solid #ccc; border-radius: 5px; padding: 20px;"
         >
           <div>
             <p

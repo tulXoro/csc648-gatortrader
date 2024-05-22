@@ -13,7 +13,8 @@
 
 <Card
   padding="none"
-  class="border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg"
+  class="border border-gray-500 rounded-lg overflow-hidden hover:shadow-lg"
+  style="background-color:darkgray color: white;"
 >
   <a href={`/viewPost/${post.post_id}`}>
     {#if post.image_file}
@@ -34,13 +35,15 @@
 
   <div class="p-4">
     <p
-      class="text-2xl font-bold mb-2"
+      class="text-2xl font-bold mb-2 border-b border-gray-300 pb-5"
       style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
     >
       {post.item_name}
     </p>
-    <p class="text-md font-semibold mb-4">{post.item_description}</p>
-    <p class="text-sm text-gray-700 mb-4">
+    <p class="text-md font-semibold mb-4">
+      {post.item_description}
+    </p>
+    <p class="text-sm text-gray-700 mb-4 border-b border-gray-300 pb-5">
       Posted: {getTimeDifference(post.timestamp)}
     </p>
     <p class="text-3xl font-semibold text-right">${post.price}</p>
