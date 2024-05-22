@@ -4,14 +4,12 @@
 * GitHub ID: csc648-sp24-03-team05
 * Project: SWE Final Project
 *
-* File: +page.svelte
+* File: dashboard/+page.svelte
 *
 * Description: pages dedicated to registered users only
 **************************************************************/ -->
 <script>
-  import { Avatar, Tabs, TabItem } from "flowbite-svelte";
-  import img from "$lib/assets/image.jpg";
-  import PostCards from "$lib/components/main/posts/PostCards.svelte";
+  import { Tabs, TabItem } from "flowbite-svelte";
   import Notification from "$lib/components/main/popUps/Notification.svelte";
   import UserPosts from "$lib/components/main/dashboard/UserPosts.svelte";
 </script>

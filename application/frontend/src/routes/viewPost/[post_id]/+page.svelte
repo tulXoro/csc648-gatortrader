@@ -1,8 +1,17 @@
+<!-- /**************************************************************
+* Class: CSC-648-03 Spring 2024
+* Team: 05
+* GitHub ID: csc648-sp24-03-team05
+* Project: SWE Final Project
+*
+* File: viewPost/[post_id]/+page.svelte
+*
+* Description: page dedicated to viewing post_id in detail 
+**************************************************************/ -->
 <script lang="ts">
   import { onMount } from "svelte";
   import { Avatar } from "flowbite-svelte";
   import img from "$lib/assets/ProfilePic.png";
-  import { posts } from "$lib/stores/store.js";
   import Message from "$lib/components/main/popUps/Message.svelte";
   import { page } from "$app/stores";
   import { formatDistanceToNow } from "date-fns";

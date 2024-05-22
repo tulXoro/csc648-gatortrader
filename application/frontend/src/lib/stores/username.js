@@ -6,10 +6,9 @@
 // *
 // * File: username.js
 // *
-// * Description: Two Svelte writable stores: username to manage
+// * Description: writable stores: username to manage
 // **************************************************************/
 
 import { writable } from "svelte/store";
 
 export const username = writable("");
-

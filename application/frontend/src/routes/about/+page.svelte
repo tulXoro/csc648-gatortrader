@@ -1,4 +1,14 @@
-<!-- This this the about-us page  -->
+<!-- /**************************************************************
+* Class: CSC-648-03 Spring 2024
+* Team: 05
+* GitHub ID: csc648-sp24-03-team05
+* Project: SWE Final Project
+*
+* File: about/+page.svelte
+*
+* Description: Component to display members of the team 
+* consisting of thier bios
+**************************************************************/ -->
 
 <script>
   import { Card } from "flowbite-svelte";

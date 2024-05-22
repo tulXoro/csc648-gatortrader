@@ -1,3 +1,13 @@
+<!-- /**************************************************************
+* Class: CSC-648-03 Spring 2024
+* Team: 05
+* GitHub ID: csc648-sp24-03-team05
+* Project: SWE Final Project
+*
+* File: UserPosts.svelte
+*
+* Description: Component to display posts belogning to the user
+**************************************************************/ -->
 <script>
   import { onMount } from "svelte";
   import ProductPost from "$lib/components/main/posts/ProductPost.svelte";
