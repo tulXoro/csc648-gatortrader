@@ -105,6 +105,13 @@
   function handleCheckboxClick(event) {
     const { id, checked } = event.target;
     console.log('SOMETHING IS HAPPENING');
+
+    if (!checked) {
+      sortByPrice = 0;
+      updatePosts();
+      return;
+    }
+
     switch(id) {
       case 'priceLowToHigh':
         priceAsc = checked;
