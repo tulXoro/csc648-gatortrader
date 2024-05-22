@@ -147,7 +147,10 @@
         // If it's a login operation, trigger success message for login
         triggerSuccess("Login successful!");
       }
-      goto("/dashboard");
+      // Delay redirection to allow flash message to be displayed
+      setTimeout(() => {
+        window.location.href = "/dashboard";
+      }, 1000);
     } catch (error) {
       console.error("There was a problem with the fetch operation:", error);
       triggerError("Username or password does not match.");

@@ -19,6 +19,7 @@
 
   let post: ProductPost | null = null;
   let isLoading = true;
+  let sellerUsername = "";
 
   // Get the post_id from localStorage if available
   const postId = localStorage.getItem("postId");
@@ -41,6 +42,12 @@
   // Function to calculate the time difference
   function getTimeDifference(timestamp: string) {
     return formatDistanceToNow(new Date(timestamp), { addSuffix: true });
+  }
+
+  // Check if the user is logged in and get the username from the session
+  const loggedInUser = $page.stores.session.username;
+  if (loggedInUser) {
+    sellerUsername = loggedInUser;
   }
 </script>
 
@@ -94,7 +101,9 @@
           >
             <Avatar src={img} rounded class="w-20 h-20" />
             <div class="mt-4 md:mt-0 flex flex-col justify-center">
-              <div class="text-xl font-medium dark:text-white">Seller</div>
+              <div class="text-xl font-medium dark:text-white">
+                Seller: {sellerUsername}
+              </div>
               <div class="text-sm text-gray-500 dark:text-gray-400">
                 Joined in August 2014
               </div>
