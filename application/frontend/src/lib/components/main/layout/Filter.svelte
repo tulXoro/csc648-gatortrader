@@ -8,75 +8,79 @@
 *
 * Description: Component will be a sidebar with togglable filter buttons.
 **************************************************************/ -->
+
 <script lang="ts">
-  import { Label, Checkbox, A } from "flowbite-svelte";
-  import { derived } from "svelte/store";
+  import { Label, Checkbox } from "flowbite-svelte";
   import { posts, updateTrigger } from "$lib/stores/store";
 
-
-
+  // Default sort order
   let sortOrder = "dsc";
 
+  // Derived store to filter and sort posts based on status and price
   $: filteredPosts = $posts
-    .filter((post) => post.status === "APPROVED")
-
+    .filter((post) => post.status === "APPROVED") // Only show approved posts
     .sort((a, b) => {
       const priceA = a.price;
       const priceB = b.price;
-      if(sortOrder === "asc"){
-
-      return priceB - priceA;
+      // Sort based on the selected order
+      if (sortOrder === "asc") {
+        return priceB - priceA;
       } else {
         return priceA - priceB;
       }
-
     });
 
+  // Variables to keep track of checkbox states
   let priceLowToHigh = false;
   let priceHighToLow = false;
 
-
+  // Function to handle checkbox click events
   function handleCheckboxClick(event) {
     const { id, checked } = event.target;
-    console.log('SOMETHING IS HAPPENING');
     switch(id) {
       case 'priceLowToHigh':
-        priceLowToHigh = checked;
+        priceLowToHigh = checked; // Update state for 'Low to High' checkbox
         if (checked) {
-          console.log('ascneding order');
+          console.log('ascending order');
           sortOrder = "asc";
-          priceHighToLow = false;
+          priceHighToLow = false; // Uncheck the 'High to Low' checkbox
         }
         break;
       case 'priceHighToLow':
-        priceHighToLow = checked;
+        priceHighToLow = checked; // Update state for 'High to Low' checkbox
         if (checked) {
-          console.log('dscending order');
+          console.log('descending order');
           sortOrder = "dsc";
-          priceLowToHigh = false;
+          priceLowToHigh = false; // Uncheck the 'Low to High' checkbox
         }
         break;
       default:
         break;
     }
 
-    console.log(filteredPosts);
-    if(sortOrder === 'dsc'){
+    console.log(filteredPosts); // Log the filtered posts for debugging
+
+    // Trigger an update to the store to refresh the filtered posts
+    if (sortOrder === 'dsc') {
       updateTrigger.set(1);
-    } else if(sortOrder==='asc'){
+    } else if (sortOrder === 'asc') {
       updateTrigger.set(2);
     }
   }
-
-
 </script>
 
+<!-- Sidebar container for filter options -->
 <div
   class="rounded border border-gray-200 dark:border-gray-700"
   style="padding-bottom:10px"
 >
   <Label>Sort By:</Label>
-  <Checkbox id="priceLowToHigh" checked={priceLowToHigh} on:click={handleCheckboxClick}>Price: Low to high</Checkbox>
-  <Checkbox id="priceHighToLow" checked={priceHighToLow} on:click={handleCheckboxClick}>Price: High to low</Checkbox>
-
+  <!-- Checkbox for sorting by price from low to high -->
+  <Checkbox id="priceLowToHigh" checked={priceLowToHigh} on:click={handleCheckboxClick}>
+    Price: Low to high
+  </Checkbox>
+  <!-- Checkbox for sorting by price from high to low -->
+  <Checkbox id="priceHighToLow" checked={priceHighToLow} on:click={handleCheckboxClick}>
+    Price: High to low
+  </Checkbox>
 </div>

@@ -4,15 +4,11 @@
 // * GitHub ID: csc648-sp24-03-team05
 // * Project: SWE Final Project
 // *
-// * File: src/stores/searchStore.js
+// * File: searchTrigger.js
 // *
-// * Description: stores the search query information here
+// * Description: triggers the search query when ever an
+// * action is done in nav
 // **************************************************************
-//
 import { writable } from "svelte/store";
 
-export const searchState = writable({
-  selectedCategory: 0,
-  searchQuery: "",
-  results: [],
-});
+export const searchTrigger = writable(false);

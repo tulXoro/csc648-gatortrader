@@ -19,8 +19,10 @@
     DropdownItem,
   } from "flowbite-svelte";
   import { ChevronDownOutline } from "flowbite-svelte-icons";
-  import SignUpPop from "../popUps/SignUpPop.svelte";
   import { goto } from "$app/navigation";
+  import { flashStore } from "../../../stores/flashStore.js";
+  import { onMount } from "svelte";
+  import SignUpPop from "../popUps/SignUpPop.svelte";
 
   let title = "";
   let selectedCategory = 0;
@@ -91,33 +93,71 @@
     }
   }
 
-  // Function to handle form submission
-  async function handleSubmit() {
-    if (!isLoggedIn) {
-      alert("You must be logged in to post.");
-      return;
-    }
-    console.log("Form Data:", {
+  function saveFormData() {
+    const formData = {
       title,
       selectedCategory,
       bookInfo,
       description,
       price,
-      image_file,
-    });
+      imageFile: image_file ? image_file.name : null,
+    };
+    localStorage.setItem("postFormData", JSON.stringify(formData));
+  }
 
+  function loadFormData() {
+    const savedFormData = localStorage.getItem("postFormData");
+    if (savedFormData) {
+      const formData = JSON.parse(savedFormData);
+      title = formData.title || "";
+      selectedCategory = formData.selectedCategory || 0;
+      bookInfo = formData.bookInfo || "";
+      description = formData.description || "";
+      price = formData.price || "";
+
+      // Notify the user to reselect the image file
+      if (formData.imageFile) {
+        // Display a message or highlight the file input
+        console.log("Please reselect the image file:", formData.imageFile);
+      }
+    }
+  }
+
+  onMount(async () => {
+    try {
+      const response = await fetch("/login/status");
+      const data = await response.json();
+      isLoggedIn = data.isLoggedIn;
+
+      if (!isLoggedIn) {
+        loadFormData();
+      } else {
+        const justRegistered = localStorage.getItem("justRegistered");
+        if (justRegistered) {
+          localStorage.removeItem("justRegistered");
+          handleSubmit();
+        }
+      }
+    } catch (error) {
+      console.error("Failed to fetch login status:", error);
+    }
+  });
+
+  // Function to handle form submission
+  async function handleSubmit() {
+    if (!isLoggedIn) {
+      saveFormData();
+      triggerError("You must be logged in to post.");
+      return;
+    }
     if (!checkRequiredFields()) {
-      alert("Please fill in all required fields.");
+      triggerError("Please fill in all required fields.");
       return;
     }
     if (!selectedCategory) {
-      alert("Please select a category.");
+      triggerError("Please select a category.");
       return;
     }
-    // if (!image_file) {
-    //   alert("Please select an image file to upload.");
-    //   return;
-    // }
 
     try {
       // Upload image first
@@ -137,17 +177,25 @@
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-      // Redirect to home page after successful post
-      goto("/");
 
       const responseData = await response.json();
-      alert(responseData.message);
+      localStorage.removeItem("postFormData");
+      triggerSuccess(responseData.message);
+      // Redirect to home page after successful post
+      goto("/");
     } catch (error) {
       console.error("There was a problem with the fetch operation:", error);
-      alert(
+      triggerError(
         "There was an error creating the product post. Please try again later."
       );
     }
+  }
+
+  function triggerError(message: string) {
+    flashStore.add(message, "error", 5000);
+  }
+  function triggerSuccess(message: string) {
+    flashStore.add(message, "success", 5000);
   }
 </script>
 
@@ -256,11 +304,16 @@
       />
     </div>
 
-    <SignUpPop />
-
-    <Button class="w-full mb-3" type="button" on:click={handleSubmit}
-      >Submit</Button
-    >
+    {#if !isLoggedIn}
+      <SignUpPop on:click={handleSubmit} />
+    {:else}
+      <Button
+        class="w-full text-xl"
+        type="button"
+        style="background-color:steelblue; color: white;"
+        on:click={handleSubmit}>Submit</Button
+      >
+    {/if}
     <P
       align="center"
       italic
