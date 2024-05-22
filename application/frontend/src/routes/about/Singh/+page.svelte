@@ -6,7 +6,10 @@
 <Profile
   name="Parampal Singh"
   photo={img}
-  bio="This is a bio"
+  bio="As a recent Computer Science graduate from San Francisco State University, 
+       I bring hands-on experience in software development, website optimization, 
+      and e-commerce solutions. Proficient in Python, JavaScript, and C++, I 
+       possess a solid background in data structures, algorithms, and full-stack development."
   role="Github Master"
   github="https://github.com/singh-paul"
   linkedin="https://www.linkedin.com/in/parampal-singh-1a2978172/"
