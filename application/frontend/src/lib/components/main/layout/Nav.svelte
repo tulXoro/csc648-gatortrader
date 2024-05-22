@@ -211,18 +211,18 @@
   }
 </script>
 
-<!-- Navigation bar layout -->
 <nav class="bg-gray-900 text-white sticky top-0 md:py-10">
-  <div class="flex items-center justify-center w-full">
-    <a href="/" class="flex item-center">
-      <img src={SFSULogo} class="mr-3 ml-5 h-20" alt="SFSU Logo" />
-      <span class="text-7xl font-bold dark:text-white">GatorTrader</span>
+  <div class="flex items-center justify-between w-full px-5">
+    <a href="/" class="flex items-center">
+      <img src={SFSULogo} class="mr-3 h-20" alt="SFSU Logo" />
+      <span class="text-5xl font-bold dark:text-white">GatorTrader</span>
     </a>
-    <div class="flex items-center flex-grow">
-      <NavUl class="flex items-center">
-        <NavLi href="/about" class=" ml-5 mr-5 text-white text-2xl">About</NavLi
-        >
-      </NavUl>
+    <div class="flex items-center space-x-4 flex-grow justify-center">
+      <ul class="flex items-center space-x-4">
+        <li>
+          <a href="/about" class="ml-5 mr-5 text-white text-2xl">About</a>
+        </li>
+      </ul>
       <div class="flex items-center space-x-0">
         <Button
           class="rounded-e-none border-e-0 !p-5"
@@ -244,7 +244,7 @@
         </Dropdown>
         <Search
           class="rounded-none py-4"
-          style="width: 650px;"
+          style="width: 400px;"
           placeholder={selectedCategory === 3
             ? "Search by course, title, or professor"
             : "Search GatorTrader..."}
@@ -259,32 +259,35 @@
           <SearchOutline class="flex w-5 h-5" />
         </Button>
       </div>
-
-      <NavUl class="flex items-center space-x-4">
-        <NavLi href="/post" class="ml-5 text-white text-2xl">Post</NavLi>
+      <ul class="flex items-center space-x-4">
+        <li>
+          <a href="/post" class="ml-5 mr-5 text-white text-2xl">Post</a>
+        </li>
         {#if isLoggedIn}
           <div class="flex items-center space-x-2">
-            <NavLi
+            <li
               class="text-white text-2xl relative cursor-pointer flex items-center space-x-2"
             >
               <span class="text-white text-2xl">Welcome, {username}</span>
-              <ChevronDownOutline class=" flex w-5 h-5" />
-            </NavLi>
+              <ChevronDownOutline class="flex w-5 h-5" />
+            </li>
             <Dropdown class="w-40">
-              <DropdownItem href="/dashboard" class="text-black"
-                >Dashboard</DropdownItem
-              >
-              <DropdownItem slot="footer" class="text-black" on:click={logout}
-                >Sign out</DropdownItem
-              >
+              <DropdownItem href="/dashboard" class="text-black">
+                Dashboard
+              </DropdownItem>
+              <DropdownItem slot="footer" class="text-black" on:click={logout}>
+                Sign out
+              </DropdownItem>
             </Dropdown>
           </div>
         {:else}
-          <NavLi href="/registration" class="ml-5 text-white text-2xl"
-            >Register</NavLi
-          >
+          <li>
+            <a href="/registration" class="ml-5 text-white text-2xl">
+              Register
+            </a>
+          </li>
         {/if}
-      </NavUl>
+      </ul>
     </div>
   </div>
 </nav>
