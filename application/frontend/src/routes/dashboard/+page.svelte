@@ -25,7 +25,7 @@
     style="padding:10px"
   >
     <div class="mt-4 md:mt-0 md:flex md:flex-col md:justify-center">
-      <div class="text-xl font-medium dark:text-white">Hi, Name</div>
+      <div class="text-xl font-medium dark:text-white">Welcome to your dashboard!</div>
     </div>
   </div>
   <div class="mb-8 md:max-w-lg"> </div>
