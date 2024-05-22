@@ -105,25 +105,37 @@
     localStorage.setItem("postFormData", JSON.stringify(formData));
   }
 
+  function loadFormData() {
+    const savedFormData = localStorage.getItem("postFormData");
+    if (savedFormData) {
+      const formData = JSON.parse(savedFormData);
+      title = formData.title || "";
+      selectedCategory = formData.selectedCategory || 0;
+      bookInfo = formData.bookInfo || "";
+      description = formData.description || "";
+      price = formData.price || "";
+
+      // Notify the user to reselect the image file
+      if (formData.imageFile) {
+        // Display a message or highlight the file input
+        console.log("Please reselect the image file:", formData.imageFile);
+      }
+    }
+  }
+
   onMount(async () => {
     try {
       const response = await fetch("/login/status");
       const data = await response.json();
       isLoggedIn = data.isLoggedIn;
 
-      const savedFormData = localStorage.getItem("postFormData");
-      if (savedFormData) {
-        const formData = JSON.parse(savedFormData);
-        title = formData.title || "";
-        selectedCategory = formData.selectedCategory || 0;
-        bookInfo = formData.bookInfo || "";
-        description = formData.description || "";
-        price = formData.price || "";
-
-        // Notify the user to reselect the image file
-        if (formData.imageFile) {
-          // Display a message or highlight the file input
-          console.log("Please reselect the image file:", formData.imageFile);
+      if (!isLoggedIn) {
+        loadFormData();
+      } else {
+        const justRegistered = localStorage.getItem("justRegistered");
+        if (justRegistered) {
+          localStorage.removeItem("justRegistered");
+          handleSubmit();
         }
       }
     } catch (error) {
@@ -138,15 +150,6 @@
       triggerError("You must be logged in to post.");
       return;
     }
-    console.log("Form Data:", {
-      title,
-      selectedCategory,
-      bookInfo,
-      description,
-      price,
-      image_file,
-    });
-
     if (!checkRequiredFields()) {
       triggerError("Please fill in all required fields.");
       return;
@@ -311,13 +314,6 @@
         on:click={handleSubmit}>Submit</Button
       >
     {/if}
-
-    <!-- <Button
-      class="w-full text-xl"
-      type="button"
-      style="background-color:steelblue; color: white;"
-      on:click={handleSubmit}>Submit</Button
-    > -->
     <P
       align="center"
       italic

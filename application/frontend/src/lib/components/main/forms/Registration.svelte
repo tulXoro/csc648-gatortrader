@@ -152,6 +152,7 @@
       if (isSignUp) {
         // If it's a sign-up operation, trigger success message for registration
         triggerSuccess("Registration successful!");
+        localStorage.setItem("justRegistered", "true");
       } else {
         // If it's a login operation, trigger success message for login
         triggerSuccess("Login successful!");
