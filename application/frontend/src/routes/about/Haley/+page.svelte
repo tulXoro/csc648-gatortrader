@@ -6,8 +6,8 @@
 <Profile
   name="Haley Park"
   photo={img}
-  bio="This is a bio"
-  role="This is a role"
+  bio="I am a senior at SFSU majoring in Computer Science."
+  role="Back End Developer"
   github="https://github.com/jung-hyeon"
   linkedin="https://linkedin.com"
   email="jpark58@sfsu.edu"
