@@ -16,7 +16,8 @@ const router = express.Router();
 
 router.get("/", async (req, res) => {
   try {
-    const { category, search } = req.query;
+    // sortByPrice: "1" -> descByPrice "2" -> ascByPrice else by desc timestamp
+    const { category, search, sortByPrice } = req.query;
     let limit = parseInt(req.query.limit);
     let page = parseInt(req.query.page);
 
@@ -27,30 +28,39 @@ router.get("/", async (req, res) => {
       page = 1;
     }
     const offset = (page - 1) * limit;
+    let orderByClause = "timestamp desc";
+    if (sortByPrice === "1") {
+      orderByClause = "pp.price desc";
+    } else if (sortByPrice === "2") {
+      orderByClause = "pp.price asc";
+    }
+
+    console.log("orderByClause", orderByClause);
+
     const selectClause =  `SELECT u.user_name, pp.*, t.course_number, t.professor FROM t_product_post pp 
                               join t_user u on pp.user_id = u.user_id
                               left outer join t_textbook t on pp.post_id = t.post_id`;
     if (category && search) {
       const sql = `${selectClause} WHERE pp.category_id = ? AND
-                      (pp.item_name LIKE '%${search}%' OR pp.item_description LIKE '%${search}%') AND pp.status = 'APPROVED' ORDER BY timestamp DESC LIMIT ? OFFSET ?`;
+                      (pp.item_name LIKE '%${search}%' OR pp.item_description LIKE '%${search}%') AND pp.status = 'APPROVED' ORDER BY ${orderByClause} LIMIT ? OFFSET ?`;
       const [rows] = await db.query(sql, [category, limit, offset]);
       res.json(rows);
     }
     // when we receive a request to query by category
     else if (category) {
       const [rows] = await db.query(
-        `${selectClause} WHERE pp.category_id = 1 AND pp.status = 'APPROVED' LIMIT ? OFFSET ?`,
+        `${selectClause} WHERE pp.category_id = 1 AND pp.status = 'APPROVED'  ORDER BY ${orderByClause} LIMIT ? OFFSET ?`,
         [category]
       );
       res.json(rows);
     } else if (search) {
       const sql = `${selectClause} WHERE (pp.item_name LIKE '%${search}%' OR pp.item_description LIKE '%${search}%')
-                              AND pp.status = 'APPROVED' ORDER BY pp.timestamp DESC LIMIT ? OFFSET ?`;
+                              AND pp.status = 'APPROVED' ORDER BY ${orderByClause} LIMIT ? OFFSET ?`;
       const [rows] = await db.query(sql, [limit, offset]);
       res.json(rows);
     } else {
       const [rows] = await db.query(
-        `${selectClause} WHERE pp.status = 'APPROVED' ORDER BY pp.timestamp DESC LIMIT ? OFFSET ?`,
+        `${selectClause} WHERE pp.status = 'APPROVED' ORDER BY ${orderByClause} LIMIT ? OFFSET ?`,
         [limit, offset]
       );
       res.json(rows);
