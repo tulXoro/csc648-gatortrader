@@ -39,6 +39,7 @@ router.post("/", async (req, res) => {
       // this shows a red alert
       message: `Log in successful.`,
       userId: user_id,
+      userName: userName,
     });
   } catch (err) {
     res.status(500).send("Error in login." + err);
