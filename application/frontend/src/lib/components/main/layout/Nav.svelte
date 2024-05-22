@@ -27,6 +27,7 @@
   import { searchState } from "../../../stores/searchStore";
   import { get } from "svelte/store";
   import { flashStore } from "$lib/stores/flashStore.js";
+  import { username } from "$lib/stores/username.js";
 
   // Define the interface for categories
   interface Category {
@@ -35,11 +36,10 @@
   }
 
   // Define exported props for the component
-  export let selectedCategory = 0;
-  export let searchQuery = "";
-  export let categories: Category[] = [];
-  export let isLoggedIn = false;
-  export let username = "";
+  let selectedCategory = 0;
+  let searchQuery = "";
+  let categories: Category[] = [];
+  let isLoggedIn = false;
   let showLogoutDropdown = false;
 
   const dispatch = createEventDispatcher();
@@ -72,7 +72,7 @@
         const data = await response.json();
         isLoggedIn = data.isLoggedIn;
         if (isLoggedIn) {
-          username = data.username;
+          username.set(data.username);
         }
       } else {
         console.error("Failed to fetch session status:", response.statusText);
@@ -90,7 +90,7 @@
       });
       if (response.ok) {
         isLoggedIn = false;
-        username = "";
+        username.set("");
         triggerSuccess("Logged out successfully.");
 
         // Delay redirection to allow flash message to be displayed

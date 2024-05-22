@@ -5,6 +5,7 @@
   import { posts } from "$lib/stores/store";
 
   export let post;
+  export let isDashboard = false;
   // Function to calculate the time difference
   function getTimeDifference(timestamp: string) {
     return formatDistanceToNow(new Date(timestamp), { addSuffix: true });
@@ -46,7 +47,23 @@
     <p class="text-sm text-gray-700 mb-4 border-b border-gray-300 pb-5">
       Posted: {getTimeDifference(post.timestamp)}
     </p>
-    <p class="text-3xl font-semibold text-right">${post.price}</p>
+    {#if isDashboard}
+    <p class="text-2xl font-semibold text-left">
+      Status:
+      {#if post.status === "PENDING"}
+        <span class="text-yellow-500">Pending</span>
+      {:else if post.status === "APPROVED"}
+        <span class="text-green-500">Approved</span>
+      {:else if post.status === "REJECTED"}
+        <span class="text-red-500">Rejected</span>
+      {:else}
+        <span class="text-red-500">Unknown</span>
+      {/if}
+    </p>
+    {/if}
+    <p class="text-3xl font-semibold text-right">
+      ${post.price}
+    </p>
   </div>
 
   <Message {post} />
