@@ -26,6 +26,8 @@ import uploadImage from './routes/uploadImage.js';
 import message from './routes/message.js';
 import getSellerPosts from './routes/getSellerPosts.js';
 import getPostById from './routes/getPostById.js';
+import getPostsCount from './routes/getPostsCount.js';
+import user from './routes/user.js';
 
 const app = express();
 const PORT = 3000;
@@ -107,9 +109,11 @@ app.use('/', requireSession);
 // app.use(cors());
 
 app.use('/getCategories', getCategories);
+app.use('/user', user);
 app.use('/posts', posts);
 app.use('/getSellerPosts', getSellerPosts);
 app.use('/getPostById', getPostById);
+app.use('/getPostsCount', getPostsCount);
 
 app.use('/image', express.static(path.join(dirname(fileURLToPath(import.meta.url)), 'images')));
 
