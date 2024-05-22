@@ -37,9 +37,6 @@
     <TabItem title="Messages">
       <p class="text-sm text-gray-500 dark:text-gray-400"></p>
       <Notification />
-      <Notification />
-      <Notification />
-      <Notification />
     </TabItem>
   </Tabs>
 </div>
