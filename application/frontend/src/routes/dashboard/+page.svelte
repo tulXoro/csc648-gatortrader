@@ -18,17 +18,16 @@
 
 <title>GatorTrader | Dashboard</title>
 
-
 <div class="container mx-auto px-4">
   <div
     class="md:flex md:items-center md:space-x-4 md:rtl:space-x-reverse md:pb-20"
     style="padding:10px"
   >
     <div class="mt-4 md:mt-0 md:flex md:flex-col md:justify-center">
-      <div class="text-xl font-medium dark:text-white">Welcome to your dashboard!</div>
+      <span class="text-4xl font-bold dark:text-white">Dashboard</span>
     </div>
   </div>
-  <div class="mb-8 md:max-w-lg"> </div>
+  <div class="mb-8 md:max-w-lg"></div>
   <Tabs>
     <TabItem open title="Posts">
       <p class="text-sm text-gray-500 dark:text-gray-400"></p>

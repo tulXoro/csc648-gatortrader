@@ -79,7 +79,7 @@
         <!-- Image detail -->
         <div
           class="flex-1 flex flex-col justify-between ml-0 lg:ml-5 mr-5 lg:mr-0"
-          style="width: 500px; height: 500px;  padding: 20px;"
+          style="width: 500px; height: 800px;  padding: 20px;"
         >
           {#if post.image_file}
             <img
@@ -95,46 +95,48 @@
             />
           {/if}
         </div>
-        <!-- Product details -->
-        <div
-          class="flex-1 flex flex-col justify-between ml-0 lg:ml-5 mr-5 lg:mr-0"
-          style="width: 400px; height: 500px; border: 2px solid #ccc; border-radius: 5px; padding: 20px;"
-        >
-          <div>
-            <p
-              class="text-5xl dark:text-black mb-5 border-b border-gray-300 pb-5"
-            >
-              {post.item_name}
-            </p>
-            <p class="text-3xl dark:text-black mb-3">${post.price}</p>
-            <p
-              class="text-xl dark:text-black mb-5 border-b border-gray-300 pb-5"
-            >
-              Posted: {getTimeDifference(post.timestamp)}
-            </p>
-          </div>
+        <div class="column-layout">
+          <!-- Product details -->
           <div
-            class="flex items-center space-x-4 rtl:space-x-reverse pb-5 mb-5 border-b border-gray-300"
+            class="top-div flex-1 flex flex-col justify-between ml-0 lg:ml-5 mr-5 lg:mr-0"
+            style="width: 400px; height: 500px; border: 2px solid #ccc; border-radius: 5px; padding: 20px;"
           >
-            <Avatar src={img} rounded class="w-20 h-20" />
-            <div class="mt-4 md:mt-0 flex flex-col justify-center">
-              <div class="text-xl font-medium dark:text-white">
-                {post.first_name}
-                {post.last_name}
-              </div>
-              <div class="text-sm dark:text-white">{post.user_name}</div>
+            <div>
+              <p
+                class="text-5xl dark:text-black mb-5 border-b border-gray-300 pb-5"
+              >
+                {post.item_name}
+              </p>
+              <p class="text-3xl dark:text-black mb-3">${post.price}</p>
+              <p
+                class="text-xl dark:text-black mb-5 border-b border-gray-300 pb-5"
+              >
+                Posted: {getTimeDifference(post.timestamp)}
+              </p>
             </div>
+            <div
+              class="flex items-center space-x-4 rtl:space-x-reverse pb-5 mb-5 border-b border-gray-300"
+            >
+              <Avatar src={img} rounded class="w-20 h-20" />
+              <div class="mt-4 md:mt-0 flex flex-col justify-center">
+                <div class="text-xl font-medium dark:text-white">
+                  {post.first_name}
+                  {post.last_name}
+                </div>
+                <div class="text-sm dark:text-white">{post.user_name}</div>
+              </div>
+            </div>
+            <Message {post} />
           </div>
-          <Message {post} />
+          <!-- Description -->
+          <div
+            class="bottom-div flex-1 ml-0 lg:ml-5 mr-5 lg:mr-0 mt-5 lg:mt-0"
+            style="width: 400px; height: 200px; border: 2px solid #ccc; border-radius: 8px; padding: 20px;"
+          >
+            <p class="text-5xl dark:text-black mb-3">Description</p>
+            <p>{post.item_description}</p>
+          </div>
         </div>
-      </div>
-      <!-- Description -->
-      <div
-        class="flex-1 flex flex-col justify-between ml-0 lg:ml-5 mr-5 lg:mr-0 mt-5 lg:mt-0"
-        style="width: 1000px; height: 200px; border: 2px solid #ccc; border-radius: 8px; padding: 20px;"
-      >
-        <p class="text-5xl dark:text-black mb-5">Description</p>
-        <p>{post.item_description}</p>
       </div>
     {/if}
   </div>
