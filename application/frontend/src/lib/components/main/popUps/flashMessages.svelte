@@ -1,3 +1,14 @@
+<!-- /**************************************************************
+* Class: CSC-648-03 Spring 2024
+* Team: 05
+* GitHub ID: csc648-sp24-03-team05
+* Project: SWE Final Project
+*
+* File: flashMessages.svelte
+*
+* Description: Component for alert messages dictating 
+* successful or error.
+**************************************************************/ -->
 <script>
   import { Alert } from "flowbite-svelte";
   import { InfoCircleSolid } from "flowbite-svelte-icons";

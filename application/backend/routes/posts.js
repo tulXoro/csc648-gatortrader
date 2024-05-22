@@ -86,7 +86,7 @@ router.post("/", async (req, res) => {
     }
 
     res.status(201).json({
-      message: `Product post from userId ${userId} is created successfully...`,
+      message: `Post was created successfully! Post is pending upload.`,
     });
     // console.log(result);
   } catch (err) {

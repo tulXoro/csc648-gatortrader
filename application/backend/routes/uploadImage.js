@@ -56,7 +56,7 @@ router.post("/", upload.single("file"), async (req, res, next) => {
     }
     // Send a response indicating the product post has been created
     res.status(201).json({
-      message: `Product post from ${username} is created successfully...`,
+      message: `Post was created successfully! Post is pending upload.`,
     });
   });
 });
