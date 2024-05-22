@@ -10,9 +10,9 @@
 * notifications for messages from buyers to sellers.
 **************************************************************/ -->
 <script lang="ts">
-  import { onMount } from 'svelte';
-  import { InfoCircleSolid } from 'flowbite-svelte-icons';
-  import { Alert } from 'flowbite-svelte';
+  import { onMount } from "svelte";
+  import { InfoCircleSolid } from "flowbite-svelte-icons";
+  import { Alert } from "flowbite-svelte";
 
   interface Message {
     senderId: number;
@@ -53,26 +53,34 @@
       });
 
       if (!messageResponse.ok) {
-        throw new Error('Failed to fetch messages');
+        throw new Error("Failed to fetch messages");
       }
 
       messages = await messageResponse.json();
-      console.log('Fetched messages:', messages);
+      console.log("Fetched messages:", messages);
 
-      messages.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+      messages.sort(
+        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+      );
 
       for (const message of messages) {
         if (message.post_id !== undefined) {
-          const postResponse = await fetch(`/getPostByID?id=${message.post_id}`, {
-            method: "GET",
-          });
+          const postResponse = await fetch(
+            `/getPostByID?id=${message.post_id}`,
+            {
+              method: "GET",
+            }
+          );
 
           if (!postResponse.ok) {
             throw new Error(`Failed to fetch post with ID: ${message.post_id}`);
           }
 
           const postData = await postResponse.json();
-          console.log(`Fetched post data for post_id ${message.post_id}:`, postData);
+          console.log(
+            `Fetched post data for post_id ${message.post_id}:`,
+            postData
+          );
 
           if (Array.isArray(postData)) {
             if (postData.length > 0) {
@@ -84,41 +92,22 @@
             posts[message.post_id] = postData;
           }
 
-          console.log(`Assigned post for post_id ${message.post_id}:`, posts[message.post_id]);
+          console.log(
+            `Assigned post for post_id ${message.post_id}:`,
+            posts[message.post_id]
+          );
         } else {
-          console.error('Skipping fetch for undefined post_id:', message);
+          console.error("Skipping fetch for undefined post_id:", message);
         }
       }
 
-      console.log('Fetched posts:', posts);
-
+      console.log("Fetched posts:", posts);
     } catch (err) {
       console.error("Failed to fetch posts:", err);
       error = err.message;
     }
   });
 </script>
-
-<style>
-  .alert-content {
-    @apply flex items-start space-x-3;
-  }
-  .post-details {
-    @apply mt-2 text-sm text-gray-700 border-t border-gray-200 pt-2;
-  }
-  .post-title {
-    @apply font-semibold text-lg text-gray-900;
-  }
-  .post-price {
-    @apply text-gray-600;
-  }
-  .alert-border {
-    @apply border border-gray-300 rounded-lg p-4 mb-4;
-  }
-  .alert-header {
-    @apply font-bold text-lg text-gray-800 mb-2;
-  }
-</style>
 
 {#if error}
   <Alert color="red" dismissable class="alert-border">
@@ -142,9 +131,19 @@
         <div>
           <div>{message.message}</div>
           {#if posts[message.post_id]}
-            <div class="post-details">
-              <div class="post-title">{posts[message.post_id].item_name}</div>
-              <div class="post-price">Price: ${posts[message.post_id].price}</div>
+            <div class="post-details flex">
+              <div class="post-image">
+                <img
+                  src={`/image/thumbnails/${posts[message.post_id].image_file}`}
+                  alt={posts[message.post_id].item_name}
+                />
+              </div>
+              <div class="flex-column ml-3">
+                <div class="post-title">{posts[message.post_id].item_name}</div>
+                <div class="post-price">
+                  Price: ${posts[message.post_id].price}
+                </div>
+              </div>
             </div>
           {:else}
             <div class="text-gray-500 mt-2">Loading post details...</div>
@@ -154,3 +153,24 @@
     </div>
   {/each}
 {/if}
+
+<style>
+  .alert-content {
+    @apply flex items-start space-x-3;
+  }
+  .post-details {
+    @apply mt-2 text-sm text-gray-700 border-t border-gray-200 pt-2;
+  }
+  .post-title {
+    @apply font-semibold text-lg text-gray-900;
+  }
+  .post-price {
+    @apply text-gray-600;
+  }
+  .alert-border {
+    @apply border border-gray-300 rounded-lg p-4 mb-4;
+  }
+  .alert-header {
+    @apply font-bold text-lg text-gray-800 mb-2;
+  }
+</style>
