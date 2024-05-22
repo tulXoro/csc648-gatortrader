@@ -6,14 +6,16 @@
 *
 * File: Notification.svelte
 *
-* Description: Component for a Notifcation popUp. Will be  
+* Description: Component for a Notification pop-up. Will be  
 * notifications for messages from buyers to sellers.
 **************************************************************/ -->
+
 <script lang="ts">
   import { onMount } from "svelte";
   import { InfoCircleSolid } from "flowbite-svelte-icons";
   import { Alert } from "flowbite-svelte";
 
+  // Define the interface for a Message object
   interface Message {
     senderId: number;
     receiverId: number;
@@ -23,6 +25,7 @@
     senderUsername: string;
   }
 
+  // Define the interface for a ProductPost object
   interface ProductPost {
     post_id: number;
     image_file: string;
@@ -38,16 +41,21 @@
     user_id?: number;
   }
 
+  // Array to store the messages
   let messages: Message[] = [];
+  // Object to store the posts keyed by post_id
   let posts: Record<number, ProductPost> = {};
+  // Variable to store any error message
   let error: string | null = null;
 
+  // Fetch messages and posts when the component mounts
   onMount(async () => {
     try {
       const params = new URLSearchParams({
         credentials: "include",
       });
 
+      // Fetch messages from the server
       const messageResponse = await fetch(`/message?${params.toString()}`, {
         method: "GET",
         credentials: "include",
@@ -57,13 +65,16 @@
         throw new Error("Failed to fetch messages");
       }
 
+      // Store the fetched messages
       messages = await messageResponse.json();
       console.log("Fetched messages:", messages);
 
+      // Sort messages by date in descending order
       messages.sort(
         (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
       );
 
+      // Fetch post data for each message
       for (const message of messages) {
         if (message.post_id !== undefined) {
           const postResponse = await fetch(
@@ -83,6 +94,7 @@
             postData
           );
 
+          // Handle the case where postData is an array
           if (Array.isArray(postData)) {
             if (postData.length > 0) {
               posts[message.post_id] = postData[0];
@@ -110,7 +122,9 @@
   });
 </script>
 
+<!-- Template to render notifications -->
 {#if error}
+  <!-- Display error message if there is an error -->
   <Alert color="red" dismissable class="alert-border">
     <div class="alert-content">
       <InfoCircleSolid slot="icon" class="w-5 h-5 text-red-500" />
@@ -118,6 +132,7 @@
     </div>
   </Alert>
 {:else if messages.length === 0}
+  <!-- Display message if there are no messages -->
   <Alert color="blue" dismissable class="alert-border">
     <div class="alert-content">
       <InfoCircleSolid slot="icon" class="w-5 h-5 text-blue-500" />
@@ -125,6 +140,7 @@
     </div>
   </Alert>
 {:else}
+  <!-- Display messages if there are any -->
   {#each messages as message}
     <div class="alert-border">
       <div class="alert-header">
@@ -133,6 +149,7 @@
       <div class="alert-content">
         <div>
           <div>{message.message}</div>
+          <!-- Display post details if available -->
           {#if posts[message.post_id]}
             <div class="post-details flex">
               <div class="post-image">
@@ -149,6 +166,7 @@
               </div>
             </div>
           {:else}
+            <!-- Display loading message if post details are not available yet -->
             <div class="text-gray-500 mt-2">Loading post details...</div>
           {/if}
         </div>
@@ -157,6 +175,7 @@
   {/each}
 {/if}
 
+<!-- Styles for the notification component -->
 <style>
   .alert-content {
     @apply flex items-start space-x-3;
