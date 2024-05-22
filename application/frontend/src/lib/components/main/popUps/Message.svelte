@@ -93,7 +93,7 @@
 
 <Button
   on:click={() => (formModal = true)}
-  class="w-full text-lg mb-1"
+  class="w-full text-lg mb-1 bottom-0"
   style="background-color:steelblue; color: white;">Message</Button
 >
 
