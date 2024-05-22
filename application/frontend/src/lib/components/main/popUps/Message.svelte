@@ -68,7 +68,7 @@
       }
 
       const responseData = await response.json();
-      alert(responseData.message);
+      triggerSuccess(responseData.message);
       message = "";
       formModal = false;
     } catch (error) {

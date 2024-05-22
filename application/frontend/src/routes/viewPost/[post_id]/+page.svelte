@@ -117,7 +117,12 @@
             <div
               class="flex items-center space-x-4 rtl:space-x-reverse pb-5 mb-5 border-b border-gray-300"
             >
-              <Avatar src={img} rounded class="w-20 h-20" />
+              <Avatar
+                src={img}
+                alt="ProfilePic"
+                imgClass="h-30"
+                class="rounded-full"
+              />
               <div class="mt-4 md:mt-0 flex flex-col justify-center">
                 <div class="text-xl font-medium dark:text-white">
                   {post.first_name}
@@ -133,7 +138,11 @@
             class="bottom-div flex-1 ml-0 lg:ml-5 mr-5 lg:mr-0 mt-5 lg:mt-0"
             style="width: 400px; height: 200px; border: 2px solid #ccc; border-radius: 8px; padding: 20px;"
           >
-            <p class="text-5xl dark:text-black mb-3">Description</p>
+            <p
+              class="text-3xl dark:text-black mb-3 border-b border-gray-300 pb-5"
+            >
+              Description
+            </p>
             <p>{post.item_description}</p>
           </div>
         </div>

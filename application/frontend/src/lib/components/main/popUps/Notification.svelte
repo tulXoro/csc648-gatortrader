@@ -20,6 +20,7 @@
     message: string;
     date: string;
     post_id: number;
+    senderUsername: string;
   }
 
   interface ProductPost {
@@ -126,7 +127,9 @@
 {:else}
   {#each messages as message}
     <div class="alert-border">
-      <div class="alert-header">Incoming Message</div>
+      <div class="alert-header">
+        Message from {message.senderUsername}
+      </div>
       <div class="alert-content">
         <div>
           <div>{message.message}</div>
@@ -168,9 +171,9 @@
     @apply text-gray-600;
   }
   .alert-border {
-    @apply border border-gray-300 rounded-lg p-4 mb-4;
+    @apply border border-gray-500 rounded-lg p-4 mb-4 bg-slate-200;
   }
   .alert-header {
-    @apply font-bold text-lg text-gray-800 mb-2;
+    @apply font-bold text-xl text-gray-800 mb-2;
   }
 </style>

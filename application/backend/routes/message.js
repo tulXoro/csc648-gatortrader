@@ -50,7 +50,12 @@ router.get("/", async (req, res) => {
   try {
     // console.log(req.query);
     const userId = req.session.user.id;
-    const sql = "SELECT * FROM t_purchase_message WHERE receiver_id = ?";
+    const sql = `
+    SELECT m.*, u.user_name AS senderUsername
+    FROM t_purchase_message m
+    JOIN t_user u ON m.sender_id = u.user_id
+    WHERE m.receiver_id = ?
+  `;
     const [rows] = await db.query(sql, [userId]);
     // console.log(rows);
     res.status(200).json(rows);
