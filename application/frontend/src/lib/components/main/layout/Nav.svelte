@@ -27,7 +27,7 @@
   import { searchState } from "../../../stores/searchStore";
   import { get } from "svelte/store";
   import { flashStore } from "$lib/stores/flashStore.js";
-  import { username } from "$lib/stores/username.js";
+  // import { username } from "$lib/stores/username.js";
   import { searchTrigger } from "$lib/stores/searchTrigger.js";
 
   // Define the interface for categories
@@ -41,7 +41,7 @@
   let searchQuery = "";
   let categories: Category[] = [];
   let isLoggedIn = false;
-  let showLogoutDropdown = false;
+  export let username = "";
 
   const dispatch = createEventDispatcher();
 
@@ -73,7 +73,7 @@
         const data = await response.json();
         isLoggedIn = data.isLoggedIn;
         if (isLoggedIn) {
-          username.set(data.username);
+          username = data.username;
         }
       } else {
         console.error("Failed to fetch session status:", response.statusText);
@@ -91,7 +91,7 @@
       });
       if (response.ok) {
         isLoggedIn = false;
-        username.set("");
+        username = "";
         triggerSuccess("Logged out successfully.");
 
         // Delay redirection to allow flash message to be displayed
@@ -160,7 +160,6 @@
       // } else {
       //   console.error("Failed to fetch posts");
       // }
-
 
       // Update the URL without reloading the page
       const newUrl = `/browse${url.search}`;
@@ -268,7 +267,7 @@
             <NavLi
               class="text-white text-2xl relative cursor-pointer flex items-center space-x-2"
             >
-              <span class="text-white text-2xl">Welcome, Gator</span>
+              <span class="text-white text-2xl">Welcome, {username}</span>
               <ChevronDownOutline class=" flex w-5 h-5" />
             </NavLi>
             <Dropdown class="w-40">
