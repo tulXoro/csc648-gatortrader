@@ -33,6 +33,7 @@
       .then((data) => {
         post = data[0];
         isLoading = false;
+        console.log(post);
       })
       .catch((err) => {
         console.error("Failed to fetch post:", err);
@@ -121,7 +122,8 @@
           >
             <Avatar src={img} rounded class="w-20 h-20" />
             <div class="mt-4 md:mt-0 flex flex-col justify-center">
-              <div class="text-xl font-medium dark:text-white">{post.user_id}</div>
+              <div class="text-xl font-medium dark:text-white">{post.first_name} {post.last_name}</div>
+              <div class="text-sm dark:text-white">{post.user_name}</div>
             </div>
           </div>
           <Message {post} />
