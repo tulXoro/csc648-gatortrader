@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import { Avatar } from "flowbite-svelte";
   import img from "$lib/assets/image.jpg";
   import { posts } from "$lib/stores/store.js";
@@ -18,25 +19,59 @@
   }
 
   let post: ProductPost | null = null;
-  let isLoading = true;
+  $: isLoading = true;
 
-  // Get the post_id from localStorage if available
-  const postId = localStorage.getItem("postId");
-
-  // Get the post details based on the route parameter or localStorage
-  $: {
+  onMount(() => {
     const { post_id } = $page.params;
-    const foundPost = $posts.find(
-      (post: ProductPost) => post.post_id === parseInt(post_id || postId || "")
-    );
-    if (foundPost) {
-      // If post is found, set loading to false and update post
-      isLoading = false;
-      post = foundPost;
-      // Store the post_id in localStorage for persistence
-      localStorage.setItem("postId", String(post_id));
-    }
-  }
+    const params = new URLSearchParams({
+      id: post_id,
+    });
+
+    fetch(`/getPostById?${params.toString()}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`Server responded with status: ${res.status}`);
+        }
+        return res.json();
+      })
+      .then((data) => {
+        post = data[0];
+        isLoading = false;
+      })
+      .catch((err) => {
+        console.error("Failed to fetch post:", err);
+      });
+  });
+
+
+  // // Get the post details based on the route parameter or localStorage
+  // $: {
+  //   const { post_id } = $page.params;
+
+  //   fetch(`/getPostById/${post_id}`)
+  //     .then((res) => {
+  //       if (!res.ok) {
+  //         throw new Error(`Server responded with status: ${res.status}`);
+  //       }
+  //       return res.json();
+  //     })
+  //     .then((data) => {
+  //       post = data;
+  //       isLoading = false;
+  //     })
+  //     .catch((err) => {
+  //       console.error("Failed to fetch post:", err);
+  //     });
+
+  //   // Cleanup function
+  // }
 
   // Function to calculate the time difference
   function getTimeDifference(timestamp: string) {
@@ -48,6 +83,9 @@
 
 {#if isLoading}
   <div>Loading...</div>
+
+{:else if !post}
+  <p>Post not Found!</p>
 {:else}
   <div class="flex flex-col gap-5 p-5">
     {#if post}

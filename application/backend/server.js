@@ -25,6 +25,7 @@ import login from './routes/login.js';
 import uploadImage from './routes/uploadImage.js';
 import message from './routes/message.js';
 import getSellerPosts from './routes/getSellerPosts.js';
+import getPostById from './routes/getPostById.js';
 
 const app = express();
 const PORT = 3000;
@@ -79,7 +80,7 @@ const restrictedPaths = ["/getSellerPosts", "/message", "/upload"];
 const allowGuestUsers = req => {
   const { path, method } = req;
   console.log("path", path, "method", method);
-  return !restrictedPaths.includes(path) 
+  return !restrictedPaths.includes(path)
             && !(path === "/posts" && method.toLowerCase() === "post");
 };
 
@@ -92,12 +93,13 @@ app.use('/login', login);
 
 app.use('/', requireSession);
 
-// Use CORS middleware 
-// app.use(cors()); 
+// Use CORS middleware
+// app.use(cors());
 
 app.use('/getCategories', getCategories);
 app.use('/posts', posts);
 app.use('/getSellerPosts', getSellerPosts);
+app.use('/getPostById', getPostById);
 
 app.use('/image', express.static(path.join(dirname(fileURLToPath(import.meta.url)), 'images')));
 
