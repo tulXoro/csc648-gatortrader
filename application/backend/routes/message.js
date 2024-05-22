@@ -16,7 +16,7 @@ const router = express.Router();
 
 router.post("/", async (req, res) => {
   try {
-    const senderId = req.body.sender_id;
+    const senderId = req.session.user.id;
     const receiverId = req.body.receiver_id;
     const message = req.body.message;
     const date = now();
