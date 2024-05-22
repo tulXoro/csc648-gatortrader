@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import { Avatar } from "flowbite-svelte";
   import img from "$lib/assets/image.jpg";
   import { posts } from "$lib/stores/store.js";
@@ -6,48 +7,62 @@
   import { page } from "$app/stores";
   import { formatDistanceToNow } from "date-fns";
 
-  // Define the interface for the product post
-  interface ProductPost {
-    post_id: number;
-    image_file: string;
-    item_name: string;
-    item_description: string;
-    price: number;
-    timestamp: string;
-    user_name?: string;
-  }
+  let post;
+  $: isLoading = true;
 
-  let post: ProductPost | null = null;
-  let isLoading = true;
-  let sellerUsername = "";
-
-  // Get the post_id from localStorage if available
-  const postId = localStorage.getItem("postId");
-
-  // Get the post details based on the route parameter or localStorage
-  $: {
+  onMount(() => {
     const { post_id } = $page.params;
-    const foundPost = $posts.find(
-      (post: ProductPost) => post.post_id === parseInt(post_id || postId || "")
-    );
-    if (foundPost) {
-      // If post is found, set loading to false and update post
-      isLoading = false;
-      post = foundPost;
-      // Store the post_id in localStorage for persistence
-      localStorage.setItem("postId", String(post_id));
-    }
-  }
+    const params = new URLSearchParams({
+      id: post_id,
+    });
+
+    fetch(`/getPostById?${params.toString()}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`Server responded with status: ${res.status}`);
+        }
+        return res.json();
+      })
+      .then((data) => {
+        post = data[0];
+        isLoading = false;
+        console.log(post);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch post:", err);
+      });
+  });
+
+  // // Get the post details based on the route parameter or localStorage
+  // $: {
+  //   const { post_id } = $page.params;
+
+  //   fetch(`/getPostById/${post_id}`)
+  //     .then((res) => {
+  //       if (!res.ok) {
+  //         throw new Error(`Server responded with status: ${res.status}`);
+  //       }
+  //       return res.json();
+  //     })
+  //     .then((data) => {
+  //       post = data;
+  //       isLoading = false;
+  //     })
+  //     .catch((err) => {
+  //       console.error("Failed to fetch post:", err);
+  //     });
+
+  //   // Cleanup function
+  // }
 
   // Function to calculate the time difference
   function getTimeDifference(timestamp: string) {
     return formatDistanceToNow(new Date(timestamp), { addSuffix: true });
-  }
-
-  // Check if the user is logged in and get the username from the session
-  const loggedInUser = $page.stores.session.username;
-  if (loggedInUser) {
-    sellerUsername = loggedInUser;
   }
 </script>
 
@@ -55,6 +70,8 @@
 
 {#if isLoading}
   <div>Loading...</div>
+{:else if !post}
+  <p>Post not Found!</p>
 {:else}
   <div class="flex flex-col gap-5 p-5">
     {#if post}
@@ -102,11 +119,10 @@
             <Avatar src={img} rounded class="w-20 h-20" />
             <div class="mt-4 md:mt-0 flex flex-col justify-center">
               <div class="text-xl font-medium dark:text-white">
-                Seller: {sellerUsername}
+                {post.first_name}
+                {post.last_name}
               </div>
-              <div class="text-sm text-gray-500 dark:text-gray-400">
-                Joined in August 2014
-              </div>
+              <div class="text-sm dark:text-white">{post.user_name}</div>
             </div>
           </div>
           <Message {post} />

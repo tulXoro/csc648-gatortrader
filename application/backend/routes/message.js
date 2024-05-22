@@ -49,8 +49,7 @@ router.post("/", async (req, res) => {
 router.get("/", async (req, res) => {
   try {
     // console.log(req.query);
-    const { userId } = req.query;
-    console.log("userId", userId);
+    const userId = req.session.user.id;
     const sql = "SELECT * FROM t_purchase_message WHERE receiver_id = ?";
     const [rows] = await db.query(sql, [userId]);
     // console.log(rows);

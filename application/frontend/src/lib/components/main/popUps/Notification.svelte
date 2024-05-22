@@ -9,37 +9,148 @@
 * Description: Component for a Notifcation popUp. Will be  
 * notifications for messages from buyers to sellers.
 **************************************************************/ -->
-<script>
-    import { Alert, Button } from 'flowbite-svelte';
-    import { InfoCircleSolid } from 'flowbite-svelte-icons';
-    import { fly } from 'svelte/transition';
-  </script>
-  
-  <!-- <Alert dismissable>
-    <InfoCircleSolid slot="icon" class="w-5 h-5" />
-    A simple default alert with an
-    <a href="/" class="font-semibold underline hover:text-blue-800 dark:hover:text-blue-900">example link</a>
-    . Give it a click if you like.
-  </Alert> -->
-  <Alert color="red" dismissable>
-    <InfoCircleSolid slot="icon" class="w-5 h-5" />
-    A sample message notification that will be filled later
-    <!-- <a href="/" class="font-semibold underline hover:text-blue-800 dark:hover:text-blue-900">example link</a>
-    . Give it a click if you like. -->
+<script lang="ts">
+  import { onMount } from 'svelte';
+  import { InfoCircleSolid } from 'flowbite-svelte-icons';
+  import { Alert } from 'flowbite-svelte';
+
+  interface Message {
+    senderId: number;
+    receiverId: number;
+    message: string;
+    date: string;
+    post_id: number;
+  }
+
+  interface ProductPost {
+    post_id: number;
+    image_file: string;
+    item_name: string;
+    item_description: string;
+    price: number;
+    timestamp: string;
+    user_name?: string;
+    category_id?: number;
+    first_name?: string;
+    last_name?: string;
+    status?: string;
+    user_id?: number;
+  }
+
+  let messages: Message[] = [];
+  let posts: Record<number, ProductPost> = {};
+  let error: string | null = null;
+
+  onMount(async () => {
+    try {
+      const params = new URLSearchParams({
+        credentials: "include",
+      });
+
+      const messageResponse = await fetch(`/message?${params.toString()}`, {
+        method: "GET",
+        credentials: "include",
+      });
+
+      if (!messageResponse.ok) {
+        throw new Error('Failed to fetch messages');
+      }
+
+      messages = await messageResponse.json();
+      console.log('Fetched messages:', messages);
+
+      messages.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+      for (const message of messages) {
+        if (message.post_id !== undefined) {
+          const postResponse = await fetch(`/getPostByID?id=${message.post_id}`, {
+            method: "GET",
+          });
+
+          if (!postResponse.ok) {
+            throw new Error(`Failed to fetch post with ID: ${message.post_id}`);
+          }
+
+          const postData = await postResponse.json();
+          console.log(`Fetched post data for post_id ${message.post_id}:`, postData);
+
+          if (Array.isArray(postData)) {
+            if (postData.length > 0) {
+              posts[message.post_id] = postData[0];
+            } else {
+              console.error(`No post found for post_id ${message.post_id}`);
+            }
+          } else {
+            posts[message.post_id] = postData;
+          }
+
+          console.log(`Assigned post for post_id ${message.post_id}:`, posts[message.post_id]);
+        } else {
+          console.error('Skipping fetch for undefined post_id:', message);
+        }
+      }
+
+      console.log('Fetched posts:', posts);
+
+    } catch (err) {
+      console.error("Failed to fetch posts:", err);
+      error = err.message;
+    }
+  });
+</script>
+
+<style>
+  .alert-content {
+    @apply flex items-start space-x-3;
+  }
+  .post-details {
+    @apply mt-2 text-sm text-gray-700 border-t border-gray-200 pt-2;
+  }
+  .post-title {
+    @apply font-semibold text-lg text-gray-900;
+  }
+  .post-price {
+    @apply text-gray-600;
+  }
+  .alert-border {
+    @apply border border-gray-300 rounded-lg p-4 mb-4;
+  }
+  .alert-header {
+    @apply font-bold text-lg text-gray-800 mb-2;
+  }
+</style>
+
+{#if error}
+  <Alert color="red" dismissable class="alert-border">
+    <div class="alert-content">
+      <InfoCircleSolid slot="icon" class="w-5 h-5 text-red-500" />
+      <span>{error}</span>
+    </div>
   </Alert>
-  <!-- <Alert color="red" dismissable>
-    <InfoCircleSolid slot="icon" class="w-5 h-5" />
-    A simple info alert with an
-    <a href="/" class="font-semibold underline hover:text-red-800 dark:hover:text-red-900">example link</a>
-    . Give it a click if you like.
+{:else if messages.length === 0}
+  <Alert color="blue" dismissable class="alert-border">
+    <div class="alert-content">
+      <InfoCircleSolid slot="icon" class="w-5 h-5 text-blue-500" />
+      <span>No messages to display.</span>
+    </div>
   </Alert>
-  <Alert color="green" dismissable>
-    <InfoCircleSolid slot="icon" class="w-5 h-5" />
-    A simple info alert with an
-    <a href="/" class="font-semibold underline hover:text-green-800 dark:hover:text-green-900">example link</a>
-    . Give it a click if you like.
-  </Alert>
-  <Alert color="yellow" dismissable transition={fly} params={{ x: 200 }}>
-    <InfoCircleSolid slot="icon" class="w-5 h-5" />
-    An alert with non default animation - fly away.
-  </Alert> -->
+{:else}
+  {#each messages as message}
+    <div class="alert-border">
+      <div class="alert-header">Incoming Message</div>
+      <div class="alert-content">
+        <div>
+          <div>{message.message}</div>
+          {#if posts[message.post_id]}
+            <div class="post-details">
+              <div class="post-title">{posts[message.post_id].item_name}</div>
+              <div class="post-price">Price: ${posts[message.post_id].price}</div>
+            </div>
+          {:else}
+            <div class="text-gray-500 mt-2">Loading post details...</div>
+          {/if}
+        </div>
+      </div>
+    </div>
+  {/each}
+{/if}

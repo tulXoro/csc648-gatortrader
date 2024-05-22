@@ -27,6 +27,8 @@
   import { searchState } from "../../../stores/searchStore";
   import { get } from "svelte/store";
   import { flashStore } from "$lib/stores/flashStore.js";
+  import { username } from "$lib/stores/username.js";
+  import { searchTrigger } from "$lib/stores/searchTrigger.js";
 
   // Define the interface for categories
   interface Category {
@@ -35,11 +37,10 @@
   }
 
   // Define exported props for the component
-  export let selectedCategory = 0;
-  export let searchQuery = "";
-  export let categories: Category[] = [];
-  export let isLoggedIn = false;
-  export let username = "";
+  let selectedCategory = 0;
+  let searchQuery = "";
+  let categories: Category[] = [];
+  let isLoggedIn = false;
   let showLogoutDropdown = false;
 
   const dispatch = createEventDispatcher();
@@ -72,7 +73,7 @@
         const data = await response.json();
         isLoggedIn = data.isLoggedIn;
         if (isLoggedIn) {
-          username = data.username;
+          username.set(data.username);
         }
       } else {
         console.error("Failed to fetch session status:", response.statusText);
@@ -90,7 +91,7 @@
       });
       if (response.ok) {
         isLoggedIn = false;
-        username = "";
+        username.set("");
         triggerSuccess("Logged out successfully.");
 
         // Delay redirection to allow flash message to be displayed
@@ -151,14 +152,15 @@
       }
 
       // Fetch the search results
-      const response = await fetch(url.toString());
-      if (response.ok) {
-        const data = await response.json();
-        posts.set(data);
-        searchState.update((state) => ({ ...state, results: data }));
-      } else {
-        console.error("Failed to fetch posts");
-      }
+      // const response = await fetch(url.toString());
+      // if (response.ok) {
+      //   const data = await response.json();
+      //   posts.set(data);
+      //   searchState.update((state) => ({ ...state, results: data }));
+      // } else {
+      //   console.error("Failed to fetch posts");
+      // }
+
 
       // Update the URL without reloading the page
       const newUrl = `/browse${url.search}`;
@@ -167,6 +169,7 @@
       } else {
         window.history.pushState({ path: newUrl }, "", newUrl);
       }
+      searchTrigger.set(true);
     } catch (error) {
       console.error("Error fetching posts:", error);
     }
@@ -265,7 +268,7 @@
             <NavLi
               class="text-white text-2xl relative cursor-pointer flex items-center space-x-2"
             >
-              <span class="text-white text-2xl">Welcome, {username}</span>
+              <span class="text-white text-2xl">Welcome, Gator</span>
               <ChevronDownOutline class=" flex w-5 h-5" />
             </NavLi>
             <Dropdown class="w-40">

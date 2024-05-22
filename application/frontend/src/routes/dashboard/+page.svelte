@@ -9,13 +9,11 @@
 * Description: pages dedicated to registered users only
 **************************************************************/ -->
 <script>
-  import Header from "$lib/components/main/layout/Header.svelte";
-  import Nav from "$lib/components/main/layout/Nav.svelte";
-  import Footer from "$lib/components/main/layout/Footer.svelte";
   import { Avatar, Tabs, TabItem } from "flowbite-svelte";
   import img from "$lib/assets/image.jpg";
   import PostCards from "$lib/components/main/posts/PostCards.svelte";
   import Notification from "$lib/components/main/popUps/Notification.svelte";
+  import UserPosts from "$lib/components/main/dashboard/UserPosts.svelte";
 </script>
 
 <title>GatorTrader | Dashboard</title>
@@ -27,20 +25,17 @@
     style="padding:10px"
   >
     <div class="mt-4 md:mt-0 md:flex md:flex-col md:justify-center">
-      <div class="text-xl font-medium dark:text-white">Hi, Name</div>
+      <div class="text-xl font-medium dark:text-white">Welcome to your dashboard!</div>
     </div>
   </div>
   <div class="mb-8 md:max-w-lg"> </div>
   <Tabs>
     <TabItem open title="Posts">
       <p class="text-sm text-gray-500 dark:text-gray-400"></p>
-      <PostCards />
+      <UserPosts />
     </TabItem>
     <TabItem title="Messages">
       <p class="text-sm text-gray-500 dark:text-gray-400"></p>
-      <Notification />
-      <Notification />
-      <Notification />
       <Notification />
     </TabItem>
   </Tabs>

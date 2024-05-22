@@ -25,6 +25,9 @@ import login from './routes/login.js';
 import uploadImage from './routes/uploadImage.js';
 import message from './routes/message.js';
 import getSellerPosts from './routes/getSellerPosts.js';
+import getPostById from './routes/getPostById.js';
+import getPostsCount from './routes/getPostsCount.js';
+import user from './routes/user.js';
 
 const app = express();
 const PORT = 3000;
@@ -79,7 +82,7 @@ const restrictedPaths = ["/getSellerPosts", "/message", "/upload"];
 const allowGuestUsers = req => {
   const { path, method } = req;
   console.log("path", path, "method", method);
-  return !restrictedPaths.includes(path) 
+  return !restrictedPaths.includes(path)
             && !(path === "/posts" && method.toLowerCase() === "post");
 };
 
@@ -87,17 +90,30 @@ app.get('/backtest', (req, res) => {
   res.send('Hello World');
 });
 
+const noCacheMiddleware = (req, res, next) => {
+  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
+  next();
+};
+
+app.use('/', noCacheMiddleware);
+
+
 app.use(bodyParser.json());
 app.use('/login', login);
 
 app.use('/', requireSession);
 
-// Use CORS middleware 
-// app.use(cors()); 
+// Use CORS middleware
+// app.use(cors());
 
 app.use('/getCategories', getCategories);
+app.use('/user', user);
 app.use('/posts', posts);
 app.use('/getSellerPosts', getSellerPosts);
+app.use('/getPostById', getPostById);
+app.use('/getPostsCount', getPostsCount);
 
 app.use('/image', express.static(path.join(dirname(fileURLToPath(import.meta.url)), 'images')));
 
