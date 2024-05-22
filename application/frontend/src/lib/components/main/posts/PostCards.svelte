@@ -12,6 +12,7 @@
   import { posts, updateTrigger } from "../../../stores/store.js";
   import { get } from "svelte/store";
   import ProductPost from "./ProductPost.svelte";
+  import Results from "./Results.svelte";
 
   let postList = [];
   // let filteredPosts = [];
@@ -52,6 +53,7 @@
   class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
 >
   {#each postList as post}
+    <Results />
     <ProductPost {post} />
   {/each}
 </div>

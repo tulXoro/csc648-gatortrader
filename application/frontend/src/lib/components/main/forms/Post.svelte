@@ -22,6 +22,7 @@
   import { goto } from "$app/navigation";
   import { flashStore } from "../../../stores/flashStore.js";
   import { onMount } from "svelte";
+  import SignUpPop from "../popUps/SignUpPop.svelte";
 
   let title = "";
   let selectedCategory = 0;
@@ -92,11 +93,39 @@
     }
   }
 
+  function saveFormData() {
+    const formData = {
+      title,
+      selectedCategory,
+      bookInfo,
+      description,
+      price,
+      imageFile: image_file ? image_file.name : null,
+    };
+    localStorage.setItem("postFormData", JSON.stringify(formData));
+  }
+
   onMount(async () => {
     try {
       const response = await fetch("/login/status");
       const data = await response.json();
       isLoggedIn = data.isLoggedIn;
+
+      const savedFormData = localStorage.getItem("postFormData");
+      if (savedFormData) {
+        const formData = JSON.parse(savedFormData);
+        title = formData.title || "";
+        selectedCategory = formData.selectedCategory || 0;
+        bookInfo = formData.bookInfo || "";
+        description = formData.description || "";
+        price = formData.price || "";
+
+        // Notify the user to reselect the image file
+        if (formData.imageFile) {
+          // Display a message or highlight the file input
+          console.log("Please reselect the image file:", formData.imageFile);
+        }
+      }
     } catch (error) {
       console.error("Failed to fetch login status:", error);
     }
@@ -105,6 +134,7 @@
   // Function to handle form submission
   async function handleSubmit() {
     if (!isLoggedIn) {
+      saveFormData();
       triggerError("You must be logged in to post.");
       return;
     }
@@ -146,7 +176,7 @@
       }
 
       const responseData = await response.json();
-      // Trigger flash message
+      localStorage.removeItem("postFormData");
       triggerSuccess(responseData.message);
       // Redirect to home page after successful post
       goto("/");
@@ -271,14 +301,23 @@
       />
     </div>
 
-    <!-- <SignUpPop /> -->
+    {#if !isLoggedIn}
+      <SignUpPop on:click={handleSubmit} />
+    {:else}
+      <Button
+        class="w-full text-xl"
+        type="button"
+        style="background-color:steelblue; color: white;"
+        on:click={handleSubmit}>Submit</Button
+      >
+    {/if}
 
-    <Button
+    <!-- <Button
       class="w-full text-xl"
       type="button"
       style="background-color:steelblue; color: white;"
       on:click={handleSubmit}>Submit</Button
-    >
+    > -->
     <P
       align="center"
       italic

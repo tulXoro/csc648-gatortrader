@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { Avatar } from "flowbite-svelte";
-  import img from "$lib/assets/image.jpg";
+  import img from "$lib/assets/ProfilePic.png";
   import { posts } from "$lib/stores/store.js";
   import Message from "$lib/components/main/popUps/Message.svelte";
   import { page } from "$app/stores";

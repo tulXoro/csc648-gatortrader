@@ -20,11 +20,13 @@
   } from "flowbite-svelte";
   import { EyeOutline, EyeSlashOutline } from "flowbite-svelte-icons";
   import { goto } from "$app/navigation";
+  import { onMount } from "svelte";
 
   let formModal = false;
   let password = "";
   let username = "";
   let showPW = false;
+  let isLoggedIn = false;
 
   async function handleLogin() {
     try {
@@ -53,6 +55,15 @@
       alert("An error occurred. Please try again later.");
     }
   }
+  onMount(async () => {
+    try {
+      const response = await fetch("/login/status");
+      const data = await response.json();
+      isLoggedIn = data.isLoggedIn;
+    } catch (error) {
+      console.error("Failed to fetch login status:", error);
+    }
+  });
 </script>
 
 <Button
