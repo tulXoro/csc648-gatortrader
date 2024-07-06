@@ -17,3 +17,5 @@ The website allows users to upload products they want to sell, which will need t
 | Cole Douglas | cdouglas8@sfsu.edu    |   cole-d    |
 | Haley Park  | jpark58@sfsu.edu  | jung-hyeon |
 
+## Website Link (May not work depending on if it is still hosted on AWS)
+http://ec2-34-210-12-165.us-west-2.compute.amazonaws.com/
