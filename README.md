@@ -2,7 +2,7 @@
 
 ## Description
 
-This was a team driven project built in the style of an AGILE environment, simulating a small startup. It is an online marketplace similar to [craigslist](craigslist.org/). The website allows users to upload products they want to sell, which will need to be approved by an admin. Other users can contact the seller, where they can discuss how the transaction will proceed.
+This was a team driven project built in the style of an AGILE environment, simulating a small startup. It is an online marketplace similar to [craigslist](https://en.wikipedia.org/wiki/Craigslist), where the idea is that [transactions are solely handled by the customers involved](https://en.wikipedia.org/wiki/Customer_to_customer). The website allows users to upload products they want to sell, which will need to be approved by an admin. Other users can contact the seller, where they can discuss how the transaction will proceed.
 *This website does not actually process any transactions, and all transactions are done through users*.
 
 ## How it works
